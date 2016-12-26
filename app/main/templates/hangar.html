@@ -1,0 +1,56 @@
+<ion-view view-title="Hangar">
+    <ion-nav-buttons side="right">
+        <div class="buttons">
+            <button class="button button-icon button-clear ion-plus-circled" ng-click="modal.show()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-content style="color: white !important">
+      <ion-list>
+        <ion-item class="item-divider item-icon-right">
+            <i class="icon ion-information-circled icon-accesory"></i>
+            <span ng-bind="pilotListLength"></span> pilotos en <span ng-bind="shipListLength"></span> naves
+        </ion-item>
+        <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="ship in shipList | orderBy: ['name'] | filter: selectedFaction" ng-click="viewShip(ship)">
+          <div class="row responsive-sm">
+              <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ ship.keyname }} avatar-{{ getFactionKeyname(ship.faction)}}" style="font-size: 4em"></i>
+              <div class="col">
+                <h2 ng-bind="ship.name" class="title"></h2>
+              </div>
+              <div class="col" style="text-align: right; font-size: 1em !important;">
+                <div class="row">
+                  <div class="col">
+                    <span class="pilots" ng-bind="ship.nPilots"></span>
+                    <i class="ion-person-stalker" style="font-size: 1.5em;"></i>
+                  </div>
+                  <div class="col">
+                    <span class="attack" ng-bind="ship.attack"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
+                  </div>
+                  <div class="col">
+                    <span class="agility" ng-bind="ship.agility"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
+                  </div>
+                  <div class="col">
+                    <span class="hull" ng-bind="ship.hull"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
+                  </div>
+                  <div class="col">
+                    <span class="shield" ng-bind="ship.shield"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
+                  </div>
+                </div>
+              </div>
+              <i class="icon ion-chevron-right icon-accessory"></i>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <ion-footer-bar style="padding: 0px">
+      <div class="button-bar">
+        <a ng-repeat="faction in factionList" class="button icon {{ faction.keyname }}"  ng-click="select(faction)">
+          <i class="xwing-miniatures-font xwing-miniatures-font-{{ faction.keyname }}"></i>
+          <span ng-bind="faction.name"></span>
+        </a>
+      </div>
+    </ion-footer-bar>
+</ion-view>

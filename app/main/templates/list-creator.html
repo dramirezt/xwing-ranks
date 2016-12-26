@@ -1,0 +1,111 @@
+<ion-view view-title="Nueva Lista">
+  <ion-nav-buttons side="right">
+    <div class="buttons">
+      <button class="button button-icon button-clear ion-forward" ng-click="saveList()"></button>
+    </div>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="row" style="padding: 0px; margin: 0px;">
+      <ion-list class="col col-40 nopadding" ng-show="showShips">
+        <ion-item class="nopadding" ng-repeat="ship in shipList | orderBy: ['name'] | filter: selectedFaction._id">
+          <ion-item class="item-divider" ng-click="selectShip(ship)">
+            <i class="xwing-miniatures-ship xwing-miniatures-ship-{{ ship.keyname }}"></i>&nbsp;
+            <span class="title" ng-bind="ship.name"></span>
+          </ion-item>
+          <ion-list ng-show="selectedShip === ship._id">
+            <ion-item ng-repeat="pilot in pilotList | orderBy: ['-poinst', '-pilotSkill'] | filter: ship._id" class="item item-icon-right" type="item-text-wrap" ng-click="addToList(pilot)">
+              <span ng-bind="pilot.pilotSkill"></span>&nbsp;
+              <i class="ion-ios-circle-filled" ng-show="pilot.unique">&nbsp;</i>
+              <span ng-bind="pilot.name"></span>&nbsp;
+              <span class="icon smallfont" ng-bind="pilot.points"></span>
+            </ion-item>
+          </ion-list>
+        </ion-item>
+      </ion-list>
+      <ion-list class="col">
+        <ion-item class="card tournament-card item item-remove-animate" style="color: lightblue; padding: 0px;" ng-repeat="current in currentList track by $index">
+          <ion-item class="item-divider item-button-right" ng-click="toggle($index)">
+            <span ng-bind="current.pilot.name"></span>
+            <div class="buttons" style="margin-top: -5px;">
+              <button class="button button-icon ion-ios-copy-outline" ng-click="duplicate($index); $event.stopPropagation()"></button>
+              <button class="button button-icon ion-ios-close-outline" ng-click="dropFromList($index); $event.stopPropagation()"></button>
+            </div>
+          </ion-item>
+          <ion-item class="item-icon-left item-body shipProfile" ng-show="visible($index)">
+              <i class="icon xwing-miniatures-ship xwing-miniatures-ship-{{ current.ship.keyname }} avatar-{{ currentFaction.keyname }}"></i>
+              <div class="col" style="text-align: center; margin-bottom: 0px;">
+                <div class="row">
+                  <div class="col" style="text-align: center; margin-bottom: 0px;">
+                    <span class="pilotskill" ng-bind="current.pilot.pilotSkill"></span>
+                  </div>
+                  <div class="col" style="text-align: center; margin-bottom: 0px;">
+                    <span class="attack" ng-bind="current.ship.attack"></span>
+                  </div>
+                  <div class="col" style="text-align: center; margin-bottom: 0px;">
+                    <span class="agility" ng-bind="current.ship.agility"></span>
+                  </div>
+                  <div class="col" style="text-align: center; margin-bottom: 0px;">
+                    <span class="hull" ng-bind="current.ship.hull"></span>
+                  </div>
+                  <div class="col" style="text-align: center; margin-bottom: 0px;">
+                    <span class="shield" ng-bind="current.ship.shield"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col actionBar" style="text-align: center; font-size: 10px !important;">
+                <div class="row">
+                  <div ng-show="current.ship.actionBar.focus" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-focus">
+                    </i>
+                  </div>
+                  <div ng-show="current.ship.actionBar.barrelRoll" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-barrelroll">
+                    </i>
+                  </div>
+                  <div ng-show="current.ship.actionBar.targetLock" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-targetlock">
+                    </i>
+                  </div>
+                  <div ng-show="current.ship.actionBar.boost" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-boost">
+                    </i>
+                  </div>
+                  <div ng-show="current.ship.actionBar.evade" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-evade">
+                    </i>
+                  </div>
+                  <div ng-show="current.ship.actionBar.slam" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-slam">
+                    </i>
+                  </div>
+                </div>
+              </div>
+          </ion-item>
+          <ion-list ng-show="visible($index)">
+            <ion-item class="item-button-right" ng-click="showSelectUpgrade(current, $index, upgrade)"  ng-repeat="upgrade in current.upgrades track by $index">
+              <i class="xwing-miniatures-font xwing-miniatures-font-{{ upgrade.type }}"></i>
+              <span ng-bind="upgrade.selected.name"></span>
+              <button class="button button-icon ion-ios-close-outline" ng-click="dropUpgrade(current, $index); $event.stopPropagation()" style="z-index: 999 !important;"></button>
+            </ion-item>
+          </ion-list>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
+  <ion-footer-bar style="padding: 0px">
+    <div class="button-bar" ng-show="selectedFaction">
+      <a class="button button-small icon col-10" ng-click="select()">
+        <i class="icon ion-chevron-left"></i>
+      </a>
+      <a class="button button-small icon" ng-click="select(selectedFaction)">
+        <i class="icon ion-eye"></i>
+      </a>
+    </div>
+    <div class="button-bar" ng-show="!selectedFaction">
+      <a ng-repeat="faction in factionList" class="button button-small icon {{ faction.keyname }}"  ng-click="select(faction)">
+        <i class="xwing-miniatures-font xwing-miniatures-font-{{ faction.keyname }}"></i>
+        <span ng-bind="faction.name"></span>
+      </a>
+    </div>
+  </ion-footer-bar>
+</ion-view>

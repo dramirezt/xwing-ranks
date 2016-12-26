@@ -1,0 +1,32 @@
+{
+  "name": "xwing-miniatures-font",
+  "version": "1.0.13",
+  "authors": [
+    "Geordan Rosario <geordan@gmail.com>"
+  ],
+  "description": "Font for X-Wing Miniatures game",
+  "main": [
+    "dist/xwing-miniatures.css",
+    "dist/xwing-miniatures.ttf",
+    "dist/xwing-miniatures-ships.ttf"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/geordanr/xwing-miniatures-font",
+  "_release": "1.0.13",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.13",
+    "commit": "133ec1d7230c0bb97b3afc2c59afa86b0c7451e1"
+  },
+  "_source": "https://github.com/geordanr/xwing-miniatures-font.git",
+  "_target": "^1.0.13",
+  "_originalSource": "xwing-miniatures-font",
+  "_direct": true
+}

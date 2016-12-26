@@ -1,0 +1,294 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+*/
+$lightblue:                       #adf1fe !default;
+$menucolor:                       #3398d0 !default;
+$light:                           #02243d !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #11122e !default;
+$calm:                            #43cee6 !default;
+$balanced:                        #66cc33 !default;
+$energized:                       #f0b840 !default;
+$assertive:                       #ef4e3a !default;
+$royal:                           #8a6de9 !default;
+$dark:                            #444 !default;
+$base-background-color:           #000015 !default;
+$menu-bg:                         $positive !default;
+$item-divider-color:              yellow !default;
+$item-divider-bg:                 $positive !default;
+$card-body-bg:                    $positive !default;
+$button-positive-border:          $menucolor !default;
+$button-light-border:             $lightblue !default;
+$modal-bg-color:                  #000015 !default;
+$bar-positive-text:               yellow !default;
+
+// The path for our ionicons font files, relative to the built & temporary main.css
+$ionicons-font-path: "../assets/fonts" !default;
+
+// Include all of Ionic
+@import "../../bower_components/ionic/scss/ionic";
+
+// Include X-Wing Miniatures Font from https://github.com/geordanr/xwing-miniatures-font
+@import "../../bower_components/xwing-miniatures-font/dist/xwing-miniatures.css";
+
+
+.xwing-miniatures-font, .xwing-miniatures-ship {
+  font-weight: normal !important;
+}
+
+.title{
+    text-transform: uppercase !important;
+    font-weight: bolder !important;
+    color: yellow !important;
+}
+
+.popup{
+    background-color: $positive !important;
+    border-color: $lightblue !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    .popup-title{
+        color: yellow !important;
+        text-transform: uppercase !important;
+        font-weight: bold !important;
+    }
+    .popup-body{
+        background-color: $light !important;
+        color: $lightblue !important;
+    }
+}
+
+.tournament-card{
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: $menucolor !important;
+    .item-avatar {
+        font-weight: bold !important;
+        color: $lightblue !important;
+        h2 {
+          color: yellow !important;
+          font-weight: bold !important;
+          text-transform: uppercase;
+        }
+    }
+    .item-avatar, .item-body > p{
+        color: $lightblue !important;
+    }
+}
+
+ion-item{
+    color: $lightblue !important;
+    border-color: $menucolor !important;
+    border-style: solid !important;
+    border-width: 1px 0px !important;
+    h2{
+        color: yellow !important;
+        text-transform: uppercase !important;
+        font-weight: bold !important;
+    }
+    p, .ion-chevron-right{
+        color: $lightblue !important;
+    }
+    .row, .col {
+      padding: 0px !important;
+    }
+}
+
+.list.list-inset {
+  border-color: $menucolor;
+  border-width: 1px;
+  border-style: solid;
+  padding: 0px;
+  margin: 0px;
+  a {
+    padding: 5px;
+  }
+  .badge {
+    font-size: 8px;
+    top: 5px;
+    right: 5px;
+  }
+}
+
+.item{
+    border-color: $menucolor !important;
+    .input-label, input{
+        color: $lightblue !important;
+    }
+    .input-label{
+        color: yellow !important;
+        text-transform: uppercase !important;
+        font-weight: bold !important;
+    }
+}
+
+#leftmenu{
+    .item-input{
+        .input-label{
+            color: yellow !important;
+        }
+    }
+}
+
+.item-divider{
+    border-color: $menucolor !important;
+    font-weight: bold !important;
+    p{
+        color: $lightblue !important;
+    }
+}
+
+.ion-plus-circled, .ion-person-add{
+    color: $balanced !important;
+}
+
+.ion-close-circled, .ion-minus-circled{
+    color: red !important;
+}
+
+.ion-navicon, ion-nav-buttons > button{
+    color: yellow !important;
+}
+
+
+// Empire SASS
+
+a.button.empire {
+  // background-color: lightblue;
+  // color: darkblue !important;
+  border-width: 1px;
+  border-style: solid;
+  border-color: blue;
+  color: blue;
+  background-color: $lightblue;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.xwing-miniatures-font-empire{
+    color: blue;
+}
+
+.avatar-empire{
+  color: lightblue;
+}
+
+
+// Rebel SASS
+
+$lightred: #ffa2a2;
+
+a.button.rebel {
+  border-width: 1px;
+  border-style: solid;
+  border-color: red;
+  background-color: $lightred;
+  color: red;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.xwing-miniatures-font-rebel{
+    color: red !important;
+}
+
+.avatar-rebel{
+  color: $lightred;
+}
+
+// Scum SASS
+
+$lightgreen: #b1ffb1;
+
+a.button.scum {
+  border-width: 1px;
+  border-style: solid;
+  border-color: green;
+  background-color: $lightgreen;
+  color: green;
+  font-weight: bolder;
+  text-transform: uppercase;;
+}
+
+.xwing-miniatures-font-scum{
+    color: green !important;
+}
+
+.avatar-scum{
+  color: $lightgreen;
+}
+
+.attack, .xwing-miniatures-font-attack {
+  color: red;
+}
+
+.agility, .xwing-miniatures-font-agility {
+  color: green;
+}
+
+.hull, .xwing-miniatures-font-hull {
+  color: yellow
+}
+
+.shield, .xwing-miniatures-font-shield {
+  color: $lightblue;
+}
+
+
+.description, .ability {
+  color: $lightblue;
+}
+
+
+ion-popover-view.fit, {
+  height: auto !important;
+}
+
+ion-popover-view.fit ion-content{
+  position: relative !important;
+}
+
+ion-popover-view.fit{
+  margin-top: 10px !important;
+}
+
+.numberRight {
+   text-align: right !important;
+   padding-right: 5px !important;
+   border-color: $lightblue !important;
+   border-width: 0px 0px 1px 0px !important;
+   border-style: solid !important;
+  -moz-appearance: textfield !important;
+   background-color: transparent;
+}
+
+ion-footer-bar {
+  padding: 0px !important;
+}
+
+.drop {
+  color: red !important;
+}
+
+.smallfont {
+  font-size: 10px !important;
+}
+
+.shipProfile {
+  .col {
+    padding: 0px;
+    margin: 0px;
+    .row {
+      .col {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+.nopadding {
+  padding: 0px !important;
+}

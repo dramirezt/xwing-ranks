@@ -1,0 +1,35 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">NUEVO TORNEO</h1>
+    <button class="button button-icon button-clear ion-close-circled" ng-click="modal.hide()"></button>
+  </ion-header-bar>
+  <ion-content>
+  <div class="list">
+    <label class="item item-input">
+      <span class="input-label">Nombre:</span>
+      <input type="text" ng-model="newTournament.name" placeholder="Ej: I Torneo X-Wing">
+    </label>
+    <label class="item item-input">
+      <span class="input-label">Lugar:</span>
+      <input type="text" ng-model="newTournament.place" placeholder="Ej: C/ Falsa 123">
+    </label>
+    <label class="item item-input">
+      <span class="input-label">Fecha:</span>
+      <input type="text" ng-model="newTournament.visibleDate" placeholder="29/8/1997" ng-click="openDatePicker()">
+    </label>
+    <label class="item item-input">
+      <span class="input-label">Rondas:</span>
+      <input type="number" min="0" ng-model="newTournament.rounds" >
+    </label>
+    <label class="item item-input">
+      <span class="input-label">Plazas:</span>
+      <input type="number" ng-model="newTournament.maxPlayers" min="4">
+    </label>
+    <label class="item item-input animate-hide">
+     <span class="input-label">Top:</span>
+     <input type="number" ng-model="newTournament.top" min="0">
+    </label>
+    <button class="button button-full button-positive" ng-click="createTournament(newTournament)">CREAR TORNEO</button>
+  </div>
+  </ion-content>
+</ion-modal-view>
