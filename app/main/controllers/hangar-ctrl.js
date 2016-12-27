@@ -3,21 +3,7 @@ angular.module('main')
 
 .controller('HangarCtrl', function ($scope, $ionicModal, $state, $filter, $ionicLoading, hangarService) {
 
-  $scope.show();
-
-  $scope.show = function() {
-    $ionicLoading.show({
-      template: 'Loading...',
-      duration: 3000
-    }).then(function(){
-       console.log("The loading indicator is now displayed");
-    });
-  };
-  $scope.hide = function(){
-    $ionicLoading.hide().then(function(){
-       console.log("The loading indicator is now hidden");
-    });
-  };
+  $scope.showLoading();
 
   $ionicModal.fromTemplateUrl('main/templates/modal-new-ship.html', {
     scope: $scope,
@@ -90,6 +76,7 @@ angular.module('main')
       $scope.pilotList = response;
       $scope.pilotListLength = $scope.pilotList.length;
       orderPilots();
+      $scope.hideLoading();
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -143,6 +130,7 @@ angular.module('main')
   };
 
   $scope.createShip = function (newShip) {
+    $scope.showLoading();
     hangarService.createShip(newShip).then(
       function (response) {
         $scope.shipList.push(response);
@@ -150,6 +138,7 @@ angular.module('main')
         $scope.newShip.actionBar = { focus: true, evade: false, barrelRoll: false, cloak: false, slam: false, targetLock: false };
         $scope.modal.hide();
         $scope.viewShip(response);
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.statusText + ' ' + error.statusText;
@@ -163,11 +152,11 @@ angular.module('main')
     $state.go('main.hangarShip');
   };
 
-  $scope.hide();
-
 })
 
 .controller('ShipDetailsCtrl', function ($scope, $ionicModal, $state, $stateParams, $filter, hangarService) {
+
+  $scope.showLoading();
 
   $scope.currentFaction = hangarService.currentFaction();
   $scope.ship = hangarService.currentShip();
@@ -200,6 +189,7 @@ angular.module('main')
     animation: 'slide-in-up'
   }).then(function (modal) {
     $scope.modalNewPilot = modal;
+    $scope.hideLoading();
   });
 
 
@@ -208,11 +198,13 @@ angular.module('main')
   };
 
   $scope.createPilot = function (pilot) {
+    $scope.showLoading();
     hangarService.createPilot(pilot).then(
       function (response) {
         $scope.pilotList.push(response);
         $scope.modalNewPilot.hide();
         $scope.newPilot = { name: '', pilotSkill: 1, unique: false, elitePilot: 0, ability: '', points: 12 };
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -249,6 +241,8 @@ angular.module('main')
 
 .controller('ShipPilotCtrl', function ($scope, $ionicModal, $state, hangarService) {
 
+  $scope.showLoading();
+
   $scope.currentFaction = hangarService.currentFaction();
   $scope.ship = hangarService.currentShip();
   $scope.currentPilot = hangarService.currentPilot();
@@ -259,6 +253,7 @@ angular.module('main')
     animation: 'slide-in-up'
   }).then(function (modal) {
     $scope.modal = modal;
+    $scope.hideLoading();
   });
 
   $scope.showModal = function () {
@@ -266,10 +261,12 @@ angular.module('main')
   };
 
   $scope.updatePilot = function (pilot) {
+    $scope.modal.hide();
+    $scope.showLoading();
     hangarService.updatePilot(pilot).then(
       function (response) {
         $scope.currentPilot = response;
-        $scope.modal.hide();
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;

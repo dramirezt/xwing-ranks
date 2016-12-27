@@ -3,6 +3,8 @@ angular.module('main')
 
 .controller('TournamentListCtrl', function ($scope, $ionicModal, $log, $state, $filter, $q, tournamentService, UserService, ionicDatePicker) {
 
+  $scope.showLoading();
+
   tournamentService.getTournaments()
   .then(
     function (response) {
@@ -36,6 +38,7 @@ angular.module('main')
                   $scope.myHistory.push(response[j]);
                 }
               }
+              $scope.hideLoading();
             },
             function (error) {
               $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -69,6 +72,7 @@ angular.module('main')
 
   $scope.createTournament = function (newTournament) {
     $scope.modal.hide();
+    $scope.showLoading();
     var user = UserService.currentUser();
     if (user) {
       newTournament.organizer = user._id;
@@ -79,6 +83,7 @@ angular.module('main')
           $scope.newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
           tournamentService.setCurrentTournament(response);
           $state.go('main.tournamentDetails');
+          $scope.hideLoading();
         },
         function (error) {
           $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -137,6 +142,8 @@ angular.module('main')
 
 .controller('TournamentInfoCtrl', function ($scope, $state, $ionicModal, tournamentService) {
 
+  $scope.showLoading();
+
   $scope.tournament = tournamentService.currentTournament();
 
   if (!$scope.tournament) {
@@ -166,10 +173,12 @@ angular.module('main')
 
   $scope.updateTournament = function (tournament) {
     $scope.closeModalEditTournament();
+    $scope.showLoading();
     tournamentService.updateTournament(tournament).then(
       function (response) {
         response.organizername = $scope.tournament.organizername;
         $scope.tournament = response;
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -177,9 +186,13 @@ angular.module('main')
     );
   };
 
+  $scope.hideLoading();
+
 })
 
 .controller('TournamentDetailsCtrl', function ($scope, $state, $ionicModal, $ionicPopover, $ionicHistory, $ionicPopup, $q, inscriptionService, pairingService, tournamentService, UserService, $filter, ionicDatePicker) {
+
+  $scope.showLoading();
 
   $scope.currentUser = UserService.currentUser();
   $scope.tournament = tournamentService.currentTournament();
@@ -217,6 +230,7 @@ angular.module('main')
     function (response) {
       $scope.pairingList = response;
       $scope.topPairingList = pairingService.pairingTopList();
+      $scope.hideLoading();
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -310,6 +324,7 @@ angular.module('main')
       okType: 'button-balanced'
     });
     confirmPopup.then(function () {
+      $scope.showLoading();
       pairingService.deletePairings($scope.tournament)
       .then(
         function () {
@@ -320,6 +335,7 @@ angular.module('main')
               $scope.inscriptionList = [];
               tournamentService.deleteTournament($scope.tournament).then(
                 function (response) {
+                  $scope.hideLoading();
                   if (response.status === 200) {
                     $ionicHistory.clearCache().then(function () {
                       $state.go('main.tournamentsList');
@@ -345,6 +361,7 @@ angular.module('main')
 
   $scope.newInscription = {};
   $scope.createInscription = function (newInscription) {
+    $scope.showLoading();
     newInscription.tournament = $scope.tournament._id;
     inscriptionService.createInscription(newInscription)
     .then(
@@ -352,6 +369,7 @@ angular.module('main')
         $scope.newInscription = {};
         $scope.inscriptionList = inscriptionService.inscriptionList();
         $scope.modal.hide();
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -365,6 +383,7 @@ angular.module('main')
   };
 
   $scope.joinTournament = function () {
+    $scope.showLoading();
     if ($scope.currentUser._id === $scope.tournament.organizer) {
       $scope.closePopover();
     }
@@ -379,6 +398,7 @@ angular.module('main')
       var inscription = { name: $scope.currentUser.username, player: $scope.currentUser._id };
       $scope.createInscription(inscription);
     } else {
+      $scope.hideLoading();
       $ionicPopup.alert({
         title: 'Ha habido un problema',
         template: '¡Ya estás inscrito! Revisa la lista.',
@@ -390,10 +410,11 @@ angular.module('main')
 
   $scope.drop = function (inscription) {
     inscription.drop = true;
+    $scope.showLoading();
     tournamentService.updateInscription(inscription)
     .then(
       function () {
-
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -405,10 +426,12 @@ angular.module('main')
     if ($scope.pairingList.length) {
       $scope.drop(inscription);
     } else {
+      $scope.showLoading();
       inscriptionService.deteteInscription(inscription)
       .then(
         function (response) {
           $scope.message = response.message;
+          $scope.hideLoading();
         },
         function (error) {
           $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -477,6 +500,8 @@ angular.module('main')
 
 .controller('TournamentPlayerProfileCtrl', function ($scope, $filter, $ionicModal, arsenalService, hangarService, inscriptionService, pairingService, tournamentService) {
 
+  $scope.showLoading();
+
   $scope.tournament = tournamentService.currentTournament();
   $scope.inscription = inscriptionService.currentInscription();
   $scope.inscriptionList = inscriptionService.inscriptionList();
@@ -521,6 +546,7 @@ angular.module('main')
   arsenalService.getUpgrades().then(
     function (response) {
       $scope.upgradeList = response;
+      $scope.hideLoading();
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;

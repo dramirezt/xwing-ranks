@@ -3,6 +3,8 @@ angular.module('main')
 
 .controller('PairingListCtrl', function ($scope, $ionicModal,  $ionicPopover, $ionicPopup, $ionicHistory, $state, $q, $filter, inscriptionService, pairingService, tournamentService) {
 
+  $scope.showLoading();
+
   $scope.navRound = 1;
   $scope.tournament = tournamentService.currentTournament();
   $scope.inscriptionList = inscriptionService.inscriptionList();
@@ -20,6 +22,7 @@ angular.module('main')
       $scope.navRound = $scope.cRound;
     }
     $scope.navRoundTag = getNavRoundTag();
+    $scope.hideLoading();
   } else {
     $ionicHistory.clearCache().then(
       function () {
@@ -45,6 +48,7 @@ angular.module('main')
     scope: $scope
   }).then(function (popover) {
     $scope.popover = popover;
+    $scope.hideLoading();
   });
   $scope.showPopover = function ($event) {
     $scope.popover.show($event);
@@ -104,6 +108,7 @@ angular.module('main')
 
   $scope.switchPlayers = function (player1, player2) {
     $scope.closeModal();
+    $scope.showLoading();
     var i = 0;
     var promises = [];
     if ($scope.navRound <= $scope.tournament.rounds) {
@@ -148,16 +153,16 @@ angular.module('main')
     }
     $q.all(promises).then(
       function () {
-
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-        // getPairings();
       }
     );
   };
 
   $scope.pairingDetails = function (pairing) {
+    $scope.showLoading();
     var index;
     if ($scope.navRound <= $scope.tournament.rounds) {
       index = $scope.pairingList.indexOf(pairing);
@@ -171,10 +176,12 @@ angular.module('main')
   };
 
   $scope.deletePairing = function (pairing, index) {
+    $scope.showLoading();
     pairingService.deletePairing(pairing)
     .then(
       function () {
         $scope.pairingList.splice(index, 1);
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -201,16 +208,21 @@ angular.module('main')
   }
 
   $scope.previousNavRound = function () {
+    $scope.showLoading();
     $scope.navRound--;
     $scope.navRoundTag = getNavRoundTag();
+    $scope.hideLoading();
   };
 
   $scope.nextNavRound = function () {
+    $scope.showLoading();
     $scope.navRound++;
     $scope.navRoundTag = getNavRoundTag();
+    $scope.hideLoading();
   };
 
   function beginTop () {
+    $scope.showLoading();
     $scope.inscriptionList = $filter('orderBy')($scope.inscriptionList, ['drop', 'bracketPosition', '-topPosition', 'swissPosition']);
     var n = $scope.tournament.top;
     var c = $scope.navRound - $scope.tournament.rounds;
@@ -257,6 +269,7 @@ angular.module('main')
         }
         $scope.navRound++;
         $scope.cRound++;
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -273,6 +286,7 @@ angular.module('main')
   };
 
   $scope.checkPairingsAndUpdateInscriptions = function () {
+    $scope.showLoading();
     var notCompleted = false;
     var i = 0;
     if ($scope.cRound <= $scope.tournament.rounds) {
@@ -326,6 +340,7 @@ angular.module('main')
           tournamentService.updateTournament($scope.tournament).then(
             function (response) {
               $scope.tournament = response;
+              $scope.hideLoading();
               $scope.showTournamentFinishedPopup();
             },
             function (error) {
@@ -489,6 +504,7 @@ angular.module('main')
   }
 
   $scope.restartRound = function () {
+    $scope.showLoading();
     var promises = [];
     var promises2 = [];
     if ($scope.cRound === $scope.navRound) {
@@ -501,7 +517,8 @@ angular.module('main')
       $q.all(promises).then(
         $q.all(promises2).then(
           $scope.cRound--,
-          createRound()
+          createRound(),
+          $scope.hideLoading()
         )
       );
     } else {
@@ -516,6 +533,7 @@ angular.module('main')
 
   $scope.deleteRound = function () {
     $scope.closePopover();
+    $scope.showLoading();
     var aux = [];
     var promises = [];
     var i, j;
@@ -538,6 +556,7 @@ angular.module('main')
           } else {
             $scope.navRound--;
             $scope.cRound--;
+            $scope.hideLoading();
           }
         },
         function (error) {
@@ -560,6 +579,7 @@ angular.module('main')
           } else {
             $scope.navRound--;
             $scope.cRound--;
+            $scope.hideLoading();
           }
         },
         function (error) {
@@ -584,6 +604,7 @@ angular.module('main')
   }
 
   $scope.updateInscription = function (pairing, reset) {
+    $scope.showLoading();
     var promises = [];
     var inscriptions = $scope.inscriptionList;
     var inscription1, inscription2;
@@ -653,6 +674,7 @@ angular.module('main')
     $q.all(promises).then(
       function () {
         $scope.inscriptionList = inscriptionService.inscriptionList();
+        $scope.hideLoading();
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -664,11 +686,16 @@ angular.module('main')
 
 .controller('PairingDetailsCtrl', function ($scope, $state, $ionicPopup, $q, $filter, inscriptionService, pairingService, tournamentService) {
 
+  $scope.showLoading();
+
   $scope.tournament = tournamentService.currentTournament();
   $scope.inscriptionList = inscriptionService.inscriptionList();
   $scope.currentPairing = pairingService.currentPairing();
 
+  $scope.hideLoading();
+
   $scope.updatePairing = function (pairing) {
+    $scope.showLoading();
     if (pairing.p1Score >= 0 && pairing.p1Score <= 100 && pairing.p2Score >= 0 && pairing.p2Score <= 100) {
       if (pairing.p1Score === pairing.p2Score) {
         var alertPopup = $ionicPopup.show({
@@ -698,8 +725,17 @@ angular.module('main')
         } else {
           pairing.winner = pairing.player2;
         }
-        $scope.updateInscription(pairing, 0);
+        $scope.updateInscription(pairing, 0).then(
+          function () {
+            $scope.hideLoading();
+          },
+          function (error) {
+            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+          }
+        );
       }
+    } else {
+      $scope.hideLoading();
     }
   };
 

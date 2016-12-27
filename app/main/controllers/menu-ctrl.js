@@ -2,18 +2,21 @@
 angular.module('main')
 .controller('MenuCtrl', function ($scope, mongoDB, $log, $ionicModal, $ionicPopup, $ionicLoading, AuthService, UserService) {
 
-  $scope.show = function () {
+  $scope.showLoading = function() {
     $ionicLoading.show({
-      template: 'Loading...'
-    }).then( function () {
-      // console.log("The loading indicator is now displayed");
+      template: '<ion-spinner icon="lines" class="spinner-calm"></ion-spinner>Loading...',
+      duration: 10000
+    }).then(function(){
+      //  console.log("The loading indicator is now displayed");
     });
   };
-  $scope.hide = function () {
-    $ionicLoading.hide().then( function () {
-      // console.log("The loading indicator is now hidden");
+  $scope.hideLoading = function(){
+    $ionicLoading.hide().then(function(){
+      //  console.log("The loading indicator is now hidden");
     });
   };
+
+  // $scope.showLoading();
 
   mongoDB.query(
       function (response) {
@@ -42,6 +45,7 @@ angular.module('main')
   UserService.getCurrentUser().then(
     function (response) {
       $scope.currentUser = response;
+      // $scope.hideLoading();
     },
     function (error) {
       return error;

@@ -3,6 +3,8 @@ angular.module('main')
 
 .controller('ListCreatorCtrl', function ($scope, $filter, $ionicModal, $q, tournamentService, listService, hangarService, arsenalService, UserService) {
 
+  $scope.showLoading();
+
   $scope.currentList = [];
 
   hangarService.getFactions().then(
@@ -47,7 +49,7 @@ angular.module('main')
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
     }
   );
-  
+
   $scope.myInscriptions = [];
   $scope.myHistory = [];
 
@@ -71,6 +73,7 @@ angular.module('main')
                   $scope.myHistory.push(response[j]);
                 }
               }
+              $scope.hideLoading();
             },
             function (error) {
               $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -90,6 +93,7 @@ angular.module('main')
   $scope.selectedFaction = '';
   $scope.showShips = false;
   $scope.select = function (faction) {
+    $scope.showLoading();
     if (faction === undefined) {
       $scope.showShips = false;
       $scope.selectedFaction = '';
@@ -101,6 +105,7 @@ angular.module('main')
     } else {
       $scope.showShips = !$scope.showShips;
     }
+    $scope.hideLoading();
   };
 
   $scope.selectedShip = '0';
@@ -131,6 +136,7 @@ angular.module('main')
   $scope.hideBody = [];
 
   $scope.addToList = function (pilot) {
+    $scope.showLoading();
     var cShip = $filter('filter')($scope.shipList, { _id: pilot.ship })[0];
     var newConfig = { pilot: pilot, ship: cShip, upgrades: []};
 
@@ -144,6 +150,7 @@ angular.module('main')
     });
     $scope.hideBody.push(true);
     $scope.currentList.push(newConfig);
+    $scope.hideLoading();
   };
 
   $scope.clearList = function () {
