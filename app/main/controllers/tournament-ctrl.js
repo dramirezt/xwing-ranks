@@ -498,14 +498,13 @@ angular.module('main')
 
 })
 
-.controller('TournamentPlayerProfileCtrl', function ($scope, $filter, $ionicModal, arsenalService, hangarService, inscriptionService, pairingService, tournamentService) {
+.controller('TournamentPlayerProfileCtrl', function ($scope, $filter, $ionicModal, arsenalService, hangarService, inscriptionService, pairingService, tournamentService, listService) {
 
   $scope.showLoading();
 
   $scope.tournament = tournamentService.currentTournament();
   $scope.inscription = inscriptionService.currentInscription();
   $scope.inscriptionList = inscriptionService.inscriptionList();
-  // $scope.pairingList = $filter('filter')(pairingService.pairingList(), { _id: $scope.inscription._id });
 
   pairingService.getPairings($scope.tournament).then(
     function (response) {
@@ -543,15 +542,42 @@ angular.module('main')
     }
   );
 
+  $scope.currentList = [];
+
   arsenalService.getUpgrades().then(
     function (response) {
       $scope.upgradeList = response;
-      $scope.hideLoading();
+      listService.getListByInscription($scope.inscription._id).then(
+        function (response) {
+          for (var i = 0; i < response.length; i++) {
+            for (var j = 0; j < response[i].ships.length; j++) {
+              var aux = { };
+              aux.pilot = $filter('filter')($scope.pilotList, { _id: response[i].ships[j].pilot })[0];
+              aux.ship = $filter('filter')($scope.shipList, { _id: aux.pilot.ship })[0];
+              aux.upgrades = [];
+              for (var k = 0; k < response[i].ships[j].upgrades.length; k++) {
+                aux.upgrades.push($filter('filter')($scope.upgradeList, { _id: response[i].ships[j].upgrades[k].upgrade })[0]);
+              }
+              $scope.currentList.push(aux);
+            }
+          }
+          $scope.hideLoading();
+        },
+        function (error) {
+          $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+        }
+      );
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
     }
   );
+
+  $scope.hide = false;
+
+  $scope.switchHide = function () {
+    $scope.hide = !$scope.hide;
+  }
 
   $scope.getInscriptionName = function (playerId) {
     return $filter('filter')($scope.inscriptionList, { _id: playerId })[0].name;

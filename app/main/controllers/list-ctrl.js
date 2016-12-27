@@ -53,10 +53,13 @@ angular.module('main')
   $scope.myInscriptions = [];
   $scope.myHistory = [];
 
+  var myIns = [];
+
   UserService.getCurrentUser().then(
     function (response) {
       tournamentService.getMyTournaments(response).then(
         function (response) {
+          myIns = response;
           var promises = [];
           for (var i = 0; i < response.length; i++) {
             promises.push(tournamentService.getTournament(response[i].tournament));
@@ -208,16 +211,22 @@ angular.module('main')
     $scope.modalTournament.show();
   };
 
-  $scope.useInTournament = function () {
-    listService.useInTournament($scope.currentList);
+  $scope.useListIn = function (tournamentId) {
+    $scope.modalTournament.hide();
+    $scope.showLoading();
+    var inscription = $filter('filter')(myIns, { tournament: tournamentId })[0];
+    listService.useInTournament($scope.currentList, inscription).then(
+      function () {
+        $scope.hideLoading();
+      },
+      function (error) {
+        $scope.error = 'Error: ' + error + ' ' + error.statusText;
+      }
+    );
   };
 
   $scope.closeModal = function () {
     $scope.modalTournament.hide();
-  };
-
-  $scope.selectTournament = function () {
-    // SELECCIONAR TORNEO PARA DEVOLVER ID DE INSCRIPCIÓN, SI NO HAY, INSCRIBIR AL JUGADOR Y DEVOLVER EL ID
   };
 
   $scope.getTimes = function (n) {

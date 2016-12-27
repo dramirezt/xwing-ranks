@@ -4,15 +4,28 @@ angular.module('main')
 
 .service('listService', function ($http, $q, baseURL) {
 
+  this.getListByInscription = function (inscriptionId) {
+    return $http.get(baseURL + '/lists/' + inscriptionId).then(
+      function (response) {
+        if (typeof response.data === 'object') {
+          return response.data;
+        } else {
+          return $q.reject(response.data);
+        }
+      },
+      function (response) {
+        return $q.reject(response.data);
+      }
+    )
+  }
+
   this.apiFormat = function (currentList) {
     var listAPI = [];
-    var aux = {};
     for (var i = 0; i < currentList.length; i++) {
-      aux.pilot = currentList[i].pilot._id;
-      aux.upgrades = [];
+      var aux = { pilot: currentList[i].pilot._id, upgrades: []};
       for (var j = 0; j < currentList[i].upgrades.length; j++) {
-        if (currentList[i].upgrades[j]._id !== undefined) {
-          aux.upgrades.push(currentList[i].upgrades[j]._id);
+        if (currentList[i].upgrades[j].selected._id !== undefined) {
+          aux.upgrades.push({ upgrade: currentList[i].upgrades[j].selected._id });
         }
       }
       listAPI.push(aux);
@@ -22,44 +35,44 @@ angular.module('main')
 
   this.useInTournament = function (currentList, inscription) {
     var list = { inscription: inscription._id, ships: this.apiFormat(currentList) };
-    $http.get(baseURL + '/lists/' + list.inscription._id)
-      .then(
-        function (response) {
-          if (typeof response.data === 'object') {
-            return $http.put(baseURL + '/lists/' + response.data._id, list)
-              .then(
-                function (response) {
-                  if (typeof response.data === 'object') {
-                    return response.data;
-                  } else {
-                    return $q.reject(response.data);
-                  }
-                },
-                function (response) {
+    return $http.get(baseURL + '/lists/' + list.inscription).then(
+      function (response) {
+        var previousList = response.data[0];
+        if (previousList._id !== undefined) {
+          return $http.put(baseURL + '/lists/' + previousList._id, list)
+            .then(
+              function (response) {
+                if (typeof response.data === 'object') {
+                  return response.data;
+                } else {
                   return $q.reject(response.data);
                 }
-              );
-          }
-          else {
-            return $http.post(baseURL + '/lists/', list)
-              .then(
-                function (response) {
-                  if (typeof response.data === 'object') {
-                    return response.data;
-                  } else {
-                    return $q.reject(response.data);
-                  }
-                },
-                function (response) {
-                  return $q.reject(response.data);
-                }
-              );
-          }
-        },
-        function (response) {
-          return $q.reject(response.data);
+              },
+              function (response) {
+                return $q.reject(response.data);
+              }
+            );
         }
-      );
+        else {
+          return $http.post(baseURL + '/lists/', list)
+            .then(
+              function (response) {
+                if (typeof response.data === 'object') {
+                  return response.data;
+                } else {
+                  return $q.reject(response.data);
+                }
+              },
+              function (response) {
+                return $q.reject(response.data);
+              }
+            );
+        }
+      },
+      function (response) {
+        return $q.reject(response.data);
+      }
+    );
   };
 
 })

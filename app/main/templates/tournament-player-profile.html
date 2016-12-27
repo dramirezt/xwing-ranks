@@ -11,16 +11,19 @@
             </div>
           </div>
         </div>
-        <ion-list>
-          <ion-item class="card tournament-card item item-remove-animate" style="color: lightblue; padding: 0px;" ng-repeat="current in currentList track by $index">
-            <ion-item class="item-divider item-button-right" ng-click="toggle($index)">
+      </div>
+      <div class="card tournament-card">
+        <div class="item item-divider item-icon-right" ng-click="switchHide()">
+          Lista
+          <i class="icon ion-chevron-right icon-accessory" ng-show="hide"></i>
+          <i class="icon ion-chevron-down icon-accessory" ng-show="!hide"></i>
+        </div>
+        <div class="item" style="padding: 0px;" ng-repeat="current in currentList track by $index" ng-show="!hide">
+          <div class="card tournament-card" style="color: lightblue; padding: 0px;">
+            <ion-item class="item-divider item-button-right">
               <span ng-bind="current.pilot.name"></span>
-              <div class="buttons" style="margin-top: -5px;">
-                <button class="button button-icon ion-ios-copy-outline" ng-click="duplicate($index); $event.stopPropagation()"></button>
-                <button class="button button-icon ion-ios-close-outline" ng-click="dropFromList($index); $event.stopPropagation()"></button>
-              </div>
             </ion-item>
-            <ion-item class="item-icon-left item-body shipProfile" ng-show="visible($index)">
+            <ion-item class="item-icon-left item-body shipProfile">
                 <i class="icon xwing-miniatures-ship xwing-miniatures-ship-{{ current.ship.keyname }} avatar-{{ currentFaction.keyname }}"></i>
                 <div class="col" style="text-align: center; margin-bottom: 0px;">
                   <div class="row">
@@ -70,15 +73,14 @@
                   </div>
                 </div>
             </ion-item>
-            <ion-list ng-show="visible($index)">
-              <ion-item class="item-button-right" ng-click="showSelectUpgrade(current, $index, upgrade)"  ng-repeat="upgrade in current.upgrades track by $index">
+            <ion-list>
+              <ion-item class="item-button-right" ng-repeat="upgrade in current.upgrades track by $index">
                 <i class="xwing-miniatures-font xwing-miniatures-font-{{ upgrade.type }}"></i>
-                <span ng-bind="upgrade.selected.name"></span>
-                <button class="button button-icon ion-ios-close-outline" ng-click="dropUpgrade(current, $index); $event.stopPropagation()" style="z-index: 999 !important;"></button>
+                <span ng-bind="upgrade.name"></span>
               </ion-item>
             </ion-list>
-          </ion-item>
-        </ion-list>
+          </div>
+        </div>
       </div>
       <div class="card tournament-card">
         <div class="item item-divider item-icon-right">

@@ -8,7 +8,7 @@
       <ion-list style="margin-top: 40px;">
         <ion-item
           class="item-remove-animate item-avatar item-icon-right"
-          type="item-text-wrap" ng-repeat="tournament in tournamentList" ng-click="useListIn(tournament)">
+          type="item-text-wrap" ng-repeat="tournament in tournamentList" ng-click="useListIn(tournament._id)">
           <img src="main/assets/images/yo@2x.png">
           <h2 ng-bind="tournament.name"></h2>
           <p>
@@ -22,7 +22,7 @@
       <ion-list style="margin-top: 40px;">
         <ion-item
           class="item-remove-animate item-avatar item-icon-right"
-          type="item-text-wrap" ng-repeat="tournament in myInscriptions" ng-click="useListIn(tournament)">
+          type="item-text-wrap" ng-repeat="tournament in myInscriptions" ng-click="useListIn(tournament._id)">
           <img src="main/assets/images/yo@2x.png">
           <h2 ng-bind="tournament.name"></h2>
           <p>
@@ -36,7 +36,7 @@
       <ion-list style="margin-top: 40px;">
         <ion-item
           class="item-remove-animate item-avatar item-icon-right"
-          type="item-text-wrap" ng-repeat="tournament in myHistory" ng-click="useListIn(tournament)">
+          type="item-text-wrap" ng-repeat="tournament in myHistory" ng-click="useListIn(tournament._id)">
           <img src="main/assets/images/yo@2x.png">
           <h2 ng-bind="tournament.name"></h2>
           <p>
