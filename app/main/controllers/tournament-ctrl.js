@@ -3,58 +3,6 @@ angular.module('main')
 
 .controller('TournamentListCtrl', function ($scope, $ionicModal, $log, $state, $filter, $q, tournamentService, UserService, ionicDatePicker) {
 
-  $scope.showLoading();
-
-  tournamentService.getTournaments()
-  .then(
-    function (response) {
-      $scope.tournamentList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
-  $scope.myInscriptions = [];
-  $scope.myHistory = [];
-
-  UserService.getCurrentUser().then(
-    function (response) {
-      tournamentService.getMyTournaments(response).then(
-        function (response) {
-          var promises = [];
-          for (var i = 0; i < response.length; i++) {
-            promises.push(tournamentService.getTournament(response[i].tournament));
-          }
-          $q.all(promises).then(
-            function (response) {
-              var currentDate = new Date();
-              var aux = {};
-              for (var j = 0; j < response.length; j++) {
-                aux = new Date(response[j].date);
-                if (aux >= currentDate) {
-                  $scope.myInscriptions.push(response[j]);
-                } else {
-                  $scope.myHistory.push(response[j]);
-                }
-              }
-              $scope.hideLoading();
-            },
-            function (error) {
-              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-            }
-          )
-        },
-        function (error) {
-          $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-        }
-      );
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
   $scope.newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
 
   $ionicModal.fromTemplateUrl('main/templates/modal-new-tournament.html', {
@@ -63,15 +11,9 @@ angular.module('main')
   }).then(function (modal) {
     $scope.modal = modal;
   });
-  $scope.openModal = function () {
-    $scope.modal.show();
-  };
-  $scope.closeModal = function () {
-    $scope.modal.hide();
-  };
 
   $scope.createTournament = function (newTournament) {
-    $scope.modal.hide();
+    $scope.closeModal();
     $scope.showLoading();
     var user = UserService.currentUser();
     if (user) {
@@ -93,6 +35,7 @@ angular.module('main')
   };
 
   $scope.viewTournament = function (tournament) {
+    $scope.showLoading();
     tournamentService.setCurrentTournament(tournament);
     $state.go('main.tournamentDetails');
   };
@@ -142,8 +85,6 @@ angular.module('main')
 
 .controller('TournamentInfoCtrl', function ($scope, $state, $ionicModal, tournamentService) {
 
-  $scope.showLoading();
-
   $scope.tournament = tournamentService.currentTournament();
 
   if (!$scope.tournament) {
@@ -185,8 +126,6 @@ angular.module('main')
       }
     );
   };
-
-  $scope.hideLoading();
 
 })
 
@@ -237,6 +176,31 @@ angular.module('main')
     }
   );
 
+  $ionicModal.fromTemplateUrl('main/templates/modal-new-inscription.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function (modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function () {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function () {
+    $scope.modal.hide();
+  };
+
+  $ionicPopover.fromTemplateUrl('main/templates/popover-tournament-details.html', {
+    scope: $scope
+  }).then(function (popover) {
+    $scope.popover = popover;
+  });
+  $scope.openPopover = function ($event) {
+    $scope.popover.show($event);
+  };
+  $scope.closePopover = function () {
+    $scope.popover.hide();
+  };
+
   var ipObj1 = {
     callback: function (val) {  //Mandatory
       // console.log('Return value from the datepicker popup is : ' + val, new Date(val));
@@ -274,31 +238,6 @@ angular.module('main')
 
   $scope.tournamentInfo = function () {
     $state.go('main.tournamentInfo');
-  };
-
-  $ionicModal.fromTemplateUrl('main/templates/modal-new-inscription.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function (modal) {
-    $scope.modal = modal;
-  });
-  $scope.openModal = function () {
-    $scope.modal.show();
-  };
-  $scope.closeModal = function () {
-    $scope.modal.hide();
-  };
-
-  $ionicPopover.fromTemplateUrl('main/templates/popover-tournament-details.html', {
-    scope: $scope
-  }).then(function (popover) {
-    $scope.popover = popover;
-  });
-  $scope.openPopover = function ($event) {
-    $scope.popover.show($event);
-  };
-  $scope.closePopover = function () {
-    $scope.popover.hide();
   };
 
   $scope.showDeleteInscriptions = false;
@@ -505,75 +444,30 @@ angular.module('main')
   $scope.tournament = tournamentService.currentTournament();
   $scope.inscription = inscriptionService.currentInscription();
   $scope.inscriptionList = inscriptionService.inscriptionList();
-
-  pairingService.getPairings($scope.tournament).then(
-    function (response) {
-      $scope.pairingList = $filter('filter')(response, { $: $scope.inscription._id });
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
-  hangarService.getFactions().then(
-    function (response) {
-      $scope.factionList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
-  hangarService.getShips().then(
-    function (response) {
-      $scope.shipList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
-  hangarService.getPilots().then(
-    function (response) {
-      $scope.pilotList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
+  $scope.pairingList = $filter('filter')(pairingService.pairingList(), { $: $scope.inscription._id });
+  $scope.hide = false;
   $scope.currentList = [];
 
-  arsenalService.getUpgrades().then(
+  listService.getListByInscription($scope.inscription._id).then(
     function (response) {
-      $scope.upgradeList = response;
-      listService.getListByInscription($scope.inscription._id).then(
-        function (response) {
-          for (var i = 0; i < response.length; i++) {
-            for (var j = 0; j < response[i].ships.length; j++) {
-              var aux = { };
-              aux.pilot = $filter('filter')($scope.pilotList, { _id: response[i].ships[j].pilot })[0];
-              aux.ship = $filter('filter')($scope.shipList, { _id: aux.pilot.ship })[0];
-              aux.upgrades = [];
-              for (var k = 0; k < response[i].ships[j].upgrades.length; k++) {
-                aux.upgrades.push($filter('filter')($scope.upgradeList, { _id: response[i].ships[j].upgrades[k].upgrade })[0]);
-              }
-              $scope.currentList.push(aux);
-            }
+      for (var i = 0; i < response.length; i++) {
+        for (var j = 0; j < response[i].ships.length; j++) {
+          var aux = { };
+          aux.pilot = $filter('filter')($scope.pilotList, { _id: response[i].ships[j].pilot })[0];
+          aux.ship = $filter('filter')($scope.shipList, { _id: aux.pilot.ship })[0];
+          aux.upgrades = [];
+          for (var k = 0; k < response[i].ships[j].upgrades.length; k++) {
+            aux.upgrades.push($filter('filter')($scope.upgradeList, { _id: response[i].ships[j].upgrades[k].upgrade })[0]);
           }
-          $scope.hideLoading();
-        },
-        function (error) {
-          $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+          $scope.currentList.push(aux);
         }
-      );
+      }
+      $scope.hideLoading();
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
     }
   );
-
-  $scope.hide = false;
 
   $scope.switchHide = function () {
     $scope.hide = !$scope.hide;

@@ -3,33 +3,25 @@ angular.module('main')
 
 .controller('ArsenalCtrl', function ($scope, $ionicModal, $state, $filter, arsenalService) {
 
-  $scope.showLoading();
-
-  $scope.upgradeList = arsenalService.upgradeList();
-
-  arsenalService.getUpgrades().then(
-    function (response) {
-      $scope.upgradeList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
-
   $ionicModal.fromTemplateUrl('main/templates/modal-new-upgrade.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
     $scope.modal = modal;
-    $scope.hideLoading();
   });
+  $scope.openModal = function () {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function () {
+    $scope.modal.hide();
+  };
 
   $scope.createUpgrade = function (upgrade) {
+    $scope.closeModal();
     $scope.showLoading();
     arsenalService.createUpgrade(upgrade).then(
       function (response) {
         $scope.upgradeList.push(response);
-        $scope.modal.hide();
         $scope.hideLoading();
         $scope.viewUpgrade(upgrade);
       },
@@ -40,6 +32,7 @@ angular.module('main')
   };
 
   $scope.viewUpgrade = function (upgrade) {
+    $scope.showLoading();
     arsenalService.setCurrentUpgrade(upgrade);
     $state.go('main.arsenalDetails');
   };
@@ -60,9 +53,15 @@ angular.module('main')
     $scope.modal = modal;
     $scope.hideLoading();
   });
+  $scope.openModal = function () {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function () {
+    $scope.modal.hide();
+  };
 
   $scope.updateUpgrade = function (upgrade) {
-    $scope.modal.hide();
+    $scope.closeModal();
     $scope.showLoading();
     arsenalService.updateUpgrade(upgrade).then(
       function (response) {

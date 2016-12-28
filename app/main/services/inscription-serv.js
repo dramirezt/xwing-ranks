@@ -7,7 +7,6 @@ angular.module('main')
   var inscriptions = [];
   var currentInscription = {};
 
-
   this.inscriptionList = function () {
     inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-strengthOfSchedule']);
     return inscriptions;

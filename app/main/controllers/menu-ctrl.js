@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('MenuCtrl', function ($scope, mongoDB, $log, $ionicModal, $ionicPopup, $ionicLoading, AuthService, UserService) {
+.controller('MenuCtrl', function ($scope, mongoDB, $filter, $ionicModal, $ionicPopup, $ionicPopover, $ionicLoading, $q, arsenalService, hangarService, tournamentService, AuthService, UserService) {
 
   $scope.showLoading = function() {
     $ionicLoading.show({
@@ -16,7 +16,111 @@ angular.module('main')
     });
   };
 
-  // $scope.showLoading();
+  $scope.showLoading();
+
+  $scope.factionList = [];
+  $scope.shipList = [];
+  $scope.pilotList = [];
+  $scope.upgradeList = [];
+  $scope.tournamentList = [];
+  $scope.myInscriptions = [];
+  $scope.myInscriptionList = [];
+  $scope.myHistory = [];
+  $scope.currentUser = {};
+
+  hangarService.getFactions().then(
+    function (response) {
+      $scope.factionList = response;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+
+  hangarService.getShips().then(
+    function (response) {
+      $scope.shipList = $filter('orderBy')(response, ['name']);
+      $scope.shipListLength = $scope.shipList.length;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+
+  function orderPilots () {
+    for (var i = 0; i < $scope.shipList.length; i++) {
+      $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i]._id}).length;
+    }
+  }
+
+  hangarService.getPilots().then(
+    function (response) {
+      $scope.pilotList = response;
+      $scope.pilotListLength = $scope.pilotList.length;
+      orderPilots();
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+
+  arsenalService.getUpgrades().then(
+    function (response) {
+      $scope.upgradeList = response;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+
+  tournamentService.getTournaments()
+  .then(
+    function (response) {
+      $scope.tournamentList = response;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+
+  UserService.getCurrentUser().then(
+    function (response) {
+      $scope.currentUser = response;
+      tournamentService.getMyTournaments(response).then(
+        function (response) {
+          $scope.myInscriptionList = response;
+          var promises = [];
+          for (var i = 0; i < response.length; i++) {
+            promises.push(tournamentService.getTournament(response[i].tournament));
+          }
+          $q.all(promises).then(
+            function (response) {
+              var currentDate = new Date();
+              var aux = {};
+              for (var j = 0; j < response.length; j++) {
+                aux = new Date(response[j].date);
+                if (aux >= currentDate) {
+                  $scope.myInscriptions.push(response[j]);
+                } else {
+                  $scope.myHistory.push(response[j]);
+                }
+              }
+              $scope.hideLoading();
+            },
+            function (error) {
+              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+            }
+          )
+        },
+        function (error) {
+          $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+        }
+      );
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
 
   mongoDB.query(
       function (response) {
@@ -37,26 +141,17 @@ angular.module('main')
   $scope.openModal = function () {
     $scope.modal.show();
   };
-
   $scope.closeModal = function () {
     $scope.modal.hide();
   };
 
-  UserService.getCurrentUser().then(
-    function (response) {
-      $scope.currentUser = response;
-      // $scope.hideLoading();
-    },
-    function (error) {
-      return error;
-    }
-  );
-
   $scope.login = function (user) {
+    $scope.closeModal();
+    $scope.showLoading();
     AuthService.login(user).then(
       function () {
         $scope.currentUser = UserService.currentUser();
-        $scope.closeModal();
+        $scope.hideLoading();
       },
       function (error) {
         $ionicPopup.alert({
@@ -68,8 +163,10 @@ angular.module('main')
   };
 
   $scope.logout = function () {
+    $scope.showLoading();
     AuthService.logout();
     $scope.currentUser = undefined;
+    $scope.hideLoading();
   };
 
 });

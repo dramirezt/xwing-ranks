@@ -50,7 +50,7 @@ angular.module('main')
     $scope.popover = popover;
     $scope.hideLoading();
   });
-  $scope.showPopover = function ($event) {
+  $scope.openPopover = function ($event) {
     $scope.popover.show($event);
   };
   $scope.closePopover = function () {
@@ -603,6 +603,142 @@ angular.module('main')
     );
   }
 
+  // $scope.updateInscription = function (pairing, reset) {
+  //   $scope.showLoading();
+  //   var promises = [];
+  //   var inscriptions = $scope.inscriptionList;
+  //   var inscription1, inscription2;
+  //   var i = 0;
+  //   while (i < inscriptions.length && (!inscription1 || !inscription2)) {
+  //     if (inscriptions[i]._id === pairing.player1) {
+  //       inscription1 = inscriptions[i];
+  //     } else if (inscriptions[i]._id === pairing.player2) {
+  //       inscription2 = inscriptions[i];
+  //     }
+  //     i++;
+  //   }
+  //   var diff = Math.abs(pairing.p1Score - pairing.p2Score);
+  //   var top = $scope.tournament.top / ($scope.cRound - $scope.tournament.rounds);
+  //   if (pairing.winner === inscription1._id) {
+  //     if (reset) {
+  //       inscription1.victoryPoints--;
+  //       inscription1.strengthOfSchedule -= 100 + diff;
+  //       if (inscription2) {
+  //         inscription2.strengthOfSchedule -= 100 - diff;
+  //       }
+  //     } else {
+  //       inscription1.victoryPoints++;
+  //       inscription1.strengthOfSchedule += 100 + diff;
+  //       if (inscription2) {
+  //         inscription2.strengthOfSchedule += 100 - diff;
+  //         if ($scope.cRound > $scope.tournament.rounds) {
+  //           inscription2.topPosition = top;
+  //         }
+  //       }
+  //     }
+  //   } else if (pairing.winner === inscription2._id) {
+  //     if (reset) {
+  //       inscription1.strengthOfSchedule -= 100 - diff;
+  //       inscription2.victoryPoints--;
+  //       inscription2.strengthOfSchedule -= 100 + diff;
+  //     } else {
+  //       inscription1.strengthOfSchedule += 100 - diff;
+  //       if ($scope.cRound > $scope.tournament.rounds) {
+  //         inscription1.topPosition = top;
+  //         if (inscription2.bracketPosition > inscription1.bracketPosition) {
+  //           var aux = inscription2.bracketPosition;
+  //           inscription2.bracketPosition = inscription1.bracketPosition;
+  //           inscription1.bracketPosition = aux;
+  //         }
+  //       }
+  //       inscription2.victoryPoints++;
+  //       inscription2.strengthOfSchedule += 100 + diff;
+  //     }
+  //   }
+  //
+  //   if (pairing.round === $scope.tournament.rounds +  $scope.tournament.top) {
+  //     if (pairing.winner === inscription1._id) {
+  //       inscription1.topPosition = 1;
+  //     } else {
+  //       inscription2.topPosition = 1;
+  //     }
+  //   }
+  //
+  //   if (!reset) {
+  //     promises.push(pairingService.updatePairing(pairing));
+  //   }
+  //   promises.push(inscriptionService.updateInscription(inscription1));
+  //   if (inscription2) {
+  //     promises.push(inscriptionService.updateInscription(inscription2));
+  //   }
+  //   $q.all(promises).then(
+  //     function () {
+  //       $scope.inscriptionList = inscriptionService.inscriptionList();
+  //       $scope.hideLoading();
+  //     },
+  //     function (error) {
+  //       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //     }
+  //   );
+  // };
+
+})
+
+.controller('PairingDetailsCtrl', function ($scope, $state, $ionicPopup, $q, $filter, inscriptionService, pairingService, tournamentService) {
+
+  $scope.showLoading();
+
+  $scope.tournament = tournamentService.currentTournament();
+  $scope.inscriptionList = inscriptionService.inscriptionList();
+  $scope.currentPairing = pairingService.currentPairing();
+
+  $scope.hideLoading();
+
+  $scope.updatePairing = function (pairing) {
+    $scope.showLoading();
+    if (pairing.p1Score >= 0 && pairing.p1Score <= 100 && pairing.p2Score >= 0 && pairing.p2Score <= 100) {
+      if (pairing.p1Score === pairing.p2Score) {
+        var alertPopup = $ionicPopup.show({
+          title: 'EMPATE',
+          template: 'Vuelve a la página del torneo para ver los resultados',
+          buttons: [
+            {
+              text: $scope.getInscriptionName(pairing.player1),
+              onTap: function () {
+                pairing.winner = pairing.player1;
+              }
+            },
+            {
+              text: $scope.getInscriptionName(pairing.player2),
+              onTap: function () {
+                pairing.winner = pairing.player2;
+              }
+            }
+          ]
+        });
+        alertPopup.then(function () {
+          $scope.updateInscription(pairing, 0);
+        });
+      } else {
+        if (pairing.p1Score > pairing.p2Score) {
+          pairing.winner = pairing.player1;
+        } else {
+          pairing.winner = pairing.player2;
+        }
+        $scope.updateInscription(pairing, 0).then(
+          function () {
+            $scope.hideLoading();
+          },
+          function (error) {
+            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+          }
+        );
+      }
+    } else {
+      $scope.hideLoading();
+    }
+  };
+
   $scope.updateInscription = function (pairing, reset) {
     $scope.showLoading();
     var promises = [];
@@ -675,140 +811,6 @@ angular.module('main')
       function () {
         $scope.inscriptionList = inscriptionService.inscriptionList();
         $scope.hideLoading();
-      },
-      function (error) {
-        $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-      }
-    );
-  };
-
-})
-
-.controller('PairingDetailsCtrl', function ($scope, $state, $ionicPopup, $q, $filter, inscriptionService, pairingService, tournamentService) {
-
-  $scope.showLoading();
-
-  $scope.tournament = tournamentService.currentTournament();
-  $scope.inscriptionList = inscriptionService.inscriptionList();
-  $scope.currentPairing = pairingService.currentPairing();
-
-  $scope.hideLoading();
-
-  $scope.updatePairing = function (pairing) {
-    $scope.showLoading();
-    if (pairing.p1Score >= 0 && pairing.p1Score <= 100 && pairing.p2Score >= 0 && pairing.p2Score <= 100) {
-      if (pairing.p1Score === pairing.p2Score) {
-        var alertPopup = $ionicPopup.show({
-          title: 'EMPATE',
-          template: 'Vuelve a la página del torneo para ver los resultados',
-          buttons: [
-            {
-              text: $scope.getInscriptionName(pairing.player1),
-              onTap: function () {
-                pairing.winner = pairing.player1;
-              }
-            },
-            {
-              text: $scope.getInscriptionName(pairing.player2),
-              onTap: function () {
-                pairing.winner = pairing.player2;
-              }
-            }
-          ]
-        });
-        alertPopup.then(function () {
-          $scope.updateInscription(pairing, 0);
-        });
-      } else {
-        if (pairing.p1Score > pairing.p2Score) {
-          pairing.winner = pairing.player1;
-        } else {
-          pairing.winner = pairing.player2;
-        }
-        $scope.updateInscription(pairing, 0).then(
-          function () {
-            $scope.hideLoading();
-          },
-          function (error) {
-            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-          }
-        );
-      }
-    } else {
-      $scope.hideLoading();
-    }
-  };
-
-  $scope.updateInscription = function (pairing, reset) {
-    var promises = [];
-    var inscriptions = $scope.inscriptionList;
-    var inscription1, inscription2;
-    var i = 0;
-    while (i < inscriptions.length && (!inscription1 || !inscription2)) {
-      if (inscriptions[i]._id === pairing.player1) {
-        inscription1 = inscriptions[i];
-      } else if (inscriptions[i]._id === pairing.player2) {
-        inscription2 = inscriptions[i];
-      }
-      i++;
-    }
-    var diff = Math.abs(pairing.p1Score - pairing.p2Score);
-    var top = $scope.tournament.top / ($scope.cRound - $scope.tournament.rounds);
-    if (pairing.winner === inscription1._id) {
-      if (reset) {
-        inscription1.victoryPoints--;
-        inscription1.strengthOfSchedule -= 100 + diff;
-        if (inscription2) {
-          inscription2.strengthOfSchedule -= 100 - diff;
-        }
-      } else {
-        inscription1.victoryPoints++;
-        inscription1.strengthOfSchedule += 100 + diff;
-        if (inscription2) {
-          inscription2.strengthOfSchedule += 100 - diff;
-          if ($scope.cRound > $scope.tournament.rounds) {
-            inscription2.topPosition = top;
-          }
-        }
-      }
-    } else if (pairing.winner === inscription2._id) {
-      if (reset) {
-        inscription1.strengthOfSchedule -= 100 - diff;
-        inscription2.victoryPoints--;
-        inscription2.strengthOfSchedule -= 100 + diff;
-      } else {
-        inscription1.strengthOfSchedule += 100 - diff;
-        if ($scope.cRound > $scope.tournament.rounds) {
-          inscription1.topPosition = top;
-          if (inscription2.bracketPosition > inscription1.bracketPosition) {
-            var aux = inscription2.bracketPosition;
-            inscription2.bracketPosition = inscription1.bracketPosition;
-            inscription1.bracketPosition = aux;
-          }
-        }
-        inscription2.victoryPoints++;
-        inscription2.strengthOfSchedule += 100 + diff;
-      }
-    }
-
-    if (pairing.round === $scope.tournament.rounds +  $scope.tournament.top) {
-      if (pairing.winner === inscription1._id) {
-        inscription1.topPosition = 1;
-      } else {
-        inscription2.topPosition = 1;
-      }
-    }
-
-    if (!reset) {
-      promises.push(pairingService.updatePairing(pairing));
-    }
-    promises.push(inscriptionService.updateInscription(inscription1));
-    if (inscription2) {
-      promises.push(inscriptionService.updateInscription(inscription2));
-    }
-    $q.all(promises).then(
-      function () {
-        $scope.inscriptionList = inscriptionService.inscriptionList();
         if (!reset) {
           $state.go('main.tournamentPairings', { roundNumber: pairing.round });
         }
