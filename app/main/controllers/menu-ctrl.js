@@ -86,7 +86,7 @@ angular.module('main')
   UserService.getCurrentUser().then(
     function (response) {
       $scope.currentUser = response;
-      tournamentService.getMyTournaments(response).then(
+      tournamentService.getMyTournaments($scope.currentUser).then(
         function (response) {
           $scope.myInscriptionList = response;
           var promises = [];
@@ -95,15 +95,8 @@ angular.module('main')
           }
           $q.all(promises).then(
             function (response) {
-              var currentDate = new Date();
-              var aux = {};
               for (var j = 0; j < response.length; j++) {
-                aux = new Date(response[j].date);
-                if (aux >= currentDate) {
-                  $scope.myInscriptions.push(response[j]);
-                } else {
-                  $scope.myHistory.push(response[j]);
-                }
+                $scope.updateMyInscriptionList(response[j]);
               }
               $scope.hideLoading();
             },
@@ -121,6 +114,20 @@ angular.module('main')
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
     }
   );
+
+  $scope.updateMyInscriptions = function (inscription) {
+    $scope.myInscriptionList.push(inscription);
+  };
+
+  $scope.updateMyInscriptionList = function (tournament) {
+    var currentDate = new Date();
+    var aux = new Date(tournament.date);
+    if (aux >= currentDate) {
+      $scope.myInscriptions.push(tournament);
+    } else {
+      $scope.myHistory.push(tournament);
+    }
+  };
 
   mongoDB.query(
       function (response) {

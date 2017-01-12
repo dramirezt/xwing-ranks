@@ -11,6 +11,12 @@ angular.module('main')
   }).then(function (modal) {
     $scope.modal = modal;
   });
+  $scope.showModal = function () {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function () {
+    $scope.modal.hide();
+  }
 
   $scope.createTournament = function (newTournament) {
     $scope.closeModal();
@@ -83,7 +89,7 @@ angular.module('main')
 
 })
 
-.controller('TournamentInfoCtrl', function ($scope, $state, $ionicModal, tournamentService) {
+.controller('TournamentInfoCtrl', function ($scope, $state, $ionicModal, ionicDatePicker, tournamentService) {
 
   $scope.tournament = tournamentService.currentTournament();
 
@@ -103,13 +109,34 @@ angular.module('main')
   }).then(function (modal) {
     $scope.modalEditTournament = modal;
   });
-
   $scope.openModalEditTournament = function () {
     $scope.modalEditTournament.show();
   };
-
   $scope.closeModalEditTournament = function () {
     $scope.modalEditTournament.hide();
+  };
+
+  var ipObj1 = {
+    callback: function (val) {  //Mandatory
+      // console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+      var aux = new Date(val);
+      var date = aux.getDate() + '-' + (aux.getMonth() + 1) + '-' + aux.getFullYear();
+      $scope.editTournament.date = aux;
+      $scope.editTournament.visibleDate = date;
+    },
+    from: new Date(2012, 1, 1), //Optional
+    to: new Date(2019, 12, 31), //Optional
+    inputDate: new Date(),      //Optional
+    weeksList: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthsList: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    mondayFirst: true,          //Optional
+    closeOnSelect: true,       //Optional
+    dateFormat: 'dd/MM/yyyy',
+    templateType: 'popup'       //Optional
+  };
+
+  $scope.openDatePicker = function () {
+    ionicDatePicker.openDatePicker(ipObj1);
   };
 
   $scope.updateTournament = function (tournament) {
@@ -300,14 +327,18 @@ angular.module('main')
 
   $scope.newInscription = {};
   $scope.createInscription = function (newInscription) {
+    $scope.closeModal();
     $scope.showLoading();
     newInscription.tournament = $scope.tournament._id;
     inscriptionService.createInscription(newInscription)
     .then(
-      function () {
+      function (response) {
         $scope.newInscription = {};
         $scope.inscriptionList = inscriptionService.inscriptionList();
-        $scope.modal.hide();
+        if (response.player === $scope.currentUser._id) {
+          $scope.updateMyInscriptions(response);
+          $scope.updateMyInscriptionList($scope.tournament);
+        }
         $scope.hideLoading();
       },
       function (error) {

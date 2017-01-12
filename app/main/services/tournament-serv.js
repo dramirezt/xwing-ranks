@@ -60,20 +60,6 @@ angular.module('main')
         } else {
           return $q.reject(response.data);
         }
-        // myTournaments = [];
-        // for (var i = 0; i < response.data.length; i++) {
-        //   var aux = self.getTournament(response.data[i].tournament);
-        //   self.getTournament(response.data[i].tournament).then(
-        //     function (response) {
-        //       myTournaments.push(response);
-        //       console.log(myTournaments);
-        //     },
-        //     function (response) {
-        //       return $q.reject(response);
-        //     }
-        //   )
-        // }
-        // console.log(myTournaments);
       },
       function (response) {
         $q.reject(response.data);
