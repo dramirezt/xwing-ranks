@@ -58,6 +58,7 @@
     "yeoman-test": "^1.1.0"
   },
   "dependencies": {
-    "angular-resource": "^1.5.8"
+    "angular-resource": "^1.5.8",
+    "chart.js": "^2.4.0"
   }
 }

@@ -37,10 +37,12 @@
                     </div>
                 </div>
                 <div class="row responsive-sm">
-                  <div class="col col-50">
+                  <div class="col">
                     <i class="ion-ios-location"></i>
-                    <span ng-bind="tournament.place"></span>
+                    <span ng-bind="tournament.address"></span> (<span ng-bind="tournament.place"></span>)
                   </div>
+                </div>
+                <div class="row responsive-sm">
                   <div class="col">
                     Organiza:
                     <span ng-bind="tournament.organizername"></span>

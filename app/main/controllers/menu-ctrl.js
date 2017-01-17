@@ -26,7 +26,8 @@ angular.module('main')
   $scope.myInscriptions = [];
   $scope.myInscriptionList = [];
   $scope.myHistory = [];
-  $scope.currentUser = {};
+  $scope.currentUser = { "_id": "578fe8629ee5dbd4265eab70",
+    "username": "user" };
 
   hangarService.getFactions().then(
     function (response) {

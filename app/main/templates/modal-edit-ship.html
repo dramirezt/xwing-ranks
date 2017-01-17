@@ -33,10 +33,11 @@
      <span class="input-label">Escudos:</span>
      <input type="number" ng-model="editShip.shield" min="0">
     </label>
-    <label class="item">
-      <span class="input-label">Acciones</span>
-      <li class="item item-toggle">
-        <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-focus" style="color: lightblue; text-transform: none"></i>&nbsp;Concentración:</span>
+    <div class="item">
+      <span class="input-label">Acciones:</span>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-focus" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;Concentración:</span>
         <label class="toggle toggle-balanced">
           <input type="checkbox" ng-model="editShip.actionBar.focus">
           <div class="track">
@@ -44,131 +45,162 @@
           </div>
         </label>
       </li>
-      <li class="item item-toggle">
-       <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-evade" style="color: lightblue; text-transform: none"></i>&nbsp;Esquiva:</span>
-       <label class="toggle toggle-balanced">
-         <input type="checkbox" ng-model="editShip.actionBar.evade">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-evade" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;Esquiva:</span>
+        <label class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="editShip.actionBar.evade">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
        </label>
       </li>
-      <li class="item item-toggle">
-       <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-barrelroll" style="color: lightblue; text-transform: none"></i>&nbsp;Tonel:</span>
-       <label class="toggle toggle-balanced">
-         <input type="checkbox" ng-model="editShip.actionBar.barrelRoll">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-barrelroll" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;Tonel:</span>
+        <label class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="editShip.actionBar.barrelRoll">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
       </li>
-      <li class="item item-toggle">
-       <span class="input-label">
-         <i class="xwing-miniatures-font xwing-miniatures-font-cloak" style="color: lightblue; text-transform: none"></i>&nbsp;Camuflaje:</span>
-       <label class="toggle toggle-balanced">
-         <input type="checkbox" ng-model="editShip.actionBar.cloak">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-cloak" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;Camuflaje:</span>
+        <label class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="editShip.actionBar.cloak">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
       </li>
-      <li class="item item-toggle">
-       <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-boost" style="color: lightblue; text-transform: none"></i>&nbsp;Impulso:</span>
-       <label class="toggle toggle-balanced">
-         <input type="checkbox" ng-model="editShip.actionBar.boost">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon icon xwing-miniatures-font xwing-miniatures-font-boost" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;Impulso:</span>
+        <label class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="editShip.actionBar.boost">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
       </li>
-      <li class="item item-toggle">
-       <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-slam" style="color: lightblue; text-transform: none"></i>&nbsp;SLAM:</span>
-       <label class="toggle toggle-balanced">
-         <input type="checkbox" ng-model="editShip.actionBar.slam">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-slam" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;SLAM:</span>
+        <label class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="editShip.actionBar.slam">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
       </li>
-      <li class="item item-toggle">
-       <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-targetlock" style="color: lightblue; text-transform: none"></i>&nbsp;Blanco Fijado:</span>
-       <label class="toggle toggle-balanced">
-         <input type="checkbox" ng-model="editShip.actionBar.targetLock">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-       </label>
+      <li class="item item-toggle item-icon-left">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-targetlock" style="color: lightblue; text-transform: none"></i>
+        <span class="input-label">&nbsp;Blanco Fijado:</span>
+        <label class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="editShip.actionBar.targetLock">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
       </li>
-    </label>
-    <label class="item">
+    </div>
+    <div class="item">
       <span class="input-label">Mejoras:</span>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-astromech" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label"> Astromecánico:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.astromech">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-bomb" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Bombas:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.bomb">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-cannon" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Cañones:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.cannon">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-crew" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Tripulación:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.crew">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-illicit" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Ilícita:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.illicit">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-missile" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Misiles:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.missile">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-modification" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Modificación:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.modification">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-salvagedastromech" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Astr. Rescatado:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.salvagedAstromech">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-system" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Sistemas:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.system">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-tech" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Tecnología:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.tech">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-title" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Título:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.title">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-torpedo" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Torpedos:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.torpedo">
-      </label>
-      <label class="item item-input">
-        <i class="xwing-miniatures-font xwing-miniatures-font-turret" style="color: lightblue;"></i>&nbsp;
-        <span class="input-label">Torretas:</span>
-        <input type="number" min="0" ng-model="editShip.upgradeSlots.turret">
-      </label>
-    </label>
-    <button class="button button-full button-positive" ng-click="updateShip(editShip)">ACTUALIZAR NAVE</button>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-astromech" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Astromecánico:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.astromech">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-bomb" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Bombas:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.bomb">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-cannon" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Ca&ntilde;ones:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.cannon">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-crew" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Tripulación:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.crew">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-illicit" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Ilícita:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.illicit">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-missile" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Misiles:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.missile">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-modification" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Modificación:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.modification">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-salvagedastromech" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Astr. Rescatado:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.salvagedAstromech">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-system" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Sistemas:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.system">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-tech" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Tecnología:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.tech">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-title" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Título:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.title">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-torpedo" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Torpedos:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.torpedo">
+        </div>
+      </li>
+      <li class="item item-icon-left" style="padding-top: 0px !important; padding-bottom: 0px;">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-turret" style="color: lightblue;"></i>
+        <div class="item-input" style="padding-left: 0px !important;">
+          <span class="input-label">&nbsp;Torretas:</span>
+          <input type="number" min="0" ng-model="editShip.upgradeSlots.turret">
+        </div>
+      </li>
+    </div>
+    <button class="button button-full button-balanced" ng-click="updateShip(editShip)">ACTUALIZAR NAVE</button>
   </div>
   </ion-content>
 </ion-modal-view>

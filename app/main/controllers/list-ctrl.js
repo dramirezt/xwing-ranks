@@ -122,7 +122,7 @@ angular.module('main')
     $scope.currentShip = current;
     $scope.upgradeIndex = index;
     $scope.currentUpgrade = upgrade;
-    $scope.showModal();
+    $scope.openModal();
   };
 
   $scope.selectUpgrade = function (upgrade) {

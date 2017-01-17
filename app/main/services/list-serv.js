@@ -37,8 +37,9 @@ angular.module('main')
     var list = { inscription: inscription._id, ships: this.apiFormat(currentList) };
     return $http.get(baseURL + '/lists/' + list.inscription).then(
       function (response) {
+        console.log(response);
         var previousList = response.data[0];
-        if (previousList._id !== undefined) {
+        if (previousList !== undefined) {
           return $http.put(baseURL + '/lists/' + previousList._id, list)
             .then(
               function (response) {

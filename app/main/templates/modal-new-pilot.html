@@ -35,10 +35,13 @@
         </div>
       </label>
     </li>
-    <label class="item item-input">
-      <textarea ng-model="newPilot.ability" placeholder="Habilidad/descripción" style="background-color: transparent; color: lightblue;"></textarea>
-    </label>
-    <button class="button button-full button-positive" ng-click="createPilot(newPilot)">AÑADIR PILOTO</button>
+    <li class="item item-input" style="border-bottom: 0px;">
+      <span class="input-label">Habilidad/Descripcion:</span><br>
+    </li>
+    <li class="item item-input" style="border-top: 0px;">
+      <textarea ng-model="newPilot.ability" placeholder="Texto de la carta" style="background-color: transparent; color: lightblue;"></textarea>
+    </li>
+    <button class="button button-full button-balanced" ng-click="createPilot(newPilot)">AÑADIR PILOTO</button>
   </div>
   </ion-content>
 </ion-modal-view>

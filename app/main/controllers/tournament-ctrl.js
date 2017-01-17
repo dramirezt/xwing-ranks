@@ -479,8 +479,11 @@ angular.module('main')
   $scope.hide = false;
   $scope.currentList = [];
 
-  listService.getListByInscription($scope.inscription._id).then(
+  console.log(inscriptionService.currentInscription()._id);
+
+  listService.getListByInscription(inscriptionService.currentInscription()._id).then(
     function (response) {
+      console.log(response);
       for (var i = 0; i < response.length; i++) {
         for (var j = 0; j < response[i].ships.length; j++) {
           var aux = { };
