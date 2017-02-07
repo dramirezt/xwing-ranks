@@ -1,0 +1,31 @@
+<ion-view view-title="Nueva Cuenta">
+  <ion-content>
+    <div class="list item" style="padding: 0px;">
+      <label class="item item-input">
+        <span class="input-label">Usuario:</span>
+        <input type="text" placeholder="Usuario" ng-model="newUser.username">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Ciudad:</span>
+        <input type="text" placeholder="Málaga" ng-model="newUser.city">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">País:</span>
+        <input type="text" placeholder="España" ng-model="newUser.country">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Contraseña:</span>
+        <input type="password" placeholder="Contraseña" ng-model="newUser.password">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Confirmar contraseña:</span>
+        <input type="password" placeholder="Repita su contraseña" ng-model="newUser.password2">
+      </label>
+      <div class="item">
+        <button class="button button-balanced button-block" ng-click="createUser()">
+        CREAR CUENTA
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

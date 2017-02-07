@@ -7,15 +7,32 @@
   <div class="list">
     <label class="item item-input">
       <span class="input-label">Nombre:</span>
-      <input type="text" ng-model="newTournament.name" placeholder="Ej: I Torneo X-Wing">
+      <input type="text" ng-model="newTournament.name" placeholder="I Torneo X-Wing">
     </label>
     <label class="item item-input">
-      <span class="input-label">Lugar:</span>
-      <input type="text" ng-model="newTournament.place" placeholder="Ej: C/ Falsa 123">
+      <span class="input-label">Ciudad:</span>
+      <input type="text" ng-model="newTournament.city" placeholder="Málaga">
     </label>
     <label class="item item-input">
-      <span class="input-label">Fecha:</span>
-      <input type="text" ng-model="newTournament.visibleDate" placeholder="29/8/1997" ng-click="openDatePicker()">
+      <span class="input-label">Dirección:</span>
+      <input type="text" ng-model="newTournament.address" placeholder="C/ Falsa 123">
+    </label>
+    <label class="item item-input">
+      <span class="input-label">Fecha<span ng-show="multiday"> inicio</span>:</span>
+      <input type="text" ng-model="newTournament.visibleStartDate" placeholder="29/8/1997" ng-click="openDatePicker()">
+    </label>
+    <label class="item item-toggle">
+      <span class="input-label">Evento de varios días</span>
+      <label class="toggle">
+         <input type="checkbox" ng-model="multiday">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+    </label>
+    <label ng-show="multiday" class="item item-input">
+      <span class="input-label">Fecha fin:</span>
+      <input type="text" ng-model="newTournament.visibleEndDate" placeholder="29/8/1997" ng-click="openDatePicker2()">
     </label>
     <label class="item item-input">
       <span class="input-label">Rondas:</span>

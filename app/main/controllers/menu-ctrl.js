@@ -26,8 +26,7 @@ angular.module('main')
   $scope.myInscriptions = [];
   $scope.myInscriptionList = [];
   $scope.myHistory = [];
-  $scope.currentUser = { "_id": "578fe8629ee5dbd4265eab70",
-    "username": "user" };
+  $scope.currentUser = {};
 
   hangarService.getFactions().then(
     function (response) {
@@ -84,37 +83,41 @@ angular.module('main')
     }
   );
 
-  UserService.getCurrentUser().then(
-    function (response) {
-      $scope.currentUser = response;
-      tournamentService.getMyTournaments($scope.currentUser).then(
-        function (response) {
-          $scope.myInscriptionList = response;
-          var promises = [];
-          for (var i = 0; i < response.length; i++) {
-            promises.push(tournamentService.getTournament(response[i].tournament));
-          }
-          $q.all(promises).then(
-            function (response) {
-              for (var j = 0; j < response.length; j++) {
-                $scope.updateMyInscriptionList(response[j]);
-              }
-              $scope.hideLoading();
-            },
-            function (error) {
-              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  function getUserData () {
+    UserService.getCurrentUser().then(
+      function (response) {
+        $scope.currentUser = response;
+        tournamentService.getMyTournaments($scope.currentUser).then(
+          function (response) {
+            $scope.myInscriptionList = response;
+            var promises = [];
+            for (var i = 0; i < response.length; i++) {
+              promises.push(tournamentService.getTournament(response[i].tournament));
             }
-          )
-        },
-        function (error) {
-          $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-        }
-      );
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
+            $q.all(promises).then(
+              function (response) {
+                for (var j = 0; j < response.length; j++) {
+                  $scope.updateMyInscriptionList(response[j]);
+                }
+                $scope.hideLoading();
+              },
+              function (error) {
+                $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+              }
+            )
+          },
+          function (error) {
+            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+          }
+        );
+      },
+      function (error) {
+        $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+      }
+    );
+  }
+
+  getUserData();
 
   $scope.updateMyInscriptions = function (inscription) {
     $scope.myInscriptionList.push(inscription);
@@ -157,8 +160,8 @@ angular.module('main')
     $scope.closeModal();
     $scope.showLoading();
     AuthService.login(user).then(
-      function () {
-        $scope.currentUser = UserService.currentUser();
+      function (response) {
+        getUserData();
         $scope.hideLoading();
       },
       function (error) {

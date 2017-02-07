@@ -34,31 +34,28 @@
           </div>
         </div>
       </ion-list>
-      <ion-list type="item-text-wrap">
-        <div class="card tournament-card" style="border-top: 0px !important;"  ng-repeat="pairing in pairingList | filter:{ round: navRound } track by $index">
-          <div class="item item-divider" style="border-top: 1px; border-style: solid;" ng-show="!pairing.isBye">
-            Mesa {{ $index +1 }}
-          </div>
-          <ion-item class="item item-icon-right" ng-show="!pairing.isBye" ng-click="pairingDetails(pairing)">
-            <div class="row responsive-sm">
-              <div class="col-50">
+      <ion-list type="item-text-wrap" ng-show="navRound <= tournament.rounds">
+          <ion-item class="item item-icon-right" ng-click="pairingDetails(pairing)" ng-repeat="pairing in pairingList | filter:{ round: navRound } track by $index">
+            <div class="row responsive-sm" ng-show="!pairing.isBye">
+              <div class="col-20">
+                Mesa {{ $index + 1}}
+              </div>
+              <div class="col">
                 <span ng-bind="getInscriptionName(pairing.player1)"></span>
                 <i class="ion-trophy icon-accessory" ng-show="pairing.winner === pairing.player1"></i>
+                (<span ng-bind="pairing.p1Score"></span>)
               </div>
-              <div class="col-50">
+              <div class="col">
                 <span ng-bind="getInscriptionName(pairing.player2)"></span>
                 <i class="ion-trophy icon-accessory" ng-show="pairing.winner === pairing.player2"></i>
+                (<span ng-bind="pairing.p2Score"></span>)
               </div>
             </div>
-            <i  style="color: #3398d0;" class="icon ion-chevron-right icon-accessory"></i>
+            <div class="row responsive-sm" ng-show="pairing.isBye">
+              <span ng-bind="getInscriptionName(pairing.player1)"></span> <span>&nbsp;tiene un Bye</span>
+            </div>
+            <i style="color: #3398d0;" class="icon ion-chevron-right icon-accessory" ng-show="!pairing.isBye"></i>
           </ion-item>
-          <ion-item class="item-avatar" ng-show="pairing.isBye">
-            <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px">
-            <label class="item-input">
-              <span class="input-label col col-80" ng-bind="getInscriptionName(pairing.player1)"></span><span class="input-label col col-20" style="text-align: right;"> Tiene un Bye</span>
-            </label>
-          </ion-item>
-        </div>
       </ion-list>
     </ion-content>
     <ion-footer-bar>

@@ -9,171 +9,135 @@
       </div>
   </ion-nav-buttons>
   <ion-content style="color: white;">
-    <div class="list card tournament-card">
-      <div class="item item-divider">
-        <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ currentFaction.keyname }}"></i>
-        <span ng-bind="currentFaction.name"></span>
-      </div>
-      <ion-item class="item item-icon-left" style="color: lightblue;">
-        <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ ship.keyname }} avatar-{{ currentFaction.keyname }}" style="font-size: 4em"></i>
-        <div class="row responsive-sm">
+    <div ng-show="isSelected(1)">
+      <div class="list card tournament-card">
+        <div class="item item-divider">
+          <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ currentFaction.keyname }}"></i>
+          <span ng-bind="currentFaction.name"></span>
+        </div>
+        <ion-item class="item item-icon-left" style="color: lightblue;">
+          <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ ship.keyname }} avatar-{{ currentFaction.keyname }}" style="font-size: 4em"></i>
+          <div class="row responsive-sm">
+              <div class="col" style="text-align: center;">
+                <div class="row">
+                  <div class="col">
+                    <span class="attack" ng-bind="ship.attack"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
+                  </div>
+                  <div class="col">
+                    <span class="agility" ng-bind="ship.agility"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
+                  </div>
+                  <div class="col">
+                    <span class="hull" ng-bind="ship.hull"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
+                  </div>
+                  <div class="col">
+                    <span class="shield" ng-bind="ship.shield"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col actionBar" style="text-align: center;">
+                <div class="row">
+                  <div ng-show="ship.actionBar.focus" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-focus">
+                    </i>
+                  </div>
+                  <div ng-show="ship.actionBar.barrelRoll" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-barrelroll">
+                    </i>
+                  </div>
+                  <div ng-show="ship.actionBar.targetLock" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-targetlock">
+                    </i>
+                  </div>
+                  <div ng-show="ship.actionBar.boost" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-boost">
+                    </i>
+                  </div>
+                  <div ng-show="ship.actionBar.evade" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-evade">
+                    </i>
+                  </div>
+                  <div ng-show="ship.actionBar.slam" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-slam">
+                    </i>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="row">&nbsp;</div>
+          <div class="row responsive-sm upgradeSlots" style="color: lightblue;">
             <div class="col" style="text-align: center;">
-              <div class="row">
-                <div class="col">
-                  <span class="attack" ng-bind="ship.attack"></span>
-                  <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
-                </div>
-                <div class="col">
-                  <span class="agility" ng-bind="ship.agility"></span>
-                  <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
-                </div>
-                <div class="col">
-                  <span class="hull" ng-bind="ship.hull"></span>
-                  <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
-                </div>
-                <div class="col">
-                  <span class="shield" ng-bind="ship.shield"></span>
-                  <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
-                </div>
-              </div>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-astromech" ng-repeat="t in getTimes(ship.upgradeSlots.astromech) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-bomb" ng-repeat="t in getTimes(ship.upgradeSlots.bomb) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-cannon" ng-repeat="t in getTimes(ship.upgradeSlots.cannon) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-crew" ng-repeat="t in getTimes(ship.upgradeSlots.crew) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-illicit" ng-repeat="t in getTimes(ship.upgradeSlots.illicit) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-missile" ng-repeat="t in getTimes(ship.upgradeSlots.missile) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-salvagedAstromech" ng-repeat="t in getTimes(ship.upgradeSlots.salvagedAstromech) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-system" ng-repeat="t in getTimes(ship.upgradeSlots.system) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-tech" ng-repeat="t in getTimes(ship.upgradeSlots.tech) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-title" ng-repeat="t in getTimes(ship.upgradeSlots.title) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-torpedo" ng-repeat="t in getTimes(ship.upgradeSlots.torpedo) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-turret" ng-repeat="t in getTimes(ship.upgradeSlots.turret) track by $index"></i>
+                  <i class="xwing-miniatures-font xwing-miniatures-font-modification" ng-repeat="t in getTimes(ship.upgradeSlots.modification) track by $index"></i>
             </div>
-            <div class="col actionBar" style="text-align: center;">
-              <div class="row">
-                <div ng-show="ship.actionBar.focus" class="col">
-                  <i class="xwing-miniatures-font xwing-miniatures-font-focus">
-                  </i>
-                </div>
-                <div ng-show="ship.actionBar.barrelRoll" class="col">
-                  <i class="xwing-miniatures-font xwing-miniatures-font-barrelroll">
-                  </i>
-                </div>
-                <div ng-show="ship.actionBar.targetLock" class="col">
-                  <i class="xwing-miniatures-font xwing-miniatures-font-targetlock">
-                  </i>
-                </div>
-                <div ng-show="ship.actionBar.boost" class="col">
-                  <i class="xwing-miniatures-font xwing-miniatures-font-boost">
-                  </i>
-                </div>
-                <div ng-show="ship.actionBar.evade" class="col">
-                  <i class="xwing-miniatures-font xwing-miniatures-font-evade">
-                  </i>
-                </div>
-                <div ng-show="ship.actionBar.slam" class="col">
-                  <i class="xwing-miniatures-font xwing-miniatures-font-slam">
-                  </i>
-                </div>
-              </div>
+          </div>
+        </ion-item>
+      </div>
+      <div class="list card tournament-card">
+        <div class="item item-divider item-icon-right">
+          <span ng-bind="pilotList.length"></span> Pilotos
+          <i class="icon ion-person-stalker"></i>
+        </div>
+        <ion-item ng-repeat="pilot in pilotList | orderBy: ['-points', 'pilotSkill']" class="item-icon-right item-text-wrap" ng-click="viewPilot(pilot)">
+          <div class="row">
+            <div class="col title">
+              <i class="ion-ios-circle-filled" ng-show="pilot.unique"></i>
+              <span ng-bind="pilot.name"></span>
+              <i class="xwing-miniatures-font xwing-miniatures-font-elite" ng-repeat="t in getTimes(pilot.elitePilot) track by $index"></i>
             </div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row responsive-sm upgradeSlots" style="color: lightblue;">
-          <div class="col" style="text-align: center;">
-                <i class="xwing-miniatures-font xwing-miniatures-font-astromech" ng-repeat="t in getTimes(ship.upgradeSlots.astromech) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-bomb" ng-repeat="t in getTimes(ship.upgradeSlots.bomb) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-cannon" ng-repeat="t in getTimes(ship.upgradeSlots.cannon) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-crew" ng-repeat="t in getTimes(ship.upgradeSlots.crew) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-illicit" ng-repeat="t in getTimes(ship.upgradeSlots.illicit) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-missile" ng-repeat="t in getTimes(ship.upgradeSlots.missile) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-salvagedAstromech" ng-repeat="t in getTimes(ship.upgradeSlots.salvagedAstromech) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-system" ng-repeat="t in getTimes(ship.upgradeSlots.system) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-tech" ng-repeat="t in getTimes(ship.upgradeSlots.tech) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-title" ng-repeat="t in getTimes(ship.upgradeSlots.title) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-torpedo" ng-repeat="t in getTimes(ship.upgradeSlots.torpedo) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-turret" ng-repeat="t in getTimes(ship.upgradeSlots.turret) track by $index"></i>
-                <i class="xwing-miniatures-font xwing-miniatures-font-modification" ng-repeat="t in getTimes(ship.upgradeSlots.modification) track by $index"></i>
+            <div class="col" style="text-align: right;">
+            H: <span ng-bind="pilot.pilotSkill"></span>,
+            P: <span ng-bind="pilot.points"></span>
+            </div>
           </div>
-        </div>
-      </ion-item>
-    </div>
-    <div ng-show="isSelected(1)" class="list card tournament-card">
-      <div class="item item-divider item-icon-right">
-        <span ng-bind="pilotList.length"></span> Pilotos
-        <i class="icon ion-person-stalker"></i>
-      </div>
-      <ion-item ng-repeat="pilot in pilotList | orderBy: ['-points', 'pilotSkill']" class="item-icon-right item-text-wrap" ng-click="viewPilot(pilot)">
-        <div class="row">
-          <div class="col title">
-            <i class="ion-ios-circle-filled" ng-show="pilot.unique"></i>
-            <span ng-bind="pilot.name"></span>
-            <i class="xwing-miniatures-font xwing-miniatures-font-elite" ng-repeat="t in getTimes(pilot.elitePilot) track by $index"></i>
-          </div>
-          <div class="col" style="text-align: right;">
-          H: <span ng-bind="pilot.pilotSkill"></span>,
-          P: <span ng-bind="pilot.points"></span>
-          </div>
-        </div>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
-    </div>
-    <div ng-show="isSelected(2)" class="list card tournament-card">
-      <div class="item item-divider">
-        Ataque
-      </div>
-      <div class="item attackPlot">
-        <canvas id="myChart" width="400" height="400"></canvas>
-<script>
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-</script>
-
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
       </div>
     </div>
-    <div ng-show="isSelected(3)" class="list card tournament-card">
-      <div class="item item-divider">
-        Defensa
+    <div ng-show="isSelected(2)" class="row responsive-sm">
+      <div class="col col-50" style="padding: 0px;">
+        <div class="list card tournament-card" style="padding: 0px;">
+          <div class="item item-divider">
+            Ataque
+          </div>
+          <canvas id="attackPlot" class="item chart chart-bar" chart-data="attackData" chart-labels="attackLabels" chart-series="attackSeries" width="300" height="300"></canvas>
+        </div>
       </div>
-      <div class="item agilityPlot">
-        Próximamente...
+      <div class="col col-50" style="padding: 0px;">
+        <div class="list card tournament-card" style="padding: 0px;">
+          <div class="item item-divider">
+            Defensa
+          </div>
+          <canvas id="agilityPlot" class="item chart chart-bar" chart-data="defenseData" chart-labels="defenseLabels" chart-series="defenseSeries" width="300" height="300"></canvas>
+        </div>
       </div>
     </div>
   </ion-content>
   <ion-footer-bar>
     <ion-footer-bar style="padding: 0px">
       <div class="button-bar">
-        <a class="button icon empire ion-person-stalker" ng-click="select(1)">
+        <a class="button icon empire ion-person-stalker" ng-click="select(1)">Información
         </a>
-        <a class="button icon rebel" ng-click="select(2)">
-          <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
+        <a class="button icon ion-stats-bars rebel" ng-click="select(2)">
+          Estadísticas
         </a>
-        <a class="button icon scum" ng-click="select(3)">
+        <!-- <a class="button icon scum" ng-click="select(3)">
           <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
-        </a>
+        </a> -->
       </div>
     </ion-footer-bar>
   </ion-footer-bar>

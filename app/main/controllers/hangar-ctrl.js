@@ -131,7 +131,7 @@ angular.module('main')
 
 })
 
-.controller('ShipDetailsCtrl', function ($scope, $ionicModal, $state, $stateParams, $filter, hangarService) {
+.controller('ShipDetailsCtrl', function ($scope, $ionicModal, $state, $stateParams, $filter, hangarService, statisticsService) {
 
   $scope.showLoading();
 
@@ -139,6 +139,34 @@ angular.module('main')
   $scope.ship = hangarService.currentShip();
   $scope.selected = 1;
   $scope.pilotList = $filter('filter')(hangarService.pilotList(), { ship: $scope.ship._id });
+
+  $scope.attackLabels = [];
+  for(var i = 0; i <= $scope.ship.attack; i++){
+    $scope.attackLabels.push(i + " impactos");
+  }
+  $scope.attackSeries = ["Base", "+ Concentración", "+ Blanco Fijado", "+ Conc. + B.F."];
+  statisticsService.getAttack($scope.ship.keyname).then(
+    function (response) {
+      $scope.attackData = response;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+
+  $scope.defenseLabels = [];
+  for(var i = 0; i <= $scope.ship.agility; i++){
+    $scope.defenseLabels.push(i + " esquivas");
+  }
+  $scope.defenseSeries = ["Base", "+ Concentración"];
+  statisticsService.getDefense($scope.ship.keyname).then(
+    function (response) {
+      $scope.defenseData = response;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
 
   $scope.editShip = angular.copy($scope.ship);
   $scope.newPilot = {

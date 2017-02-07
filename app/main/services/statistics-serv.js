@@ -1,0 +1,44 @@
+'use strict';
+angular.module('main')
+.constant('baseURL', 'http://localhost:3000/api')
+
+.service('statisticsService', function ($http, $q, $filter, baseURL) {
+
+  var attackProbability = [];
+  var defenseProbability = [];
+
+  this.getAttack = function (shipKeyname) {
+    return $http.get(baseURL + '/ships/' + shipKeyname + '/statistics/attack').then(
+      function (response) {
+        if (typeof response.data === 'object') {
+          attackProbability = response.data;
+          console.log(attackProbability);
+          return attackProbability;
+        } else {
+          return $q.reject(response.data);
+        }
+      },
+      function (response) {
+        return $q.reject(response.data);
+      }
+    );
+  }
+
+  this.getDefense = function (shipKeyname) {
+    return $http.get(baseURL + '/ships/' + shipKeyname + '/statistics/agility').then(
+      function (response) {
+        if (typeof response.data === 'object') {
+          defenseProbability = response.data;
+          console.log(defenseProbability);
+          return defenseProbability;
+        } else {
+          return $q.reject(response.data);
+        }
+      },
+      function (response) {
+        return $q.reject(response.data);
+      }
+    );
+  }
+
+});

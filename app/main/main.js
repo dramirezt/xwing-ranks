@@ -4,7 +4,8 @@ angular.module('main', [
   'ngCordova',
   'ui.router',
   'ngResource',
-  'ionic-datepicker'
+  'ionic-datepicker',
+  'chart.js',
   // TODO: load other modules selected during generation
 ])
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -24,6 +25,16 @@ angular.module('main', [
       views: {
         'pageContent': {
           templateUrl: 'main/templates/index.html',
+        }
+      }
+    })
+
+    .state('main.register', {
+      url: '/register',
+      views: {
+        'pageContent': {
+          templateUrl: 'main/templates/register.html',
+          controller: 'RegisterCtrl'
         }
       }
     })

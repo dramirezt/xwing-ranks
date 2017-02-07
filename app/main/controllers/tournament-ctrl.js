@@ -24,7 +24,8 @@ angular.module('main')
     var user = UserService.currentUser();
     if (user) {
       newTournament.organizer = user._id;
-      newTournament.visibleDate = undefined;
+      newTournament.visibleStartDate = undefined;
+      newTournament.visibleEndDate = undefined;
       tournamentService.createTournament(newTournament)
       .then(
         function (response) {
@@ -48,11 +49,12 @@ angular.module('main')
 
   $scope.createTestTournament = function () {
     $scope.newTournament.name = 'Carrera de Kessel';
-    $scope.newTournament.place = 'Sistema Kessel';
+    $scope.newTournament.city = 'Sistema Kessel';
+    $scope.newTournament.address = 'C/ Falsa 312';
     $scope.newTournament.top = 4;
     $scope.newTournament.rounds = 3;
     $scope.newTournament.maxPlayers = 8;
-    $scope.newTournament.date = new Date('7/11/1977');
+    $scope.newTournament.startDate = new Date('7/11/1977');
     // $scope.newTournament.name = 'Nacional España 2016 - Top 32'
     // $scope.newTournament.place = 'Madrid - Las Rozas';
     // $scope.newTournament.rounds = 0;
@@ -69,8 +71,27 @@ angular.module('main')
       // console.log('Return value from the datepicker popup is : ' + val, new Date(val));
       var aux = new Date(val);
       var date = aux.getDate() + '-' + (aux.getMonth() + 1) + '-' + aux.getFullYear();
-      $scope.newTournament.date = aux;
-      $scope.newTournament.visibleDate = date;
+      $scope.newTournament.startDate = aux;
+      $scope.newTournament.visibleStartDate = date;
+    },
+    from: new Date(2012, 1, 1), //Optional
+    to: new Date(2019, 12, 31), //Optional
+    inputDate: new Date(),      //Optional
+    weeksList: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthsList: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    mondayFirst: true,          //Optional
+    closeOnSelect: true,       //Optional
+    dateFormat: 'dd/MM/yyyy',
+    templateType: 'popup'       //Optional
+  };
+
+  var ipObj2 = {
+    callback: function (val) {  //Mandatory
+      // console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+      var aux = new Date(val);
+      var date = aux.getDate() + '-' + (aux.getMonth() + 1) + '-' + aux.getFullYear();
+      $scope.newTournament.endDate = aux;
+      $scope.newTournament.visibleEndDate = date;
     },
     from: new Date(2012, 1, 1), //Optional
     to: new Date(2019, 12, 31), //Optional
@@ -85,6 +106,10 @@ angular.module('main')
 
   $scope.openDatePicker = function () {
     ionicDatePicker.openDatePicker(ipObj1);
+  };
+
+  $scope.openDatePicker2 = function () {
+    ionicDatePicker.openDatePicker(ipObj2);
   };
 
 })

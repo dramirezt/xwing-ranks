@@ -162,16 +162,18 @@ angular.module('main')
   };
 
   $scope.pairingDetails = function (pairing) {
-    $scope.showLoading();
-    var index;
-    if ($scope.navRound <= $scope.tournament.rounds) {
-      index = $scope.pairingList.indexOf(pairing);
-      pairingService.setCurrentPairing($scope.pairingList[index]);
-      $state.go('main.pairingDetails', { roundNumber: pairing.round, pairingId: index });
-    } else {
-      index = $scope.topPairingList.indexOf(pairing);
-      pairingService.setCurrentPairing($scope.pairingTopList[index]);
-      $state.go('main.pairingDetails', { roundNumber: pairing.round, pairingId: index });
+    if(!pairing.isBye) {
+      $scope.showLoading();
+      var index;
+      if ($scope.navRound <= $scope.tournament.rounds) {
+        index = $scope.pairingList.indexOf(pairing);
+        pairingService.setCurrentPairing($scope.pairingList[index]);
+        $state.go('main.pairingDetails', { roundNumber: pairing.round, pairingId: index });
+      } else {
+        index = $scope.topPairingList.indexOf(pairing);
+        pairingService.setCurrentPairing($scope.pairingTopList[index]);
+        $state.go('main.pairingDetails', { roundNumber: pairing.round, pairingId: index });
+      }
     }
   };
 
@@ -694,51 +696,6 @@ angular.module('main')
 
   $scope.hideLoading();
 
-  $scope.updatePairing = function (pairing) {
-    $scope.showLoading();
-    if (pairing.p1Score >= 0 && pairing.p1Score <= 100 && pairing.p2Score >= 0 && pairing.p2Score <= 100) {
-      if (pairing.p1Score === pairing.p2Score) {
-        var alertPopup = $ionicPopup.show({
-          title: 'EMPATE',
-          template: 'Vuelve a la página del torneo para ver los resultados',
-          buttons: [
-            {
-              text: $scope.getInscriptionName(pairing.player1),
-              onTap: function () {
-                pairing.winner = pairing.player1;
-              }
-            },
-            {
-              text: $scope.getInscriptionName(pairing.player2),
-              onTap: function () {
-                pairing.winner = pairing.player2;
-              }
-            }
-          ]
-        });
-        alertPopup.then(function () {
-          $scope.updateInscription(pairing, 0);
-        });
-      } else {
-        if (pairing.p1Score > pairing.p2Score) {
-          pairing.winner = pairing.player1;
-        } else {
-          pairing.winner = pairing.player2;
-        }
-        $scope.updateInscription(pairing, 0).then(
-          function () {
-            $scope.hideLoading();
-          },
-          function (error) {
-            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-          }
-        );
-      }
-    } else {
-      $scope.hideLoading();
-    }
-  };
-
   $scope.updateInscription = function (pairing, reset) {
     $scope.showLoading();
     var promises = [];
@@ -819,6 +776,43 @@ angular.module('main')
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
       }
     );
+  };
+  $scope.updatePairing = function (pairing) {
+    $scope.showLoading();
+    if (pairing.p1Score >= 0 && pairing.p1Score <= 100 && pairing.p2Score >= 0 && pairing.p2Score <= 100) {
+      if (pairing.p1Score === pairing.p2Score) {
+        var alertPopup = $ionicPopup.show({
+          title: 'EMPATE',
+          template: 'Vuelve a la página del torneo para ver los resultados',
+          buttons: [
+            {
+              text: $scope.getInscriptionName(pairing.player1),
+              onTap: function () {
+                pairing.winner = pairing.player1;
+              }
+            },
+            {
+              text: $scope.getInscriptionName(pairing.player2),
+              onTap: function () {
+                pairing.winner = pairing.player2;
+              }
+            }
+          ]
+        });
+        alertPopup.then(function () {
+          $scope.updateInscription(pairing, 0);
+        });
+      } else {
+        if (pairing.p1Score > pairing.p2Score) {
+          pairing.winner = pairing.player1;
+        } else {
+          pairing.winner = pairing.player2;
+        }
+        $scope.updateInscription(pairing, 0);
+      }
+    } else {
+      $scope.hideLoading();
+    }
   };
 
   $scope.getInscriptionName = function (playerId) {
