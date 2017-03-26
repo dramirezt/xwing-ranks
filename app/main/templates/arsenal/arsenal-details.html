@@ -1,0 +1,31 @@
+<ion-view>
+  <ion-nav-title>
+    {{ upgrade.name }}
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+      <div class="buttons">
+          <button class="button button-icon button-clear ion-compose" ng-click="modal.show()"></button>
+      </div>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="card tournament-card">
+          <div class="item item-text-wrap" style="color: lightblue;">
+              <div class="row responsive-sm">
+                  <div class="col col-80">
+                      <i class="xwing-miniatures-font xwing-miniatures-font-unique" ng-show="upgrade.unique">&nbsp;</i>
+                      <span ng-bind="upgrade.name"></span>&nbsp;
+                      (<span ng-bind="upgrade.points"></span>)<br><br>
+                      <span ng-show="upgrade.limited">Limited.<br><br></span>
+                      <span ng-show="upgrade.faction"><i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.faction).replace('Galactic ', '') | lowercase }}"></i> only.<br><br></span>
+                      <span ng-show="upgrade.ship"><span ng-repeat="ship in upgrade.ship">{{ ship }}</span> only.<br><br></span>
+                      <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ upgrade.slot | lowercase }}"> </i> <span ng-bind="upgrade.slot"></span><br><br>
+                      <span ng-bind-html="upgrade.text"></span>
+                  </div>
+                  <div class="col col-20">
+                      <img ng-src="../bower_components/xwing-data/images/{{ upgrade.image }}" style="width: 200px; right: 0px;">
+                  </div>
+              </div>
+          </div>
+    </div>
+  </ion-content>
+</ion-view>

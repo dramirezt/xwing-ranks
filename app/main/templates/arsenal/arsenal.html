@@ -1,0 +1,101 @@
+<ion-view view-title="Arsenal">
+  <!--<ion-nav-buttons side="right">-->
+      <!--<div class="buttons">-->
+          <!--<button class="button button-icon button-clear ion-plus-circled" ng-click="modal.show()"></button>-->
+      <!--</div>-->
+  <!--</ion-nav-buttons>-->
+  <ion-content>
+      <div class="list card tournament-card">
+          <div class="item item-divider">
+              Filtros:
+          </div>
+          <div class="item text-lightblue">
+              <div class="row responsive-sm">
+                  <div class="col col-20">
+                      <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-rebel rebel"
+                         ng-click="filterByFaction('rebel')"></i>
+                      <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-scum scum"
+                         ng-click="filterByFaction('scum ')"></i>
+                      <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-empire empire"
+                         ng-click="filterByFaction('empire')"></i>
+                  </div>
+                  <div class="col col-80">
+                      <div class="row responsive-lg">
+                          <div class="col">
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-missile upgrade"
+                                 ng-click="filterByUpgradeType('missile')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-title upgrade"
+                                 ng-click="filterByUpgradeType('title')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-crew upgrade"
+                                 ng-click="filterByUpgradeType('crew')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-elite upgrade"
+                                 ng-click="filterByUpgradeType('elite')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-modification upgrade"
+                                 ng-click="filterByUpgradeType('modification')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-torpedo upgrade"
+                                 ng-click="filterByUpgradeType('torpedo')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-system upgrade"
+                                 ng-click="filterByUpgradeType('system')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-astromech upgrade"
+                                 ng-click="filterByUpgradeType('astromech')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-salvagedastromech upgrade"
+                                 ng-click="filterByUpgradeType('salvaged astromech')"></i>
+                          </div>
+                          <div class="col">
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-cannon upgrade"
+                                 ng-click="filterByUpgradeType('cannon')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-bomb upgrade"
+                                 ng-click="filterByUpgradeType('bomb')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-illicit upgrade"
+                                 ng-click="filterByUpgradeType('illicit')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-tech upgrade"
+                                 ng-click="filterByUpgradeType('tech')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-turret upgrade"
+                                 ng-click="filterByUpgradeType('turret')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-cargo upgrade"
+                                 ng-click="filterByUpgradeType('cargo')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-team upgrade"
+                                 ng-click="filterByUpgradeType('team')"></i>
+                              <i class="button button-large button-outline icon xwing-miniatures-font xwing-miniatures-font-hardpoint upgrade"
+                                 ng-click="filterByUpgradeType('hardpoint')"></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <div class="list card tournament-card">
+        <div class="item item-divider">
+            Mejoras
+            <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ filterFaction }} {{ filterFaction }}"></i>
+            <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ filterType }} upgrade"></i>
+        </div>
+      <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="upgrade in upgradeList | filter: { 'slot': filterType,  'faction': filterFaction }" ng-click="showUpgrade($index)">
+        <div class="row">
+          <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.slot).replace(' ', '') | lowercase }}"></i>
+          <i class="xwing-miniatures-font xwing-miniatures-font-unique" ng-show="upgrade.unique">&nbsp;</i>
+          <span ng-bind="upgrade.name"></span>&nbsp;
+          (<span ng-bind="upgrade.points"></span>)
+          <span ng-show="upgrade.faction"><i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.faction).replace('Galactic ', '') | lowercase }}"></i></span>
+          <br>
+          <span ng-show="upgrade.limited">Limitado</span>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </div>
+        <div class="row" style="color: lightblue;" ng-show="showUpgrades[$index]">
+          <div class="row responsive-sm">
+            <div class="col col-80">
+              <span ng-show="upgrade.limited">Limited.<br><br></span>
+              <span ng-show="upgrade.faction"><i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.faction).replace('Galactic ', '') | lowercase }}"></i> only.<br><br></span>
+              <span ng-show="upgrade.ship"><span ng-repeat="ship in upgrade.ship">{{ ship }}</span> only.<br><br></span>
+              <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ upgrade.slot | lowercase }}"> </i> <span ng-bind="upgrade.slot"></span><br><br>
+              <span ng-bind-html="upgrade.text"></span>
+            </div>
+            <div class="col col-20">
+              <img ng-src="../bower_components/xwing-data/images/{{ upgrade.image }}" style="width: 200px; right: 0px;">
+            </div>
+          </div>
+        </div>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-view>

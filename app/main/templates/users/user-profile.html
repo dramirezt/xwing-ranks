@@ -1,0 +1,61 @@
+<ion-view view-title="Perfil">
+  <ion-content class="has-footer">
+    <div class="list card tournament-card">
+      <div class="item item-avatar item-icon-right">
+        <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px">
+        <div class="row responsive-sm">
+          <div class="col">
+            <span ng-bind="userProf.username"></span>
+            <i class="xwing-miniatures-font xwing-miniatures-font-{{ mostUsedFaction }}"></i>
+          </div>
+        </div>
+        <div class="row responsive-sm">
+          <div class="col">
+            <i class="ion-ios-location"></i>
+            <span ng-bind="userProf.city"></span> (<span ng-bind="userProf.country"></span>)
+          </div>
+        </div>
+        <div class="row responsive-sm">
+          <div class="col">
+            <i class="ion-trophy"></i>
+            <label>W/L Ratio: </label>
+            <span ng-bind="wlratio"></span>%
+          </div>
+          <div class="col">
+            <i class="ion-android-share-alt"></i>
+            <span ng-bind="userProf.games"></span> partidas
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list card tournament-card" ng-show="showStatistic">
+      <div class="item item-divider">
+        <i class="icon ion-statistic icon-accesory"></i>
+        <span>Estadíticas de combate</span>
+      </div>
+      <canvas id="combatPlot" class="item chart chart-pie" chart-data="combatData" chart-labels="combatLabels" chart-options="options" width="200" height="100"></canvas>
+    </div>
+    <div class="list card tournament-card" ng-show="!showStatistic">
+      <div class="item item-divider">
+        <i class="icon ion-statistic icon-accesory"></i>
+        <span>Uso de facción</span>
+      </div>
+      <canvas id="factionPlot" class="item chart chart-doughnut" chart-data="factionData" chart-labels="factionLabels" chart-options="options" width="200" height="100"></canvas>
+    </div>
+    <div class="list card tournament-card" ng-show="showNoDataProfile">
+      <div class="item item-body">
+        No hay datos disponibles para este usuario.
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar style="padding: 0px">
+      <div class="button-bar">
+        <a class="button icon ion-pie-graph button-balanced" ng-click="switchStatistic(true)">
+          <span>Total</span>
+        </a>
+        <a class="button icon ion-stats-bars button-positive" ng-click="switchStatistic(false)">
+          <span>Por facción</span>
+        </a>
+      </div>
+  </ion-footer-bar>
+</ion-view>

@@ -1,0 +1,26 @@
+<ion-modal-view class="fit">
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Agregar Jugador</h1>
+    <button class="button button-icon button-clear ion-close-circled" ng-click="closeModal()"></button>
+  </ion-header-bar>
+  <ion-content>
+      <form name="newInscriptionForm" class="form-horizontal" role="form" ng-submit="createInscription(newInscription)">
+        <ul class"list">
+          <li class="item item-input">
+            <span class="input-label">Nombre:</span>
+            <input type="text" ng-model="newInscription.name">
+          </li>
+          <li class="item item-toggle">
+            <span class="input-label">¿Bye en primera ronda?</span>
+            <label class="toggle toggle-balanced">
+              <input type="checkbox" ng-model="newInscription.firstRoundBye">
+              <div class="track">
+                <div class="handle"></div>
+              </div>
+            </label>
+          </li>
+        </ul>
+        <button type="submit" ng-disabled="newInscriptionForm.$invalid" class="button button-full button-balanced">AÑADIR JUGADOR</button>
+      </form>
+  </ion-content>
+</ion-modal-view>

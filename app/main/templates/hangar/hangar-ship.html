@@ -1,0 +1,143 @@
+<ion-view>
+  <ion-nav-title>
+    {{ ship.name }}
+  </ion-nav-title>
+  <!--<ion-nav-buttons side="right">-->
+      <!--<div class="buttons">-->
+          <!--<button class="button button-icon button-clear ion-compose" ng-click="modal.show()"></button>-->
+          <!--<button class="button button-icon button-clear ion-person-add" ng-click="showNewPilotModal()"></button>-->
+      <!--</div>-->
+  <!--</ion-nav-buttons>-->
+  <ion-content style="color: white;">
+    <div ng-show="isSelected(1)">
+      <div class="list card tournament-card">
+        <div class="item item-divider">
+          <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
+          <span ng-bind="ship.faction[0]"></span>
+        </div>
+        <ion-item class="item item-icon-left" style="color: lightblue;">
+          <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('aft', '').replace('fore', '') }}
+                        avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 4em"></i>
+          <div class="row responsive-sm">
+              <div class="col" style="text-align: center;">
+                <div class="row">
+                  <div class="col">
+                    <span class="attack" ng-bind="ship.attack"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
+                  </div>
+                  <div class="col">
+                    <span class="agility" ng-bind="ship.agility"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
+                  </div>
+                  <div class="col">
+                    <span class="hull" ng-bind="ship.hull"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
+                  </div>
+                  <div class="col">
+                    <span class="shield" ng-bind="ship.shield"></span>
+                    <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col actions" style="text-align: center;">
+                <div class="row">
+                  <div ng-repeat="action in ship.actions" class="col">
+                    <i class="xwing-miniatures-font xwing-miniatures-font-{{ action.replace(' ', '') | lowercase }}">
+                    </i>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="row">&nbsp;</div>
+          <div class="row responsive-sm upgradeSlots" style="color: lightblue;">
+            <div class="col" style="text-align: center;">
+              <span  ng-repeat="slot in pilotList[0].slots track by $index">
+                <i class="xwing-miniatures-font xwing-miniatures-font-{{ slot.replace(' ', '') | lowercase }}"></i>
+              </span>
+              <i class="xwing-miniatures-font xwing-miniatures-font-title"></i>
+              <i class="xwing-miniatures-font xwing-miniatures-font-modification"></i>
+            </div>
+          </div>
+        </ion-item>
+      </div>
+      <div class="list card tournament-card">
+        <div class="item item-divider item-icon-right">
+          <span ng-bind="pilotList.length"></span> Pilotos
+          <i class="icon ion-person-stalker"></i>
+        </div>
+        <ion-item ng-repeat="pilot in pilotList track by $index"
+                  class="item-icon-right item-text-wrap"
+                  ng-click="displayPilot($index)">
+          <div class="row">
+            <div class="col title">
+              <i class="ion-ios-circle-filled"
+                 ng-show="pilot.unique"></i>
+              <span ng-bind="pilot.name"></span>
+              <i class="xwing-miniatures-font xwing-miniatures-font-elite"
+                 ng-show="pilot.slots.indexOf('Elite') != -1"></i>
+            </div>
+            <div class="col" style="text-align: right;" ng-show="!showPilots[$index]">
+              PS: <span ng-bind="pilot.skill"></span>,
+              P: <span ng-bind="pilot.points"></span>
+            </div>
+          </div>
+          <div class="row" ng-show="showPilots[$index]">
+            <div class="col col-80">
+              <div class="row responsive-sm">
+                <div class="col">
+                  Pilot skill: <span ng-bind="pilot.skill"></span>
+                </div>
+              </div>
+              <div class="row responsive-sm">
+                <div class="col">
+                  Points: <span ng-bind="pilot.points"></span>
+                </div>
+              </div>
+              <div class="row responsive-sm">
+                <div class="col">
+                  <span ng-bind="pilot.text"></span>
+                </div>
+              </div>
+            </div>
+            <div class="col col-20">
+              <img ng-src="../bower_components/xwing-data/images/{{ pilot.image }}" style="width: 200px; right: 0px;">
+            </div>
+          </div>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
+      </div>
+    </div>
+    <div ng-show="isSelected(2)" class="row responsive-sm">
+      <div class="col col-50" style="padding: 0px;">
+        <div class="list card tournament-card" style="padding: 0px;">
+          <div class="item item-divider">
+            Ataque
+          </div>
+          <canvas id="attackPlot" class="item chart chart-bar" chart-data="attackData" chart-labels="attackLabels" chart-series="attackSeries" width="300" height="300"></canvas>
+        </div>
+      </div>
+      <div class="col col-50" style="padding: 0px;">
+        <div class="list card tournament-card" style="padding: 0px;">
+          <div class="item item-divider">
+            Defensa
+          </div>
+          <canvas id="agilityPlot" class="item chart chart-bar" chart-data="defenseData" chart-labels="defenseLabels" chart-series="defenseSeries" width="300" height="300"></canvas>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar>
+    <ion-footer-bar style="padding: 0px">
+      <div class="button-bar">
+        <a class="button icon empire ion-person-stalker" ng-click="select(1)">Información
+        </a>
+        <a class="button icon ion-stats-bars rebel" ng-click="select(2)">
+          Estadísticas
+        </a>
+        <!-- <a class="button icon scum" ng-click="select(3)">
+          <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
+        </a> -->
+      </div>
+    </ion-footer-bar>
+  </ion-footer-bar>
+</ion-view>

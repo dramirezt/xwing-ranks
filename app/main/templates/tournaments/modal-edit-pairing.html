@@ -1,0 +1,29 @@
+<ion-modal-view class="fit">
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">MOVER JUGADORES</h1>
+    <button class="button button-icon button-clear ion-close-circled" ng-click="closeModal()"></button>
+  </ion-header-bar>
+  <ion-content>
+      <form name="newInscriptionForm" class="form-horizontal" role="form" ng-submit="switchPlayers(player1, player2)">
+      <div class="list">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Cambiar:
+          </div>
+          <select class="input-label" style="border-style: none !important;" ng-model="player1">
+            <option ng-repeat="player in playersNameList | orderBy: ['name']" value="{{ player.id }}">{{ player.name }}</option>
+          </select>
+        </label>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Por:
+          </div>
+          <select class="input-label" ng-model="player2">
+            <option ng-repeat="player in playersNameList | orderBy: ['name']" value="{{ player.id }}">{{ player.name }}</option>
+          </select>
+        </label>
+        <button type="submit" class="button button-full button-balanced">MOVER</button>
+      </div>
+      </form>
+  </ion-content>
+</ion-modal-view>

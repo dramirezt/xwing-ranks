@@ -1,0 +1,87 @@
+<ion-view view-title="Tournament Player Profile">
+    <ion-content>
+      <div class="card tournament-card">
+        <div class="item item-avatar">
+          <img ng-src="main/assets/images/yo@2x.png">
+          <div class="row">
+            <div class="col col-80">
+              <h2>{{ inscription.name }}</h2>
+              PV: <span ng-bind="inscription.victoryPoints"></span>
+              SOS: <span ng-bind="inscription.strengthOfSchedule"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card tournament-card">
+        <div class="item item-divider item-icon-right" ng-click="switchHide()">
+          Lista
+          <i class="icon ion-chevron-right icon-accessory" ng-show="hide"></i>
+          <i class="icon ion-chevron-down icon-accessory" ng-show="!hide"></i>
+        </div>
+        <div class="item" style="padding: 0px;" ng-repeat="current in currentList track by $index" ng-show="!hide">
+          <div class="card tournament-card" style="color: lightblue; padding: 0px;">
+            <ion-item class="item-divider item-button-right">
+              <span ng-bind="current.pilot.name"></span>
+            </ion-item>
+            <ion-item class="item-icon-left item-body shipProfile">
+              <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (current.ship.xws).replace('aft', '').replace('fore', '') | lowercase }}
+                        avatar-{{ (current.ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 4em"></i>
+              <div class="row responsive-sm">
+                <div class="col" style="text-align: center;">
+                  <div class="row">
+                    <div class="col">
+                      <span class="attack" ng-bind="current.ship.attack"></span>
+                      <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
+                    </div>
+                    <div class="col">
+                      <span class="agility" ng-bind="current.ship.agility"></span>
+                      <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
+                    </div>
+                    <div class="col">
+                      <span class="hull" ng-bind="current.ship.hull"></span>
+                      <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
+                    </div>
+                    <div class="col">
+                      <span class="shield" ng-bind="current.ship.shield"></span>
+                      <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col actions" style="text-align: center;">
+                  <div class="row">
+                    <div ng-repeat="action in current.ship.actions" class="col">
+                      <i class="xwing-miniatures-font xwing-miniatures-font-{{ action.replace(' ', '') | lowercase }}">
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ion-item>
+            <ion-list>
+              <ion-item class="item-button-right" ng-repeat="upgrade in current.upgrades track by $index">
+                <i class="xwing-miniatures-font xwing-miniatures-font-{{ upgrade.slot | lowercase }}"></i>
+                <span ng-bind="upgrade.name"></span>
+              </ion-item>
+            </ion-list>
+          </div>
+        </div>
+      </div>
+      <div class="card tournament-card">
+        <div class="item item-divider item-icon-right">
+          <i class="icon ion-information-circled icon-accesory"></i>
+          EMPAREJAMIENTOS
+        </div>
+        <div class="item" ng-repeat="pairing in pairingList">
+          Ronda {{ pairing.round }}:
+          <span ng-show="pairing.winner && pairing.winner === inscription._id">
+            Victoria contra
+          </span>
+          <span ng-show="pairing.winner && pairing.winner !== inscription._id">
+            Derrota contra
+          </span>
+          <span ng-bind="getInscriptionName(pairing.player1)" ng-show="pairing.player1 !== inscription._id"></span>
+          <span ng-bind="getInscriptionName(pairing.player2)" ng-show="pairing.player2 !== inscription._id"></span>
+        </div>
+      </div>
+    </ion-content>
+</ion-view>
