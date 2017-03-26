@@ -5,8 +5,6 @@ angular.module('main')
 
   $scope.showLoading();
 
-  $scope.selectedFaction = '';
-
   $scope.newShip = {
     name: '',
     faction: '',
@@ -41,7 +39,7 @@ angular.module('main')
     turrets: 0
   };
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-new-ship.html', {
+  $ionicModal.fromTemplateUrl('main/templates/hangar/modal-new-ship.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -55,55 +53,37 @@ angular.module('main')
     $scope.modal.hide();
   };
 
+  $scope.selectedFaction = undefined;
+
   function getShipListLength () {
-    if ($scope.selectedFaction !== '') {
-      var c = 0;
-      for (var i = 0; i < $scope.shipList.length; i++) {
-        if ($scope.shipList[i].faction === $scope.selectedFaction) {
-          c++;
-        }
-      }
-      $scope.shipListLength = c;
-    } else {
-      $scope.shipListLength = $scope.shipList.length;
-    }
+      $scope.shipListLength = $filter('filter')($scope.shipList, {'faction': $scope.selectedFaction }).length;
   };
 
   function getPilotListLength () {
-    if ($scope.selectedFaction !== '') {
-      var c = 0;
-      for (var i = 0; i < $scope.pilotList.length; i++) {
-        if ($scope.pilotList[i].faction === $scope.selectedFaction) {
-          c++;
-        }
-      }
-      $scope.pilotListLength = c;
-    } else {
-      $scope.pilotListLength = $scope.pilotList.length;
-    }
+      $scope.pilotListLength = $filter('filter')($scope.pilotList, { 'faction': $scope.selectedFaction }).length;
   };
 
   $scope.select = function (faction) {
-    if ($scope.selectedFaction === faction._id) {
-      $scope.selectedFaction = '';
+    if ($scope.selectedFaction === faction) {
+      $scope.selectedFaction = undefined;
     } else {
-      $scope.selectedFaction = faction._id;
+      $scope.selectedFaction = faction;
     }
     getShipListLength();
     getPilotListLength();
   };
 
-  $scope.getFactionKeyname = function (factionId) {
-    var name = '';
-    var i = 0;
-    while (i < $scope.factionList.length && name === '') {
-      if ($scope.factionList[i]._id === factionId) {
-        name = $scope.factionList[i].keyname;
-      }
-      i++;
-    }
-    return name;
-  };
+  // $scope.getFactionKeyname = function (factionId) {
+  //   var name = '';
+  //   var i = 0;
+  //   while (i < $scope.factionList.length && name === '') {
+  //     if ($scope.factionList[i]._id === factionId) {
+  //       name = $scope.factionList[i].keyname;
+  //     }
+  //     i++;
+  //   }
+  //   return name;
+  // };
 
   $scope.createShip = function (newShip) {
     $scope.closeModal();
@@ -131,14 +111,15 @@ angular.module('main')
 
 })
 
-.controller('ShipDetailsCtrl', function ($scope, $ionicModal, $state, $stateParams, $filter, hangarService, statisticsService) {
+.controller('ShipDetailsCtrl', function ($scope, $ionicModal, $state, $stateParams, $filter,
+                                         hangarService, statisticsService) {
 
   $scope.showLoading();
 
   $scope.currentFaction = hangarService.currentFaction();
   $scope.ship = hangarService.currentShip();
   $scope.selected = 1;
-  $scope.pilotList = $filter('filter')(hangarService.pilotList(), { ship: $scope.ship._id });
+  $scope.pilotList = $filter('filter')($scope.pilotList, { ship: $scope.ship.name });
 
   $scope.attackLabels = [];
   for(var i = 0; i <= $scope.ship.attack; i++){
@@ -180,7 +161,7 @@ angular.module('main')
     ship: $scope.ship._id
   };
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-edit-ship.html', {
+  $ionicModal.fromTemplateUrl('main/templates/hangar/modal-edit-ship.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -193,7 +174,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-new-pilot.html', {
+  $ionicModal.fromTemplateUrl('main/templates/hangar/modal-new-pilot.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -241,6 +222,14 @@ angular.module('main')
     $state.go('main.hangarPilot');
   };
 
+  $scope.showPilots = [];
+  for (var i = 0; i < $scope.pilotList.length; i++) {
+      $scope.showPilots.push(false);
+  }
+  $scope.displayPilot = function (index) {
+    $scope.showPilots[index] = !$scope.showPilots[index];
+  }
+
   $scope.getTimes = function (n) {
     if (!n) {
       return [];
@@ -269,7 +258,7 @@ angular.module('main')
   $scope.currentPilot = hangarService.currentPilot();
   $scope.editPilot = angular.copy($scope.currentPilot);
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-edit-pilot.html', {
+  $ionicModal.fromTemplateUrl('main/templates/hangar/modal-edit-pilot.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {

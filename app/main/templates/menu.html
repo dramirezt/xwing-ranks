@@ -34,7 +34,7 @@
     <!-- menu content -->
     <ion-content>
       <ion-list id="leftmenu">
-        <ion-item menu-close class="item-avatar" ng-show="currentUser">
+        <ion-item menu-close class="item-avatar" ng-show="currentUser" ng-click="viewProfile(currentUser._id)">
           <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px" href="#">Bienvenido {{ currentUser.username }}
         </ion-item>
         <ion-item class="item-avatar" ng-show="!currentUser" ng-click="openModal()">
@@ -59,9 +59,6 @@
         <ion-item class="item-icon-left" menu-close ui-sref="main.arsenal" ng-click="">
           <i class="icon ion-ios-cog"></i>
           Arsenal
-        </ion-item>
-        <ion-item menu-close ui-sref="main.debug">
-          Debug
         </ion-item>
         <ion-item class="item-icon-left" menu-close ng-show="currentUser" ng-click="logout()">
           <i class="icon ion-log-out"></i>

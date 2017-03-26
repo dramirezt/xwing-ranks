@@ -12,7 +12,6 @@ angular.module('main')
       function (response) {
         if (typeof response.data === 'object') {
           attackProbability = response.data;
-          console.log(attackProbability);
           return attackProbability;
         } else {
           return $q.reject(response.data);
@@ -29,7 +28,6 @@ angular.module('main')
       function (response) {
         if (typeof response.data === 'object') {
           defenseProbability = response.data;
-          console.log(defenseProbability);
           return defenseProbability;
         } else {
           return $q.reject(response.data);

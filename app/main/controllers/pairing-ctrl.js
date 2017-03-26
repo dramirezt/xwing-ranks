@@ -31,7 +31,7 @@ angular.module('main')
     );
   }
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-edit-pairing.html', {
+  $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-edit-pairing.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -44,7 +44,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-  $ionicPopover.fromTemplateUrl('main/templates/popover-pairing-list.html', {
+  $ionicPopover.fromTemplateUrl('main/templates/tournaments/popover-pairing-list.html', {
     scope: $scope
   }).then(function (popover) {
     $scope.popover = popover;
@@ -252,7 +252,7 @@ angular.module('main')
       // var done = false;
       // while (i + 1 === n / 2 && !done) {
       //   var possibleP2 = inscriptions[n - i];
-      //   if (currentP2.victoryPoints === possibleP2.victoryPoints && currentP2.strengthOfSchedule === possibleP2.strengthOfSchedule) {
+      //   if (currentP2.victoryPoints === possibleP2.victoryPoints && currentP2.marginOfVictory === possibleP2.marginOfVictory) {
       //     if (Math.random() >= 0.5) {
       //       currentP2 = possibleP2;
       //     }
@@ -324,7 +324,7 @@ angular.module('main')
           // Comienza el top
           if (!$scope.topPairingList.length) {
             var promises = [];
-            $scope.inscriptionList = $filter('orderBy')($scope.inscriptionList, ['drop', '-victoryPoints', '-strengthOfSchedule']);
+            $scope.inscriptionList = $filter('orderBy')($scope.inscriptionList, ['drop', '-victoryPoints', '-marginOfVictory']);
             for (i = 0; i < $scope.inscriptionList.length; i++) {
               $scope.inscriptionList[i].swissPosition = i + 1;
               $scope.inscriptionList[i].bracketPosition = i + 1;
@@ -473,7 +473,7 @@ angular.module('main')
           pairing.isBye = true;
           aux.push(pairing);
           updateWithByeScore.victoryPoints++;
-          updateWithByeScore.strengthOfSchedule += 150;
+          updateWithByeScore.marginOfVictory += 150;
           inscriptionService.updateInscription(updateWithByeScore);
         } else {
           pairing.p1Score = 100;
@@ -624,15 +624,15 @@ angular.module('main')
   //   if (pairing.winner === inscription1._id) {
   //     if (reset) {
   //       inscription1.victoryPoints--;
-  //       inscription1.strengthOfSchedule -= 100 + diff;
+  //       inscription1.marginOfVictory -= 100 + diff;
   //       if (inscription2) {
-  //         inscription2.strengthOfSchedule -= 100 - diff;
+  //         inscription2.marginOfVictory -= 100 - diff;
   //       }
   //     } else {
   //       inscription1.victoryPoints++;
-  //       inscription1.strengthOfSchedule += 100 + diff;
+  //       inscription1.marginOfVictory += 100 + diff;
   //       if (inscription2) {
-  //         inscription2.strengthOfSchedule += 100 - diff;
+  //         inscription2.marginOfVictory += 100 - diff;
   //         if ($scope.cRound > $scope.tournament.rounds) {
   //           inscription2.topPosition = top;
   //         }
@@ -640,11 +640,11 @@ angular.module('main')
   //     }
   //   } else if (pairing.winner === inscription2._id) {
   //     if (reset) {
-  //       inscription1.strengthOfSchedule -= 100 - diff;
+  //       inscription1.marginOfVictory -= 100 - diff;
   //       inscription2.victoryPoints--;
-  //       inscription2.strengthOfSchedule -= 100 + diff;
+  //       inscription2.marginOfVictory -= 100 + diff;
   //     } else {
-  //       inscription1.strengthOfSchedule += 100 - diff;
+  //       inscription1.marginOfVictory += 100 - diff;
   //       if ($scope.cRound > $scope.tournament.rounds) {
   //         inscription1.topPosition = top;
   //         if (inscription2.bracketPosition > inscription1.bracketPosition) {
@@ -654,7 +654,7 @@ angular.module('main')
   //         }
   //       }
   //       inscription2.victoryPoints++;
-  //       inscription2.strengthOfSchedule += 100 + diff;
+  //       inscription2.marginOfVictory += 100 + diff;
   //     }
   //   }
   //
@@ -715,15 +715,15 @@ angular.module('main')
     if (pairing.winner === inscription1._id) {
       if (reset) {
         inscription1.victoryPoints--;
-        inscription1.strengthOfSchedule -= 100 + diff;
+        inscription1.marginOfVictory -= 100 + diff;
         if (inscription2) {
-          inscription2.strengthOfSchedule -= 100 - diff;
+          inscription2.marginOfVictory -= 100 - diff;
         }
       } else {
         inscription1.victoryPoints++;
-        inscription1.strengthOfSchedule += 100 + diff;
+        inscription1.marginOfVictory += 100 + diff;
         if (inscription2) {
-          inscription2.strengthOfSchedule += 100 - diff;
+          inscription2.marginOfVictory += 100 - diff;
           if ($scope.cRound > $scope.tournament.rounds) {
             inscription2.topPosition = top;
           }
@@ -731,11 +731,11 @@ angular.module('main')
       }
     } else if (pairing.winner === inscription2._id) {
       if (reset) {
-        inscription1.strengthOfSchedule -= 100 - diff;
+        inscription1.marginOfVictory -= 100 - diff;
         inscription2.victoryPoints--;
-        inscription2.strengthOfSchedule -= 100 + diff;
+        inscription2.marginOfVictory -= 100 + diff;
       } else {
-        inscription1.strengthOfSchedule += 100 - diff;
+        inscription1.marginOfVictory += 100 - diff;
         if ($scope.cRound > $scope.tournament.rounds) {
           inscription1.topPosition = top;
           if (inscription2.bracketPosition > inscription1.bracketPosition) {
@@ -745,7 +745,7 @@ angular.module('main')
           }
         }
         inscription2.victoryPoints++;
-        inscription2.strengthOfSchedule += 100 + diff;
+        inscription2.marginOfVictory += 100 + diff;
       }
     }
 

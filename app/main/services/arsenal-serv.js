@@ -2,7 +2,7 @@
 angular.module('main')
 .constant('baseURL', 'http://localhost:3000/api')
 
-.service('arsenalService', function ($http, $q, $filter, baseURL) {
+.service('arsenalService', function (baseURL, $http, $q) {
 
   var upgrades = [];
   var currentUpgrade = {};

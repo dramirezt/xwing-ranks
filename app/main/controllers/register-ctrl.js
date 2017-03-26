@@ -32,7 +32,6 @@ angular.module('main')
         }
       )
     } else {
-      console.log('NO ENTRA');
       // Show error
     }
   }

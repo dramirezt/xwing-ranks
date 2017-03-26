@@ -68,7 +68,7 @@ $ionicons-font-path: "../assets/fonts" !default;
     .item-avatar {
         font-weight: bold !important;
         color: $lightblue !important;
-        h2 {
+        h2, row {
           color: yellow !important;
           font-weight: bold !important;
           text-transform: uppercase;
@@ -169,14 +169,20 @@ a.button.empire {
   text-transform: uppercase;
 }
 
-.xwing-miniatures-font-empire{
-    color: blue;
+.xwing-miniatures-font-empire, .galacticempire{
+    color: blue !important;
 }
 
 .avatar-empire{
   color: lightblue;
 }
 
+.text-lightblue{
+  color: lightblue !important;
+}
+i.upgrade {
+  color: lightblue !important;
+}
 
 // Rebel SASS
 
@@ -192,7 +198,7 @@ a.button.rebel {
   text-transform: uppercase;
 }
 
-.xwing-miniatures-font-rebel{
+.xwing-miniatures-font-rebel, .rebelalliance{
     color: red !important;
 }
 
@@ -214,7 +220,7 @@ a.button.scum {
   text-transform: uppercase;;
 }
 
-.xwing-miniatures-font-scum{
+.xwing-miniatures-font-scum, .scumandvillainy{
     color: green !important;
 }
 
@@ -231,7 +237,7 @@ a.button.scum {
 }
 
 .hull, .xwing-miniatures-font-hull {
-  color: yellow
+  color: yellow;
 }
 
 .shield, .xwing-miniatures-font-shield {
@@ -279,15 +285,8 @@ ion-footer-bar {
 }
 
 .shipProfile {
-  .col {
-    padding: 0px;
-    margin: 0px;
-    .row {
-      .col {
-        padding: 0px;
-      }
-    }
-  }
+  overflow: hidden;
+  padding-left: 50px;
 }
 
 .nopadding {

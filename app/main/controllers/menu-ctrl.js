@@ -1,11 +1,11 @@
 'use strict';
 angular.module('main')
-.controller('MenuCtrl', function ($scope, mongoDB, $filter, $ionicModal, $ionicPopup, $ionicPopover, $ionicLoading, $q, arsenalService, hangarService, tournamentService, AuthService, UserService) {
+.controller('MenuCtrl', function ($scope, mongoDB, $filter, $ionicModal, $ionicPopup, $ionicPopover, $ionicLoading, $q, $state, arsenalService, hangarService, tournamentService, AuthService, UserService, $http) {
 
   $scope.showLoading = function() {
     $ionicLoading.show({
       template: '<ion-spinner icon="lines" class="spinner-calm"></ion-spinner>Loading...',
-      duration: 10000
+      duration: 3000
     }).then(function(){
       //  console.log("The loading indicator is now displayed");
     });
@@ -26,52 +26,88 @@ angular.module('main')
   $scope.myInscriptions = [];
   $scope.myInscriptionList = [];
   $scope.myHistory = [];
-  $scope.currentUser = {};
+  $scope.currentUser = undefined;
 
-  hangarService.getFactions().then(
-    function (response) {
-      $scope.factionList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
+  $scope.factionList = ["Rebel Alliance", "Galactic Empire", "Scum And Villainy"];
 
-  hangarService.getShips().then(
-    function (response) {
-      $scope.shipList = $filter('orderBy')(response, ['name']);
-      $scope.shipListLength = $scope.shipList.length;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
+  // hangarService.getFactions().then(
+  //   function (response) {
+  //     $scope.factionList = response;
+  //   },
+  //   function (error) {
+  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //   }
+  // );
 
-  function orderPilots () {
-    for (var i = 0; i < $scope.shipList.length; i++) {
-      $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i]._id}).length;
-    }
-  }
+  // hangarService.getShips().then(
+  //   function (response) {
+  //     $scope.shipList = $filter('orderBy')(response, ['name']);
+  //     $scope.shipListLength = $scope.shipList.length;
+  //   },
+  //   function (error) {
+  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //   }
+  // );
+    $http.get('../bower_components/xwing-data/data/ships.js')
+        .success(
+            function(response) {
+                $scope.shipList = $filter('orderBy')(response, ['name']);
+                $scope.shipListLength = $scope.shipList.length;
+            },
+            function (error) {
+                $scope.error = error;
+            }
+        );
 
-  hangarService.getPilots().then(
-    function (response) {
-      $scope.pilotList = response;
-      $scope.pilotListLength = $scope.pilotList.length;
-      orderPilots();
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
+  // function orderPilots () {
+  //   for (var i = 0; i < $scope.shipList.length; i++) {
+  //     $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
+  //   }
+  // }
 
-  arsenalService.getUpgrades().then(
-    function (response) {
-      $scope.upgradeList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
+    $http.get('../bower_components/xwing-data/data/pilots.js')
+        .success(
+            function(response) {
+                $scope.pilotList = $filter('orderBy')(response, ['-points', 'skill', 'name']);
+                $scope.pilotListLength = $scope.pilotList.length;
+                for (var i = 0; i < $scope.shipList.length; i++) {
+                    $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
+                }
+            },
+            function (error) {
+                $scope.error = error;
+            }
+        );
+
+  // hangarService.getPilots().then(
+  //   function (response) {
+  //     $scope.pilotList = response;
+  //     $scope.pilotListLength = $scope.pilotList.length;
+  //     orderPilots();
+  //   },
+  //   function (error) {
+  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //   }
+  // );
+
+  $http.get('../bower_components/xwing-data/data/upgrades.js')
+      .success(
+        function(response) {
+          $scope.upgradeList = $filter('orderBy')(response, ['points', 'slot', 'name']);
+        },
+        function (error) {
+          $scope.error = error;
+        }
+      );
+
+  // arsenalService.getUpgrades().then(
+  //   function (response) {
+  //     $scope.upgradeList = response;
+  //   },
+  //   function (error) {
+  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //   }
+  // );
 
   tournamentService.getTournaments()
   .then(
@@ -143,7 +179,7 @@ angular.module('main')
       }
   );
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-login.html', {
+  $ionicModal.fromTemplateUrl('main/templates/users/modal-login.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -155,6 +191,17 @@ angular.module('main')
   $scope.closeModal = function () {
     $scope.modal.hide();
   };
+
+  $scope.viewProfile = function (userId) {
+    UserService.getProfile(userId).then(
+      function () {
+        $state.go('main.userProfile');
+      },
+      function (error) {
+        $scope.error = 'Error: ' + error + ' ' + error.statusText;
+      }
+    );
+  }
 
   $scope.login = function (user) {
     $scope.closeModal();
@@ -180,4 +227,33 @@ angular.module('main')
     $scope.hideLoading();
   };
 
+  $scope.test = function (object){
+      console.log(object);
+  }
+
+})
+
+
+.directive('fileReader', function() {
+    return {
+        scope: {
+            fileReader:"=",
+        },
+        link: function(scope, element) {
+            element.on('change', function (changeEvent) {
+                var files = changeEvent.target.files;
+                if (files.length) {
+                    var r = new FileReader();
+                    r.onload = function (e) {
+                        var contents = e.target.result;
+                        scope.$apply(function () {
+                            scope.fileReader = contents;
+                        });
+                    };
+
+                    r.readAsText(files[0]);
+                }
+            });
+        }
+    };
 });

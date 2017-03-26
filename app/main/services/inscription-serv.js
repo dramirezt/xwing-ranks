@@ -8,14 +8,14 @@ angular.module('main')
   var currentInscription = {};
 
   this.inscriptionList = function () {
-    inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-strengthOfSchedule']);
+    inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-marginOfVictory']);
     return inscriptions;
   };
 
   this.getInscriptions = function (tournament) {
     return $http.get(baseURL + '/tournaments/' + tournament._id + '/inscriptions').then(
       function (response) {
-        inscriptions = $filter('orderBy')(response.data, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-strengthOfSchedule']);
+        inscriptions = $filter('orderBy')(response.data, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-marginOfVictory']);
         return inscriptions;
       },
       function (response) {
@@ -54,7 +54,7 @@ angular.module('main')
       .then(
         function (response) {
           if (typeof response.data === 'object') {
-            inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-strengthOfSchedule']);
+            inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-marginOfVictory']);
             return response.data;
           } else {
             return $q.reject(response.data);

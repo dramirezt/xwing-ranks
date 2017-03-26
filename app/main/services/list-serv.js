@@ -22,10 +22,10 @@ angular.module('main')
   this.apiFormat = function (currentList) {
     var listAPI = [];
     for (var i = 0; i < currentList.length; i++) {
-      var aux = { pilot: currentList[i].pilot._id, upgrades: []};
+      var aux = { pilot: currentList[i].pilot.name, upgrades: []};
       for (var j = 0; j < currentList[i].upgrades.length; j++) {
-        if (currentList[i].upgrades[j].selected._id !== undefined) {
-          aux.upgrades.push({ upgrade: currentList[i].upgrades[j].selected._id });
+        if (currentList[i].upgrades[j].selected.name !== undefined) {
+          aux.upgrades.push({ upgrade: currentList[i].upgrades[j].selected.name });
         }
       }
       listAPI.push(aux);
@@ -37,7 +37,6 @@ angular.module('main')
     var list = { inscription: inscription._id, ships: this.apiFormat(currentList) };
     return $http.get(baseURL + '/lists/' + list.inscription).then(
       function (response) {
-        console.log(response);
         var previousList = response.data[0];
         if (previousList !== undefined) {
           return $http.put(baseURL + '/lists/' + previousList._id, list)

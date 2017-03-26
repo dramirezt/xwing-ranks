@@ -7,12 +7,12 @@ angular.module('main')
 
   $scope.currentList = [];
 
-  $scope.selectedFaction = '';
+  $scope.selectedFaction = undefined;
   $scope.selectedShip = '0';
   $scope.showShips = false;
   $scope.hideBody = [];
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-select-upgrade.html', {
+  $ionicModal.fromTemplateUrl('main/templates/listcreator/modal-select-upgrade.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -25,7 +25,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-  $ionicModal.fromTemplateUrl('main/templates/modal-select-tournament.html', {
+  $ionicModal.fromTemplateUrl('main/templates/listcreator/modal-select-tournament.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -43,7 +43,7 @@ angular.module('main')
     $scope.showLoading();
     if (faction === undefined) {
       $scope.showShips = false;
-      $scope.selectedFaction = '';
+      $scope.selectedFaction = undefined;
       $scope.selectedShip = '0';
     } else if ($scope.selectedFaction !== faction) {
       $scope.showShips = true;
@@ -56,10 +56,10 @@ angular.module('main')
   };
 
   $scope.selectShip = function (ship) {
-    if ($scope.selectedShip === ship._id) {
+    if ($scope.selectedShip === ship.name) {
       $scope.selectedShip = '0';
     } else {
-      $scope.selectedShip = ship._id;
+      $scope.selectedShip = ship.name;
     }
   };
 
@@ -81,17 +81,16 @@ angular.module('main')
 
   $scope.addToList = function (pilot) {
     $scope.showLoading();
-    var cShip = $filter('filter')($scope.shipList, { _id: pilot.ship })[0];
+    var cShip = $filter('filter')($scope.shipList, { name: pilot.ship })[0];
     var newConfig = { pilot: pilot, ship: cShip, upgrades: []};
 
-    for (var i = 1; i <= pilot.elitePilot; i++) {
-      newConfig.upgrades.push({ slot: 'elite' + i, type: 'elite', selected: '' });
-    }
-    angular.forEach(cShip.upgradeSlots, function (value, key) {
-      for (var i = 1; i <= value; i++) {
-        newConfig.upgrades.push({ slot: key + value, type: key, selected: '' });
-      }
+    angular.forEach(pilot.slots, function (value, key) {
+      newConfig.upgrades.push({ slot: key+value, type: value, selected: '' });
     });
+    newConfig.upgrades.push({ slot: '0title', type: 'Title', selected: ''});
+    newConfig.upgrades.push({ slot: '0modification', type: 'Modification', selected: ''});
+
+
     $scope.hideBody.push(true);
     $scope.currentList.push(newConfig);
     $scope.hideLoading();
@@ -102,8 +101,10 @@ angular.module('main')
   };
 
   $scope.duplicate = function (index) {
-    var d = angular.copy($scope.currentList[index]);
-    $scope.currentList.push(d);
+    // if(!$scope.currentList[index].pilot.unique) {
+      var d = angular.copy($scope.currentList[index]);
+      $scope.currentList.push(d);
+    // }
   };
 
   $scope.dropFromList = function (index) {
@@ -147,6 +148,15 @@ angular.module('main')
       }
     );
   };
+
+  $scope.availableUpgrade = function (upgrade) {
+    return !($scope.currentUpgrade === undefined)
+        && (
+            upgrade.slot === $scope.currentUpgrade.type
+            && (upgrade.ship === undefined || upgrade.ship.indexOf($scope.currentShip.ship.name) != -1)
+            && (upgrade.faction === undefined || upgrade.faction.indexOf($scope.currentShip.pilot.faction) != -1)
+        );
+  }
 
 })
 ;

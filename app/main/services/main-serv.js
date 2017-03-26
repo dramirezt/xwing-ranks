@@ -9,6 +9,7 @@ angular.module('main')
 .service('UserService', function ($http, $q, baseURL) {
 
   var currentUser = {};
+  var userProfile = {};
 
   this.currentUser = function () {
     return currentUser;
@@ -36,6 +37,7 @@ angular.module('main')
         function (response) {
           if (typeof response.data === 'object') {
             currentUser = response.data;
+            userProfile = response.data;
             return response.data;
           } else {
             return $q.reject(response.data);
@@ -51,6 +53,25 @@ angular.module('main')
     return $http.get(baseURL + '/users/' + userId).then(
       function (response) {
         return response.data.username;
+      },
+      function (response) {
+        return $q.reject(response.data);
+      }
+    );
+  };
+
+  this.userProfile = function () {
+    if (userProfile._id){
+      return userProfile;
+    }
+    else return currentUser;
+  };
+
+  this.getProfile = function (userId) {
+    return $http.get(baseURL + '/users/' + userId).then(
+      function (response) {
+        userProfile = response.data;
+        return response.data;
       },
       function (response) {
         return $q.reject(response.data);

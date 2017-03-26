@@ -33,8 +33,18 @@ angular.module('main', [
       url: '/register',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/register.html',
+          templateUrl: 'main/templates/users/register.html',
           controller: 'RegisterCtrl'
+        }
+      }
+    })
+
+    .state('main.userProfile', {
+      url: '/profile',
+      views: {
+        'pageContent': {
+          templateUrl: 'main/templates/users/user-profile.html',
+          controller: 'UserProfileCtrl'
         }
       }
     })
@@ -44,7 +54,7 @@ angular.module('main', [
       url: '/tournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournament-list.html',
+          templateUrl: 'main/templates/tournaments/tournament-list.html',
           controller: 'TournamentListCtrl'
         }
       }
@@ -53,7 +63,7 @@ angular.module('main', [
       url: '/tournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournament-details.html',
+          templateUrl: 'main/templates/tournaments/tournament-details.html',
           controller: 'TournamentDetailsCtrl'
         }
       }
@@ -62,7 +72,7 @@ angular.module('main', [
       url: '/tournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournament-player-profile.html',
+          templateUrl: 'main/templates/tournaments/tournament-player-profile.html',
           controller: 'TournamentPlayerProfileCtrl'
         }
       }
@@ -71,7 +81,7 @@ angular.module('main', [
       url: '/tournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournament-info.html',
+          templateUrl: 'main/templates/tournaments/tournament-info.html',
           controller: 'TournamentInfoCtrl'
         }
       }
@@ -80,7 +90,7 @@ angular.module('main', [
       url: '/tournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/pairing-list.html',
+          templateUrl: 'main/templates/tournaments/pairing-list.html',
           controller: 'PairingListCtrl'
         }
       }
@@ -89,7 +99,7 @@ angular.module('main', [
       url: '/tournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/pairing-details.html',
+          templateUrl: 'main/templates/tournaments/pairing-details.html',
           controller: 'PairingDetailsCtrl'
         }
       }
@@ -100,7 +110,7 @@ angular.module('main', [
       url: '/hangar',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/hangar.html',
+          templateUrl: 'main/templates/hangar/hangar.html',
           controller: 'HangarCtrl'
         }
       }
@@ -109,7 +119,7 @@ angular.module('main', [
       url: '/hangar',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/hangar-ship.html',
+          templateUrl: 'main/templates/hangar/hangar-ship.html',
           controller: 'ShipDetailsCtrl'
         }
       }
@@ -118,7 +128,7 @@ angular.module('main', [
       url: '/hangar',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/hangar-pilot.html',
+          templateUrl: 'main/templates/hangar/hangar-pilot.html',
           controller: 'ShipPilotCtrl'
           // controller: 'PilotDetailsCtrl'
         }
@@ -130,7 +140,7 @@ angular.module('main', [
       url: '/arsenal',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/arsenal.html',
+          templateUrl: 'main/templates/arsenal/arsenal.html',
           controller: 'ArsenalCtrl'
         }
       }
@@ -139,7 +149,7 @@ angular.module('main', [
       url: '/arsenal',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/arsenal-details.html',
+          templateUrl: 'main/templates/arsenal/arsenal-details.html',
           controller: 'ArsenalDetailsCtrl'
         }
       }
@@ -151,22 +161,12 @@ angular.module('main', [
       url: '/list',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/list-creator.html',
+          templateUrl: 'main/templates/listcreator/list-creator.html',
           controller: 'ListCreatorCtrl'
         }
       }
     })
 
-
-    .state('main.debug', {
-      url: '/debug',
-      views: {
-        'pageContent': {
-          templateUrl: 'main/templates/debug.html',
-          controller: 'DebugCtrl'
-        }
-      }
-    })
     ;
 })
 

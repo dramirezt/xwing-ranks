@@ -13,6 +13,10 @@ angular.module('main')
   var currentShip = {};
 
 
+  this.setPilots = function () {
+    return pilots;
+  }
+
   this.factionList = function () {
     return factions;
   };
@@ -31,7 +35,9 @@ angular.module('main')
 
   this.setCurrentShip = function (ship) {
     currentShip = ship;
-    currentPilots = $filter('filter')(pilots, { 'ship': ship._id });
+    console.log(pilots);
+    currentPilots = $filter('filter')(pilots, { 'ship': ship });
+    console.log(currentPilots);
     currentPilot = {};
   };
 
@@ -47,12 +53,13 @@ angular.module('main')
     return currentFaction;
   };
 
-  this.setCurrentFaction = function (factionId) {
-    for (var i = 0; i < factions.length; i++) {
-      if (factions[i]._id === factionId) {
-        currentFaction = factions[i];
-      }
-    }
+  this.setCurrentFaction = function (faction) {
+    currentFaction = faction;
+    // for (var i = 0; i < factions.length; i++) {
+    //   if (factions[i]._id === factionId) {
+    //     currentFaction = factions[i];
+    //   }
+    // }
   };
 
   this.getFactions = function () {
