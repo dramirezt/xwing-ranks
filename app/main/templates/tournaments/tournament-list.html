@@ -8,6 +8,9 @@
   <ion-tabs class="tabs-positive tabs-icon-top">
     <ion-tab title="Todos" icon-on="ion-ios-calendar" icon-off="ion-ios-calendar-outline">
       <ion-list style="margin-top: 40px;">
+        <ion-item>
+          <input type="file" file-change="handler($event,files)" ng-model="MyFiles" />
+        </ion-item>
         <ion-item
           class="item-remove-animate item-avatar item-icon-right"
           type="item-text-wrap" ng-repeat="tournament in tournamentList" ng-click="viewTournament(tournament)">

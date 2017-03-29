@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
-.controller('MenuCtrl', function ($scope, mongoDB, $filter, $ionicModal, $ionicPopup, $ionicPopover, $ionicLoading, $q, $state, arsenalService, hangarService, tournamentService, AuthService, UserService, $http) {
+.controller('MenuCtrl', function ($scope, mongoDB, $filter, $ionicModal, $ionicPopup, $ionicPopover, $ionicLoading, $q,
+                                  $state, arsenalService, hangarService, tournamentService, AuthService, UserService, listService, $http) {
 
   $scope.showLoading = function() {
     $ionicLoading.show({
@@ -229,31 +230,5 @@ angular.module('main')
 
   $scope.test = function (object){
       console.log(object);
-  }
-
-})
-
-
-.directive('fileReader', function() {
-    return {
-        scope: {
-            fileReader:"=",
-        },
-        link: function(scope, element) {
-            element.on('change', function (changeEvent) {
-                var files = changeEvent.target.files;
-                if (files.length) {
-                    var r = new FileReader();
-                    r.onload = function (e) {
-                        var contents = e.target.result;
-                        scope.$apply(function () {
-                            scope.fileReader = contents;
-                        });
-                    };
-
-                    r.readAsText(files[0]);
-                }
-            });
-        }
-    };
+  };
 });

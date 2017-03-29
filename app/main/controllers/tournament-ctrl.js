@@ -1,9 +1,83 @@
 'use strict';
 angular.module('main')
 
-.controller('TournamentListCtrl', function ($scope, $ionicModal, $log, $state, $filter, $q, tournamentService, UserService, ionicDatePicker) {
+.controller('TournamentListCtrl', function ($scope, $ionicModal, $log, $state, $filter, $q, tournamentService, UserService, ionicDatePicker, inscriptionService, listService) {
 
   $scope.newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
+
+    $scope.MyFiles={};
+
+    $scope.handler = function(e,files){
+        var reader = new FileReader();
+        reader.onload = function(e){
+            var string=reader.result;
+            var obj = JSON.parse(string);
+            // var obj=$filter('csvToObj')(string);
+            //do what you want with obj !
+            console.log(obj);
+            var newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
+            newTournament.name = obj.name;
+            newTournament.tier = obj.type;
+            newTournament.startDate = obj.date;
+
+            $scope.showLoading();
+            var user = UserService.currentUser();
+            if (user) {
+                newTournament.organizer = user._id;
+                newTournament.visibleStartDate = undefined;
+                newTournament.visibleEndDate = undefined;
+                tournamentService.createTournament(newTournament)
+                    .then(
+                        function (response) {
+                            var tournament = response;
+                            var inscriptions = obj.inscriptions;
+                            var promises = [];
+                            for (var i = 0; i < inscriptions.length; i++){
+                                var newInscription = inscriptions[i];
+                                newInscription.tournament = tournament._id;
+                                // var list = { 'inscription': '', 'ships': newInscription.ships };
+                                var list = newInscription.ships;
+                                promises.push(inscriptionService.createInscription(newInscription));
+                                    // .then(
+                                    // function (response) {
+                                    //   console.log(newInscription.ships);
+                                    //     listService.useInTournament(newInscription.ships, response);
+                                    // },
+                                    // function (error) {
+                                    //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                    // })
+                                // );
+                                // promises.push(inscriptionService.createFromCSV(newInscription, list));
+                                //inscriptionService.createFromCSV(newInscription, list);
+                            }
+                            $q.all(promises).then(
+                                function (response){
+                                  for (var j = 0; j < response.length; j++) {
+                                      // console.log(response[j]);
+                                      // console.log(inscriptions[j].ships);
+                                      listService.useInTournament(inscriptions[j].ships, response[j], false);
+                                  }
+                                }
+                            );
+                            // $q.all(promises).then(
+                            //   function () {
+                            //       tournamentService.setCurrentTournament(tournament);
+                            //       $state.go('main.tournamentDetails');
+                            //   },
+                            //     function (error) {
+                            //         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                            //     }
+                            // );
+                        },
+                        function (error) {
+                            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                        }
+                    );
+            }
+        };
+        reader.readAsText(files[0]);
+        $scope.hideLoading();
+    }
 
   $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-new-tournament.html', {
     scope: $scope,
@@ -113,6 +187,8 @@ angular.module('main')
     ionicDatePicker.openDatePicker(ipObj2);
   };
 
+
+
 })
 
 .controller('TournamentInfoCtrl', function ($scope, $state, $ionicModal, ionicDatePicker, tournamentService) {
@@ -209,6 +285,18 @@ angular.module('main')
   .then(
     function (response) {
       $scope.inscriptionList = response;
+
+    $scope.showInscriptionButton = function () {
+        var i = 0;
+        var show = false;
+        console.log($scope.inscriptionList.length);
+        while (!show && i < $scope.inscriptionList.length) {
+            show = ($scope.inscriptionList[i].player === $scope.currentUser._id);
+            if(show) $scope.myCurrentInscription = $scope.inscriptionList[i];
+            i++;
+        }
+        return show;
+    };
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -236,7 +324,10 @@ angular.module('main')
     $scope.modal = modal;
   });
   $scope.openModal = function () {
-    $scope.modal.show();
+      $scope.closePopover();
+      var body = angular.element(document.getElementsByTagName('body'));
+      body.removeClass('popover-open');
+      $scope.modal.show();
   };
   $scope.closeModal = function () {
     $scope.modal.hide();
@@ -441,38 +532,6 @@ angular.module('main')
   };
 
   $scope.beginTestTournament = function () {
-    // $scope.createInscription({ name: 'Pablo Pintor', victoryPoints: 6, marginOfVictory: 1152, swissPosition: 1, bracketPosition: 1 });
-    // $scope.createInscription({ name: 'Antonio Veiga', victoryPoints: 6, marginOfVictory: 1026, swissPosition: 2, bracketPosition: 2 });
-    // $scope.createInscription({ name: 'Iván Verdera', victoryPoints: 6, marginOfVictory: 982, swissPosition: 3, bracketPosition: 3 });
-    // $scope.createInscription({ name: 'Ángel Hermana', victoryPoints: 5, marginOfVictory: 934, swissPosition: 4, bracketPosition: 4 });
-    // $scope.createInscription({ name: 'Ekaitz Fraile', victoryPoints: 5, marginOfVictory: 924, swissPosition: 5, bracketPosition: 5 });
-    // $scope.createInscription({ name: 'Alberto Nogales', victoryPoints: 5, marginOfVictory: 924, swissPosition: 6, bracketPosition: 6 });
-    // $scope.createInscription({ name: 'Jorge Moya', victoryPoints: 5, marginOfVictory: 914, swissPosition: 7, bracketPosition: 7 });
-    // $scope.createInscription({ name: 'Adrián Diego Benavente', victoryPoints: 5, marginOfVictory: 869, swissPosition: 8, bracketPosition: 8 });
-    // $scope.createInscription({ name: 'Francisco López', victoryPoints: 5, marginOfVictory: 862, swissPosition: 9, bracketPosition: 9 });
-    // $scope.createInscription({ name: 'Pablo Subias', victoryPoints: 5, marginOfVictory: 853, swissPosition: 10, bracketPosition: 10 });
-    // $scope.createInscription({ name: 'Miguel Angel Díaz', victoryPoints: 5, marginOfVictory: 833, swissPosition: 11, bracketPosition: 11 });
-    // $scope.createInscription({ name: 'Joaquín Ramos', victoryPoints: 5, marginOfVictory: 823, swissPosition: 12, bracketPosition: 12 });
-    // $scope.createInscription({ name: 'Carlos Guerra', victoryPoints: 5, marginOfVictory: 822, swissPosition: 13, bracketPosition: 13 });
-    // $scope.createInscription({ name: 'Andoni Abril', victoryPoints: 5, marginOfVictory: 812, swissPosition: 14, bracketPosition: 14 });
-    // $scope.createInscription({ name: 'Antonio José González', victoryPoints: 5, marginOfVictory: 800, swissPosition: 15, bracketPosition: 15 });
-    // $scope.createInscription({ name: 'Francisco José Morales', victoryPoints: 5, marginOfVictory: 774, swissPosition: 16, bracketPosition: 16 });
-    // $scope.createInscription({ name: 'Borja Ortuño', victoryPoints: 5, marginOfVictory: 769, swissPosition: 17, bracketPosition: 17 });
-    // $scope.createInscription({ name: 'Pablo Rodríguez', victoryPoints: 5, marginOfVictory: 756, swissPosition: 18, bracketPosition: 18 });
-    // $scope.createInscription({ name: 'Rafael de Linares', victoryPoints: 5, marginOfVictory: 751, swissPosition: 19, bracketPosition: 19 });
-    // $scope.createInscription({ name: 'Lisardo Montagud', victoryPoints: 5, marginOfVictory: 727, swissPosition: 20, bracketPosition: 20 });
-    // $scope.createInscription({ name: 'Juan José Fernández', victoryPoints: 5, marginOfVictory: 724, swissPosition: 21, bracketPosition: 21 });
-    // $scope.createInscription({ name: 'Alejandro Burillo', victoryPoints: 5, marginOfVictory: 681, swissPosition: 22, bracketPosition: 22 });
-    // $scope.createInscription({ name: 'Ismael Roig', victoryPoints: 5, marginOfVictory: 665, swissPosition: 23, bracketPosition: 23 });
-    // $scope.createInscription({ name: 'Imanol Acillona', victoryPoints: 4, marginOfVictory: 881, swissPosition: 24, bracketPosition: 24 });
-    // $scope.createInscription({ name: 'Francisco Segura', victoryPoints: 4, marginOfVictory: 875, swissPosition: 25, bracketPosition: 25 });
-    // $scope.createInscription({ name: 'Alberto Lozano', victoryPoints: 4, marginOfVictory: 854, swissPosition: 26, bracketPosition: 26 });
-    // $scope.createInscription({ name: 'David Jesús de Jorge', victoryPoints: 4, marginOfVictory: 832, swissPosition: 27, bracketPosition: 27 });
-    // $scope.createInscription({ name: 'Mario Núñez', victoryPoints: 4, marginOfVictory: 818, swissPosition: 28, bracketPosition: 28 });
-    // $scope.createInscription({ name: 'Vicente Marco', victoryPoints: 4, marginOfVictory: 812, swissPosition: 29, bracketPosition: 29 });
-    // $scope.createInscription({ name: 'Alvaro Alejandro Martínez', victoryPoints: 4, marginOfVictory: 800, swissPosition: 30, bracketPosition: 30 });
-    // $scope.createInscription({ name: 'Jose Antonio Mellado', victoryPoints: 4, marginOfVictory: 795, swissPosition: 31, bracketPosition: 31 });
-    // $scope.createInscription({ name: 'Óscar Baroja Peral', victoryPoints: 4, marginOfVictory: 795, swissPosition: 32, bracketPosition: 32 });
     $scope.createInscription({ name: 'Darth Vader' });
     $scope.createInscription({ name: 'Soontir Fel' });
     $scope.createInscription({ name: 'Wedge Antilles' });
@@ -481,14 +540,6 @@ angular.module('main')
     $scope.createInscription({ name: 'Luke Skywalker' });
     $scope.createInscription({ name: 'Boba Fett' });
     $scope.createInscription({ name: 'Dengar' });
-    // $scope.createInscription({ name: 'Carnor Jax' });
-    // $scope.createInscription({ name: 'Juno Eclipse' });
-    // $scope.createInscription({ name: 'Zukkus' });
-    // $scope.createInscription({ name: 'Bossk' });
-    // $scope.createInscription({ name: 'Gran Inquisidor' });
-    // $scope.createInscription({ name: 'Corran Horn' });
-    // $scope.createInscription({ name: 'Hera Syndulla' });
-    // $scope.createInscription({ name: 'Miranda Doni' });
     //$scope.beginTournament();
   };
 
@@ -518,7 +569,7 @@ angular.module('main')
           aux.upgrades = [];
           for (var k = 0; k < response[i].ships[j].upgrades.length; k++) {
             // aux.upgrades.push($filter('filter')($scope.upgradeList, { _id: response[i].ships[j].upgrades[k].upgrade })[0]);
-              aux.upgrades.push($filter('filter')($scope.upgradeList, { 'name': response[i].ships[j].upgrades[k].upgrade })[0]);
+              aux.upgrades.push($filter('filter')($scope.upgradeList, { 'name': response[i].ships[j].upgrades[k].name })[0]);
           }
           $scope.currentList.push(aux);
         }
@@ -538,4 +589,19 @@ angular.module('main')
     return $filter('filter')($scope.inscriptionList, { _id: playerId })[0].name;
   };
 })
-;
+
+.directive('fileChange',['$parse', function($parse){
+    return{
+        require:'ngModel',
+        restrict:'A',
+        link:function($scope,element,attrs,ngModel){
+            var attrHandler=$parse(attrs['fileChange']);
+            var handler=function(e){
+                $scope.$apply(function(){
+                    attrHandler($scope,{$event:e,files:e.target.files});
+                });
+            };
+            element[0].addEventListener('change',handler,false);
+        }
+    }
+}]);

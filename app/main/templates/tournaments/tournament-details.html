@@ -1,19 +1,18 @@
-<ion-view view-title="TORNEO">
+<ion-view view-title="{{ tournament.name }}">
     <ion-nav-buttons side="right">
         <div class="buttons">
-            <button class="button button-icon button-clear ion-more" style="color: #adf1fe;" ng-click="openPopover($event)"></button>
-            <button class="button button-icon button-clear ion-person-add" ng-click="openModal()" ng-show="!currentUser || currentUser._id === tournament.organizer" ng-disabled="inscriptionList.length == tournament.maxPlayers"></button>
-            <button class="button button-icon button-clear ion-person-add ng-cloak" ng-click="joinTournament()" ng-show="currentUser._id !== tournament.organizer"  ng-disabled="inscriptionList.length == tournament.maxPlayers">
-            <button class="button button-icon button-clear ion-clipboard" ng-click="beginTestTournament()"></button>
+            <button class="button button-icon button-clear ion-more" ng-click="openPopover($event)" ng-show="currentUser._id === tournament.organizer"></button>
+            <!--<button class="button button-icon button-clear ion-clipboard" ng-click="beginTestTournament()"></button>-->
         </div>
     </ion-nav-buttons>
     <ion-content class="has-footer">
         <div class="list card tournament-card">
-            <div class="item item-divider item-icon-right">
+            <div class="item item-divider item-icon-left">
                 <i class="icon ion-information-circled icon-accesory"></i>
-                <span ng-bind="tournament.name"></span>
+                Información
             </div>
-            <div class="item item-avatar item-icon-right" ng-click="tournamentInfo()">
+            <!--<div class="item item-avatar item-icon-right" ng-click="tournamentInfo()">-->
+            <div class="item item-avatar">
                 <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px">
                 <div class="row responsive-sm">
                   <div class="col col-50">
@@ -47,12 +46,16 @@
                     Organiza:
                     <span ng-bind="tournament.organizername"></span>
                   </div>
+                  <div class="col">
+                    <button class="button button-balanced" ng-show="!showInscriptionButton()" ng-click="joinTournament()" ng-disabled="inscriptionList.length >= tournament.maxPlayers">Inscribirme a este evento</button>
+                    <button class="button button-assertive" ng-show="showInscriptionButton()" ng-click="deleteInscription(myCurrentInscription)">Cancelar inscripción</button>
+                  </div>
                 </div>
-                <i class="icon ion-chevron-right icon-accessory"></i>
+                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
             </div>
         </div>
         <div class="list card tournament-card">
-            <div class="item item-divider item-icon-right">
+            <div class="item item-divider item-icon-left">
                 <i class="icon ion-person icon-accesory"></i>
                 Ranking - <span ng-bind="inscriptionList.length"></span>/<span ng-bind="tournament.maxPlayers"></span> Jugadores
             </div>

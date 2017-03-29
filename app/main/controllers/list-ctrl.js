@@ -6,7 +6,7 @@ angular.module('main')
   $scope.showLoading();
 
   $scope.currentList = [];
-
+  $scope.currentPoints = 0;
   $scope.selectedFaction = undefined;
   $scope.selectedShip = '0';
   $scope.showShips = false;
@@ -41,10 +41,12 @@ angular.module('main')
 
   $scope.select = function (faction) {
     $scope.showLoading();
-    if (faction === undefined) {
+    if (!faction) {
       $scope.showShips = false;
       $scope.selectedFaction = undefined;
       $scope.selectedShip = '0';
+      $scope.currentList = [];
+      $scope.currentPoints = 0;
     } else if ($scope.selectedFaction !== faction) {
       $scope.showShips = true;
       $scope.selectedFaction = faction;
@@ -81,18 +83,29 @@ angular.module('main')
 
   $scope.addToList = function (pilot) {
     $scope.showLoading();
-    var cShip = $filter('filter')($scope.shipList, { name: pilot.ship })[0];
-    var newConfig = { pilot: pilot, ship: cShip, upgrades: []};
+    var uniqueFound = false;
+    if (pilot.unique === true) {
+        var i = 0;
+        while (!uniqueFound && i < $scope.currentList.length) {
+            uniqueFound = $scope.currentList[i].pilot.name === pilot.name;
+            i++;
+        }
+    }
+    if (!uniqueFound) {
+        var cShip = angular.copy($filter('filter')($scope.shipList, {name: pilot.ship})[0]);
+        var newConfig = {pilot: pilot, ship: cShip, upgrades: []};
 
-    angular.forEach(pilot.slots, function (value, key) {
-      newConfig.upgrades.push({ slot: key+value, type: value, selected: '' });
-    });
-    newConfig.upgrades.push({ slot: '0title', type: 'Title', selected: ''});
-    newConfig.upgrades.push({ slot: '0modification', type: 'Modification', selected: ''});
+        angular.forEach(pilot.slots, function (value, key) {
+            newConfig.upgrades.push({slot: key + value, type: value, selected: ''});
+        });
+        newConfig.upgrades.push({slot: '0title', type: 'Title', selected: ''});
+        newConfig.upgrades.push({slot: '0modification', type: 'Modification', selected: ''});
 
 
-    $scope.hideBody.push(true);
-    $scope.currentList.push(newConfig);
+        $scope.hideBody.push(true);
+        $scope.currentList.push(newConfig);
+        $scope.currentPoints += pilot.points;
+    }
     $scope.hideLoading();
   };
 
@@ -101,14 +114,24 @@ angular.module('main')
   };
 
   $scope.duplicate = function (index) {
-    // if(!$scope.currentList[index].pilot.unique) {
-      var d = angular.copy($scope.currentList[index]);
-      $scope.currentList.push(d);
-    // }
+      if(!$scope.currentList[index].pilot.unique) {
+          var d = angular.copy($scope.currentList[index]);
+          $scope.currentList.push(d);
+          $scope.currentPoints += $scope.currentList[index].pilot.points;
+      }
   };
 
   $scope.dropFromList = function (index) {
-    $scope.currentList.splice(index, 1);
+      console.log($scope.currentList[index]);
+      if($scope.currentList[index].upgrades){
+          for (var i = 0; i < $scope.currentList[index].upgrades.length; i++) {
+              if ($scope.currentList[index].upgrades[i].selected) {
+                  $scope.currentPoints -= $scope.currentList[index].upgrades[i].selected.points;
+              }
+          }
+      }
+      $scope.currentPoints -= $scope.currentList[index].pilot.points;
+      $scope.currentList.splice(index, 1);
   };
 
   $scope.toggle = function (index) {
@@ -127,19 +150,82 @@ angular.module('main')
   };
 
   $scope.selectUpgrade = function (upgrade) {
-    $scope.currentShip.upgrades[$scope.upgradeIndex].selected = upgrade;
-    $scope.closeModal();
+      var found = false;
+      if (upgrade.unique === true) {
+          var i = 0;
+          while (!found && i < $scope.currentList.length) {
+              var j = 0;
+              while (!found && j < $scope.currentList[i].upgrades.length) {
+                  found = (upgrade.name === $scope.currentList[i].upgrades[j].selected.name);
+                  j++;
+              }
+              i++;
+          }
+      }
+      if (!found && upgrade.limited === true) {
+          var i = 0;
+          while (!found && i < $scope.currentShip.upgrades.length) {
+              found = (upgrade.name === $scope.currentShip.upgrades[i].selected.name);
+              i++;
+          }
+      }
+      if (!found) {
+          if (upgrade.grants) {
+              for (var i = 0; i < upgrade.grants.length; i++) {
+                  switch (upgrade.grants[i].type) {
+                      case 'slot':
+                          $scope.currentShip.upgrades.push({
+                              selected: '', slot: i + upgrade.grants[i].name,
+                              type: upgrade.grants[i].name
+                          });
+                          break;
+                      case 'stats':
+                          console.log($scope.currentShip);
+                          switch (upgrade.grants[i].name) {
+                              case 'attack':
+                                  $scope.currentShip.ship.attack += upgrade.grants[i].value;
+                                  break;
+                              case 'agility':
+                                  $scope.currentShip.ship.agility += upgrade.grants[i].value;
+                                  break;
+                              case 'hull':
+                                  $scope.currentShip.ship.hull += upgrade.grants[i].value;
+                                  break;
+                              case 'shields':
+                                  $scope.currentShip.ship.shields += upgrade.grants[i].value;
+                                  break;
+                              case 'skill':
+                                  $scope.currentShip.pilot.skill += upgrade.grants[i].value;
+                              default:
+                                  break;
+                          }
+                          break;
+                      case 'action':
+                          $scope.currentShip.ship.actions.push(upgrade.grants[i].name);
+                          break;
+                      case '-slot':
+                          break;
+                      default:
+                          break;
+                  }
+              }
+          }
+          $scope.currentShip.upgrades[$scope.upgradeIndex].selected = upgrade;
+          $scope.currentPoints += upgrade.points;
+      }
+      $scope.closeModal();
   };
 
   $scope.dropUpgrade = function (current, upgradeIndex) {
-    current.upgrades[upgradeIndex].selected = {};
+      $scope.currentPoints -= current.upgrades[upgradeIndex].selected.points;
+      current.upgrades[upgradeIndex].selected = {};
   };
 
   $scope.useListIn = function (tournamentId) {
     $scope.closeModalTournament();
     $scope.showLoading();
     var inscription = $filter('filter')($scope.myInscriptionList, { tournament: tournamentId })[0];
-    listService.useInTournament($scope.currentList, inscription).then(
+    listService.useInTournament($scope.currentList, inscription, true).then(
       function () {
         $scope.hideLoading();
       },

@@ -13,7 +13,7 @@
         <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="ship in shipList | orderBy: ['name'] | filter: selectedFaction"
                   ng-click="viewShip(ship)">
           <div class="row responsive-sm">
-              <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('aft', '').replace('fore', '') }}
+              <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}
                         avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 4em"></i>
               <div class="col">
                 <h2 ng-bind="ship.name" class="title"></h2>

@@ -5,6 +5,7 @@ var requireDir = require('require-dir');
 var chalk = require('chalk');
 var fs = require('fs');
 var browserSync = require('browser-sync');
+var serve = require('gulp-serve');
 
 // config
 var paths = gulp.paths = {
