@@ -35,9 +35,7 @@ angular.module('main')
 
   this.setCurrentShip = function (ship) {
     currentShip = ship;
-    console.log(pilots);
     currentPilots = $filter('filter')(pilots, { 'ship': ship });
-    console.log(currentPilots);
     currentPilot = {};
   };
 
