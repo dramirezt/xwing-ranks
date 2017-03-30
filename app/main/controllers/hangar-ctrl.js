@@ -126,7 +126,7 @@ angular.module('main')
     $scope.attackLabels.push(i + " impactos");
   }
   $scope.attackSeries = ["Base", "+ Concentración", "+ Blanco Fijado", "+ Conc. + B.F."];
-  statisticsService.getAttack($scope.ship.keyname).then(
+  statisticsService.getAttack($scope.ship.xws).then(
     function (response) {
       $scope.attackData = response;
     },
@@ -140,7 +140,7 @@ angular.module('main')
     $scope.defenseLabels.push(i + " esquivas");
   }
   $scope.defenseSeries = ["Base", "+ Concentración"];
-  statisticsService.getDefense($scope.ship.keyname).then(
+  statisticsService.getDefense($scope.ship.xws).then(
     function (response) {
       $scope.defenseData = response;
     },
