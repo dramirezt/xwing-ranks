@@ -131,6 +131,7 @@ angular.module('main')
       $scope.attackData = response;
     },
     function () {
+        console.log('error opencpu');
         $scope.error = 'Error: OpenCPU Server error';
     }
   );
@@ -145,6 +146,7 @@ angular.module('main')
       $scope.defenseData = response;
     },
     function () {
+        console.log('error opencpu');
       $scope.error = 'Error: OpenCPU Server error';
     }
   );
