@@ -129,10 +129,6 @@ angular.module('main')
   statisticsService.getAttack($scope.ship.xws).then(
     function (response) {
       $scope.attackData = response;
-    },
-    function () {
-        console.log('error opencpu');
-        $scope.error = 'Error: OpenCPU Server error';
     }
   );
 
@@ -144,10 +140,6 @@ angular.module('main')
   statisticsService.getDefense($scope.ship.xws).then(
     function (response) {
       $scope.defenseData = response;
-    },
-    function () {
-        console.log('error opencpu');
-      $scope.error = 'Error: OpenCPU Server error';
     }
   );
 
