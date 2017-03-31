@@ -40,25 +40,25 @@ angular.module('main')
   //   }
   // );
 
-  // hangarService.getShips().then(
-  //   function (response) {
-  //     $scope.shipList = $filter('orderBy')(response, ['name']);
-  //     $scope.shipListLength = $scope.shipList.length;
-  //   },
-  //   function (error) {
-  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-  //   }
-  // );
-    $http.get('../bower_components/xwing-data/data/ships.js')
-        .success(
-            function(response) {
-                $scope.shipList = $filter('orderBy')(response, ['name']);
-                $scope.shipListLength = $scope.shipList.length;
-            },
-            function (error) {
-                $scope.error = error;
-            }
-        );
+  hangarService.getShips().then(
+    function (response) {
+      $scope.shipList = $filter('orderBy')(response, ['name']);
+      $scope.shipListLength = $scope.shipList.length;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
+    // $http.get('../bower_components/xwing-data/data/ships.js')
+    //     .success(
+    //         function(response) {
+    //             $scope.shipList = $filter('orderBy')(response, ['name']);
+    //             $scope.shipListLength = $scope.shipList.length;
+    //         },
+    //         function (error) {
+    //             $scope.error = error;
+    //         }
+    //     );
 
   // function orderPilots () {
   //   for (var i = 0; i < $scope.shipList.length; i++) {
@@ -66,49 +66,51 @@ angular.module('main')
   //   }
   // }
 
-    $http.get('../bower_components/xwing-data/data/pilots.js')
-        .success(
-            function(response) {
-                $scope.pilotList = $filter('orderBy')(response, ['-points', 'skill', 'name']);
-                $scope.pilotListLength = $scope.pilotList.length;
-                for (var i = 0; i < $scope.shipList.length; i++) {
-                    $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
-                }
-            },
-            function (error) {
-                $scope.error = error;
-            }
-        );
+    // $http.get('../bower_components/xwing-data/data/pilots.js')
+    //     .success(
+    //         function(response) {
+    //             $scope.pilotList = $filter('orderBy')(response, ['-points', 'skill', 'name']);
+    //             $scope.pilotListLength = $scope.pilotList.length;
+    //             for (var i = 0; i < $scope.shipList.length; i++) {
+    //                 $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
+    //             }
+    //         },
+    //         function (error) {
+    //             $scope.error = error;
+    //         }
+    //     );
 
-  // hangarService.getPilots().then(
-  //   function (response) {
-  //     $scope.pilotList = response;
-  //     $scope.pilotListLength = $scope.pilotList.length;
-  //     orderPilots();
-  //   },
-  //   function (error) {
-  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-  //   }
-  // );
-
-  $http.get('../bower_components/xwing-data/data/upgrades.js')
-      .success(
-        function(response) {
-          $scope.upgradeList = $filter('orderBy')(response, ['points', 'slot', 'name']);
-        },
-        function (error) {
-          $scope.error = error;
+  hangarService.getPilots().then(
+    function (response) {
+      $scope.pilotList = response;
+      $scope.pilotListLength = $scope.pilotList.length;
+        for (var i = 0; i < $scope.shipList.length; i++) {
+            $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
         }
-      );
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
 
-  // arsenalService.getUpgrades().then(
-  //   function (response) {
-  //     $scope.upgradeList = response;
-  //   },
-  //   function (error) {
-  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-  //   }
-  // );
+  // $http.get('../bower_components/xwing-data/data/upgrades.js')
+  //     .success(
+  //       function(response) {
+  //         $scope.upgradeList = $filter('orderBy')(response, ['points', 'slot', 'name']);
+  //       },
+  //       function (error) {
+  //         $scope.error = error;
+  //       }
+  //     );
+
+  arsenalService.getUpgrades().then(
+    function (response) {
+      $scope.upgradeList = response;
+    },
+    function (error) {
+      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+    }
+  );
 
   tournamentService.getTournaments()
   .then(
@@ -202,7 +204,7 @@ angular.module('main')
         $scope.error = 'Error: ' + error + ' ' + error.statusText;
       }
     );
-  }
+  };
 
   $scope.login = function (user) {
     $scope.closeModal();

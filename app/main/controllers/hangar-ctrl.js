@@ -60,7 +60,7 @@ angular.module('main')
       if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
       else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
       return $scope.selectedFaction === undefined || faction.indexOf($scope.selectedFaction) !== -1;
-  }
+  };
 
   function getShipListLength () {
       $scope.shipListLength = $filter('filter')($scope.shipList, {'faction': $scope.selectedFaction }).length;
@@ -96,13 +96,13 @@ angular.module('main')
       for (var i = 0; i < $scope.shipList.length; i++ ){
         $scope.createShip($scope.shipList[i]);
       }
-    }
+    };
 
     $scope.exportPilots = function () {
         for (var i = 0; i < $scope.pilotList.length; i++ ){
             $scope.createPilot($scope.pilotList[i]);
         }
-    }
+    };
 
   $scope.createShip = function (newShip) {
     $scope.closeModal();

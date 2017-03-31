@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
-.constant('baseURL', 'http://localhost:3000/api')
-
+    .constant('baseURL', 'http://ec2-54-171-152-168.eu-west-1.compute.amazonaws.com/:3000/api')
+    //.constant('baseURL', 'http://localhost:3000/api')
 .service('tournamentService', function ($http, $q, $filter, baseURL) {
 
   var tournament = {};
