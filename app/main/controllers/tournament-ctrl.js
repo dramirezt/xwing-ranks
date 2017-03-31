@@ -276,7 +276,7 @@ angular.module('main')
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-      $state.go('main.tournamentsList');
+      // $state.go('main.tournamentsList');
     }
   );
 
