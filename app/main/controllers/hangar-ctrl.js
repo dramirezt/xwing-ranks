@@ -59,7 +59,7 @@ angular.module('main')
       var faction = ship.faction;
       if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
       else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
-      return faction.indexOf($scope.selectedFaction) !== -1;
+      return $scope.selectedFaction === undefined || faction.indexOf($scope.selectedFaction) !== -1;
   }
 
   function getShipListLength () {
