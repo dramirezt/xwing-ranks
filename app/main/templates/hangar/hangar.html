@@ -6,11 +6,15 @@
     <!--</ion-nav-buttons>-->
     <ion-content style="color: white !important">
       <ion-list>
+          <ion-item>
+              <button ng-click="exportShips()">Export ships to mongodb</button>
+              <button ng-click="exportPilots()">Export pilots to mongodb</button>
+          </ion-item>
         <ion-item class="item-divider item-icon-right">
             <i class="icon ion-information-circled icon-accesory"></i>
             <span ng-bind="pilotListLength"></span> pilotos en <span ng-bind="shipListLength"></span> naves
         </ion-item>
-        <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="ship in shipList | orderBy: ['name'] | filter: selectedFaction"
+        <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="ship in shipList | orderBy: ['name'] | filter: showShip"
                   ng-click="viewShip(ship)">
           <div class="row responsive-sm">
               <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}

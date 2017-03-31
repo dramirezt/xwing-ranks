@@ -55,6 +55,13 @@ angular.module('main')
 
   $scope.selectedFaction = undefined;
 
+  $scope.showShip = function (ship) {
+      var faction = ship.faction;
+      if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
+      else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
+      return faction.indexOf($scope.selectedFaction) !== -1;
+  }
+
   function getShipListLength () {
       $scope.shipListLength = $filter('filter')($scope.shipList, {'faction': $scope.selectedFaction }).length;
   };
@@ -85,15 +92,24 @@ angular.module('main')
   //   return name;
   // };
 
+    $scope.exportShips = function () {
+      for (var i = 0; i < $scope.shipList.length; i++ ){
+        $scope.createShip($scope.shipList[i]);
+      }
+    }
+
+    $scope.exportPilots = function () {
+        for (var i = 0; i < $scope.pilotList.length; i++ ){
+            $scope.createPilot($scope.pilotList[i]);
+        }
+    }
+
   $scope.createShip = function (newShip) {
     $scope.closeModal();
     $scope.showLoading();
     hangarService.createShip(newShip).then(
       function (response) {
-        $scope.shipList.push(response);
-        $scope.newShip = { name: '', faction: '', keyname: '', attack: 2, agility: 2, hull: 2, shield: 2 };
-        $scope.newShip.actionBar = { focus: true, evade: false, barrelRoll: false, cloak: false, slam: false, targetLock: false };
-        $scope.viewShip(response);
+        //$scope.shipList.push(response);
         $scope.hideLoading();
       },
       function (error) {
@@ -108,6 +124,18 @@ angular.module('main')
     hangarService.setCurrentFaction(ship.faction);
     $state.go('main.hangarShip');
   };
+
+    $scope.createPilot = function (pilot) {
+        $scope.showLoading();
+        hangarService.createPilot(pilot).then(
+            function (response) {
+                $scope.hideLoading();
+            },
+            function (error) {
+                $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+            }
+        );
+    };
 
 })
 

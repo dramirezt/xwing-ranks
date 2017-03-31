@@ -16,6 +16,12 @@ angular.module('main')
     $scope.modal.hide();
   };
 
+    $scope.exportUpgrades = function () {
+        for (var i = 0; i < $scope.upgradeList.length; i++ ){
+            $scope.createUpgrade($scope.upgradeList[i]);
+        }
+    }
+
   $scope.showUpgrades = [];
   for (var i = 0; i < $scope.upgradeList.length; i++) {
     $scope.showUpgrades.push(false);
@@ -47,9 +53,9 @@ angular.module('main')
     $scope.showLoading();
     arsenalService.createUpgrade(upgrade).then(
       function (response) {
-        $scope.upgradeList.push(response);
+        // $scope.upgradeList.push(response);
         $scope.hideLoading();
-        $scope.viewUpgrade(upgrade);
+        // $scope.viewUpgrade(upgrade);
       },
       function (error) {
         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;

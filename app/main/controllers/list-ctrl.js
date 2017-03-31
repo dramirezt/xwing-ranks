@@ -39,6 +39,13 @@ angular.module('main')
     $scope.modalTournament.hide();
   }
 
+    $scope.showShip = function (ship) {
+        var faction = ship.faction;
+        if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
+        else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
+        return faction.indexOf($scope.selectedFaction) !== -1;
+    }
+
   $scope.select = function (faction) {
     $scope.showLoading();
     if (!faction) {
@@ -62,18 +69,6 @@ angular.module('main')
       $scope.selectedShip = '0';
     } else {
       $scope.selectedShip = ship.name;
-    }
-  };
-
-  $scope.showShip = function (ship) {
-    if ($scope.selectedShip === '0') {
-      return true;
-    } else {
-      if ($scope.selectedShip === ship._id) {
-        return true;
-      } else {
-        return false;
-      }
     }
   };
 

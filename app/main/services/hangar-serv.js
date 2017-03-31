@@ -113,7 +113,7 @@ angular.module('main')
       function (response) {
         if (typeof response.data === 'object') {
           currentShip = response.data;
-          ships.push(currentShip);
+          // ships.push(currentShip);
           return currentShip;
         } else {
           return $q.reject(response.data);
@@ -151,7 +151,7 @@ angular.module('main')
       function (response) {
         if (typeof response.data === 'object') {
           currentPilot = response.data;
-          pilots.push(currentPilot);
+          // pilots.push(currentPilot);
           return currentPilot;
         } else {
           return $q.reject(response.data);
