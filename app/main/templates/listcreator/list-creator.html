@@ -14,7 +14,7 @@
             <span class="title" ng-bind="ship.name"></span>
           </ion-item>
           <ion-list ng-show="selectedShip === ship.name">
-            <ion-item ng-repeat="pilot in pilotList | filter: { ship: ship.name, faction: selectedFaction }" class="item item-icon-right" type="item-text-wrap" ng-click="addToList(pilot)">
+            <ion-item ng-repeat="pilot in pilotList | filter: { ship: ship.name, faction: showPilot }" class="item item-icon-right" type="item-text-wrap" ng-click="addToList(pilot)">
               <span ng-bind="pilot.skill"></span>&nbsp;
               <i class="ion-ios-circle-filled" ng-show="pilot.unique">&nbsp;</i>
               <span ng-bind="pilot.name"></span>&nbsp;

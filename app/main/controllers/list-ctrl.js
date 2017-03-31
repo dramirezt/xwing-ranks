@@ -44,7 +44,14 @@ angular.module('main')
         if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
         else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
         return faction.indexOf($scope.selectedFaction) !== -1;
-    }
+    };
+
+    $scope.showShip = function (pilot) {
+        var faction = ship.pilot;
+        if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
+        else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
+        return faction.indexOf($scope.selectedFaction) !== -1;
+    };
 
   $scope.select = function (faction) {
     $scope.showLoading();
