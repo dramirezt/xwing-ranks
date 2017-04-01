@@ -18,9 +18,8 @@
           <i class="icon ion-chevron-right icon-accessory" ng-show="hide"></i>
           <i class="icon ion-chevron-down icon-accessory" ng-show="!hide"></i>
         </div>
-        <div class="item row responsive-xlg">
-          <div class="col" ng-repeat="current in currentList" ng-show="!hide">
-            <div class="tournament-card text-lightblue">
+        <div class="item">
+            <div class="responsive-sm card tournament-card text-lightblue" ng-repeat="current in currentList" ng-show="!hide">
               <ion-item class="item-divider item-button-right item-icon-left">
                   <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ current.ship.xws | lowercase }}
                           avatar-{{ (current.pilot.faction).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 3em"></i>
