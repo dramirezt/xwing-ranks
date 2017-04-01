@@ -47,7 +47,7 @@ angular.module('main')
     };
 
     $scope.showShip = function (pilot) {
-        var faction = pilot.factionpassport.authenticate('jwt', { session: false }),;
+        var faction = pilot.faction;
         if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
         else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
         return faction.indexOf($scope.selectedFaction) !== -1;
