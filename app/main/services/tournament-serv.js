@@ -11,6 +11,7 @@ angular.module('main')
     this.importTournament = function (data) {
         return $http.post(baseURL + '/tournaments/import', data).then(
             function (response) {
+                console.log(response);
                 return response.data;
             },
             function (error) {
