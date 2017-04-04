@@ -11,72 +11,83 @@ angular.module('main')
         var reader = new FileReader();
         reader.onload = function(e){
             var string=reader.result;
-            var obj = JSON.parse(string);
+            var obj = { data: string };
+            //var obj = JSON.parse(string);
             // var obj=$filter('csvToObj')(string);
             //do what you want with obj !
-            console.log(obj);
-            var newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
-            newTournament.name = obj.name;
-            newTournament.tier = obj.type;
-            newTournament.startDate = obj.date;
+            // console.log(obj);
+            tournamentService.importTournament(obj).then(
+                function (response) {
 
-            $scope.showLoading();
-            var user = UserService.currentUser();
-            if (user) {
-                newTournament.organizer = user._id;
-                newTournament.visibleStartDate = undefined;
-                newTournament.visibleEndDate = undefined;
-                tournamentService.createTournament(newTournament)
-                    .then(
-                        function (response) {
-                            var tournament = response;
-                            var inscriptions = obj.inscriptions;
-                            var promises = [];
-                            for (var i = 0; i < inscriptions.length; i++){
-                                var newInscription = inscriptions[i];
-                                newInscription.tournament = tournament._id;
-                                // var list = { 'inscription': '', 'ships': newInscription.ships };
-                                var list = newInscription.ships;
-                                promises.push(inscriptionService.createInscription(newInscription));
-                                    // .then(
-                                    // function (response) {
-                                    //   console.log(newInscription.ships);
-                                    //     listService.useInTournament(newInscription.ships, response);
-                                    // },
-                                    // function (error) {
-                                    //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                                    // })
-                                // );
-                                // promises.push(inscriptionService.createFromCSV(newInscription, list));
-                                //inscriptionService.createFromCSV(newInscription, list);
-                            }
-                            $q.all(promises).then(
-                                function (response){
-                                  for (var j = 0; j < response.length; j++) {
-                                      // console.log(response[j]);
-                                      // console.log(inscriptions[j].ships);
-                                      listService.useInTournament(inscriptions[j].ships, response[j], false);
-                                  }
-                                }
-                            );
-                            // $q.all(promises).then(
-                            //   function () {
-                            //       tournamentService.setCurrentTournament(tournament);
-                            //       $state.go('main.tournamentDetails');
-                            //   },
-                            //     function (error) {
-                            //         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                            //     }
-                            // );
-                        },
-                        function (error) {
-                            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                    var obj = JSON.parse(response[0]);
+                    var newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
+                        newTournament.name = obj.name;
+                        newTournament.tier = obj.type;
+                        newTournament.startDate = obj.date;
+
+                        $scope.showLoading();
+                        var user = UserService.currentUser();
+                        if (user) {
+                            newTournament.organizer = user._id;
+                            newTournament.visibleStartDate = undefined;
+                            newTournament.visibleEndDate = undefined;
+                            tournamentService.createTournament(newTournament)
+                                .then(
+                                    function (response) {
+                                        var tournament = response;
+                                        var inscriptions = obj.inscriptions;
+                                        var promises = [];
+                                        for (var i = 0; i < inscriptions.length; i++){
+                                            var newInscription = inscriptions[i];
+                                            newInscription.tournament = tournament._id;
+                                            // var list = { 'inscription': '', 'ships': newInscription.ships };
+                                            var list = newInscription.ships;
+                                            promises.push(inscriptionService.createInscription(newInscription));
+                                                // .then(
+                                                // function (response) {
+                                                //   console.log(newInscription.ships);
+                                                //     listService.useInTournament(newInscription.ships, response);
+                                                // },
+                                                // function (error) {
+                                                //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                                // })
+                                            // );
+                                            // promises.push(inscriptionService.createFromCSV(newInscription, list));
+                                            //inscriptionService.createFromCSV(newInscription, list);
+                                        }
+                                        $q.all(promises).then(
+                                            function (response){
+                                              for (var j = 0; j < response.length; j++) {
+                                                  // console.log(response[j]);
+                                                  // console.log(inscriptions[j].ships);
+                                                  listService.useInTournament(inscriptions[j].ships, response[j], false);
+                                              }
+                                            }
+                                        );
+                                        // $q.all(promises).then(
+                                        //   function () {
+                                        //       tournamentService.setCurrentTournament(tournament);
+                                        //       $state.go('main.tournamentDetails');
+                                        //   },
+                                        //     function (error) {
+                                        //         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                        //     }
+                                        // );
+                                    },
+                                    function (error) {
+                                        $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                    }
+                                );
                         }
-                    );
-            }
+                },
+                function (error) {
+                    $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                }
+            );
+        //
         };
-        reader.readAsText(files[0]);
-        $scope.hideLoading();
+         reader.readAsText(files[0]);
+        // $scope.hideLoading();
     }
 
   $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-new-tournament.html', {

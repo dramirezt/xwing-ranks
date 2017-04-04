@@ -6,6 +6,7 @@ angular.module('main', [
   'ngResource',
   'ionic-datepicker',
   'chart.js',
+  'lr.upload',
   // TODO: load other modules selected during generation
 ])
 .config(function ($stateProvider, $urlRouterProvider) {
