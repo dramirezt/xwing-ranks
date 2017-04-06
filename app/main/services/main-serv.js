@@ -40,11 +40,11 @@ angular.module('main')
             userProfile = response.data;
             return response.data;
           } else {
-            return $q.reject(response.data);
+            return $q.reject(response);
           }
         },
         function (response) {
-          return $q.reject(response.data);
+          return $q.reject(response);
         }
       );
   };
