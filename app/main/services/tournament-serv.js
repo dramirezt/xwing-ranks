@@ -70,11 +70,11 @@ angular.module('main')
         if (typeof response.data === 'object') {
           return response.data;
         } else {
-          return $q.reject(response.data);
+          return $q.reject(response);
         }
       },
       function (response) {
-        $q.reject(response.data);
+        $q.reject(response);
       }
     );
   };
@@ -82,10 +82,10 @@ angular.module('main')
   this.getMyEvents = function (currentUser) {
     return $http.get(baseURL + '/tournaments/owner/' + currentUser._id).then(
       function (response) {
-        return response.data;
+        return response;
       },
       function (response) {
-        $q.reject(response.data);
+        $q.reject(response);
       }
     )
   }
