@@ -40,39 +40,35 @@ angular.module('main')
                                         for (var i = 0; i < inscriptions.length; i++){
                                             var newInscription = inscriptions[i];
                                             newInscription.tournament = tournament._id;
-                                            // var list = { 'inscription': '', 'ships': newInscription.ships };
-                                            var list = newInscription.ships;
                                             promises.push(inscriptionService.createInscription(newInscription));
-                                                // .then(
-                                                // function (response) {
-                                                //   console.log(newInscription.ships);
-                                                //     listService.useInTournament(newInscription.ships, response);
-                                                // },
-                                                // function (error) {
-                                                //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                                                // })
-                                            // );
-                                            // promises.push(inscriptionService.createFromCSV(newInscription, list));
-                                            //inscriptionService.createFromCSV(newInscription, list);
                                         }
                                         $q.all(promises).then(
                                             function (response){
+                                              var promises2 = [];
                                               for (var j = 0; j < response.length; j++) {
-                                                  // console.log(response[j]);
-                                                  // console.log(inscriptions[j].ships);
-                                                  listService.useInTournament(inscriptions[j].ships, response[j], false);
+                                                  promises2.push(listService.useInTournament(inscriptions[j].ships, response[j], false));
                                               }
+                                              $q.all(promises2).then(
+                                                  function (response) {
+                                                      tournament.maxPlayers = response.length;
+                                                      tournament.finished = true;
+                                                      tournamentService.updateTournament(tournament).then(
+                                                          function (response) {
+                                                              tournamentService.setCurrentTournament(response);
+                                                              $state.go('main.tournamentDetails');
+                                                              $scope.hideLoading();
+                                                          },
+                                                          function (error) {
+                                                              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                                          }
+                                                      );
+                                                  },
+                                                  function (error) {
+                                                      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                                  }
+                                              )
                                             }
                                         );
-                                        // $q.all(promises).then(
-                                        //   function () {
-                                        //       tournamentService.setCurrentTournament(tournament);
-                                        //       $state.go('main.tournamentDetails');
-                                        //   },
-                                        //     function (error) {
-                                        //         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                                        //     }
-                                        // );
                                     },
                                     function (error) {
                                         $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -268,7 +264,18 @@ angular.module('main')
   };
 
 })
-
+    .filter("emptyToEnd", function () {
+        return function (array, key) {
+            if(!angular.isArray(array)) return;
+            var present = array.filter(function (item) {
+                return item[key];
+            });
+            var empty = array.filter(function (item) {
+                return !item[key]
+            });
+            return present.concat(empty);
+        };
+    })
 .controller('TournamentDetailsCtrl', function ($scope, $state, $ionicModal, $ionicPopover, $ionicHistory, $ionicPopup, $q, inscriptionService, pairingService, tournamentService, UserService, $filter, ionicDatePicker) {
 
   $scope.showLoading();
@@ -295,19 +302,17 @@ angular.module('main')
   inscriptionService.getInscriptions($scope.tournament)
   .then(
     function (response) {
-      $scope.inscriptionList = response;
-
-    $scope.showInscriptionButton = function () {
-        var i = 0;
-        var show = false;
-        console.log($scope.inscriptionList.length);
-        while (!show && i < $scope.inscriptionList.length) {
-            show = ($scope.inscriptionList[i].player === $scope.currentUser._id);
-            if(show) $scope.myCurrentInscription = $scope.inscriptionList[i];
-            i++;
-        }
-        return show;
-    };
+        $scope.inscriptionList = response;
+        $scope.showInscriptionButton = function () {
+            var i = 0;
+            var show = false;
+            while (!show && i < $scope.inscriptionList.length) {
+                show = ($scope.inscriptionList[i].player === $scope.currentUser._id);
+                if(show) $scope.myCurrentInscription = $scope.inscriptionList[i];
+                i++;
+            }
+            return show;
+        };
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;

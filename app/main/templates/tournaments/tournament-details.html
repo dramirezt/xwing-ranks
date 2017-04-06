@@ -46,7 +46,7 @@
                     Organiza:
                     <span ng-bind="tournament.organizername"></span>
                   </div>
-                  <div class="col">
+                  <div class="col" ng-show="!tournament.finished">
                     <button class="button button-balanced" ng-show="!showInscriptionButton()" ng-click="joinTournament()" ng-disabled="inscriptionList.length >= tournament.maxPlayers">Inscribirme a este evento</button>
                     <button class="button button-assertive" ng-show="showInscriptionButton()" ng-click="deleteInscription(myCurrentInscription)">Cancelar inscripción</button>
                   </div>
@@ -61,16 +61,26 @@
             </div>
             <ion-list show-delete="showDeleteInscriptions">
               <ion-item
-                class="item-remove-animate item-avatar item-icon-right"
-                type="item-text-wrap" ng-repeat="inscription in inscriptionList | orderBy: ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-strengthOfSchedule'];" ng-click="viewInscription(inscription)">
+                      class="item-remove-animate item-avatar item-icon-right"
+                      type="item-text-wrap"
+                      ng-repeat="inscription in inscriptionList | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'" ng-click="viewInscription(inscription)">
                     <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
                     <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px" href="#">
                     <h2 ng-bind="inscription.name"></h2>
                     <p ng-show="!inscription.drop">
-                      PV: <span ng-bind="inscription.victoryPoints"></span>, SoS: <span ng-bind="inscription.strengthOfSchedule"></span>
-                      <span ng-show="inscription.swissPosition">Swiss: <span ng-bind="inscription.swissPosition"></span></span>
-                      <span ng-show="tournament.top && inscription.topPosition">Top: <span ng-bind="inscription.topPosition"></span></span>
-                      <span class="badge badge-assertive" ng-show="inscription.firstRoundBye">Bye R1</span>
+                        <span ng-show="inscription.topPosition">
+                            Top: <span ng-bind="inscription.topPosition"></span>
+                        </span>
+                        <span ng-show="inscription.swissPosition">
+                            Swiss: <span ng-bind="inscription.swissPosition"></span>
+                        </span>
+                        <span ng-show="inscription.victoryPoints">
+                            PV: <span ng-bind="inscription.victoryPoints"></span>,
+                        </span>
+                        <span ng-show="inscription.strengthOfSchedule">
+                            SoS: <span ng-bind="inscription.strengthOfSchedule"></span>
+                        </span>
+                        <span class="badge badge-assertive" ng-show="inscription.firstRoundBye">Bye R1</span>
                     </p>
                     <p class="drop" ng-show="inscription.drop">Drop</p>
                     <i  style="color: #3398d0;" class="icon ion-chevron-right icon-accessory"></i>
@@ -78,7 +88,7 @@
             </ion-list>
         </div>
     </ion-content>
-    <ion-footer-bar style="padding: 0px">
+    <ion-footer-bar style="padding: 0px" ng-show="!tournament.finished">
         <div class="button-bar button-full">
           <a class="button button-balanced" ng-click="viewPairings()"
              ng-disabled="!inscriptionList.length">

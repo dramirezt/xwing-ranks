@@ -8,14 +8,14 @@ angular.module('main')
   var currentInscription = {};
 
   this.inscriptionList = function () {
-    inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-marginOfVictory']);
+    // inscriptions = $filter('orderBy')(inscriptions, ['drop', 'bracketPosition', '-topPosition', '-swissPosition']);
     return inscriptions;
   };
 
   this.getInscriptions = function (tournament) {
     return $http.get(baseURL + '/tournaments/' + tournament._id + '/inscriptions').then(
       function (response) {
-        inscriptions = $filter('orderBy')(response.data, ['drop', 'bracketPosition', 'topPosition', 'swissPosition', '-victoryPoints', '-marginOfVictory']);
+        inscriptions = $filter('orderBy')(response.data, ['drop', 'topPosition', 'bracketPosition', 'swissPosition']);
         return inscriptions;
       },
       function (response) {

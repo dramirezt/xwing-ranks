@@ -241,8 +241,8 @@ angular.module('main')
     return !($scope.currentUpgrade === undefined)
         && (
             upgrade.slot === $scope.currentUpgrade.type
-            && (upgrade.ship === undefined || upgrade.ship.indexOf($scope.currentShip.ship.name) != -1)
-            && (upgrade.faction === undefined || upgrade.faction.indexOf($scope.currentShip.pilot.faction) != -1)
+            && (upgrade.ship === undefined || upgrade.ship.indexOf($scope.currentShip.ship.name) !== -1)
+            && (upgrade.faction === undefined || upgrade.faction.indexOf($scope.currentShip.pilot.faction) !== -1)
         );
   }
 

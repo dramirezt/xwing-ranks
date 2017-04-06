@@ -3,7 +3,37 @@ angular.module('main')
 
 .controller('ArsenalCtrl', function ($scope, $ionicModal, $state, $filter, arsenalService, $rootScope) {
 
-  $ionicModal.fromTemplateUrl('main/templates/arsenal/modal-new-upgrade.html', {
+  $scope.display = 0;
+  $scope.upgrades = [];
+  $scope.currentUpgradeList = [];
+
+  $scope.showMore = function (number) {
+    var limit = $scope.display + number;
+    if($scope.filterType || $scope.filterFaction) {
+        var tmp = $filter('filter')($scope.upgradeList, { 'slot': $scope.filterType,  'faction': $scope.filterFaction });
+        while ($scope.display < limit) {
+          if(tmp[$scope.display]) $scope.currentUpgradeList.push(tmp[$scope.display]);
+          $scope.display++;
+        }
+    } else {
+        while ($scope.display < limit) {
+            $scope.currentUpgradeList.push($scope.upgradeList[$scope.display]);
+            $scope.display++;
+        }
+    }
+  };
+
+  arsenalService.getUpgrades().then(
+      function (response) {
+        $scope.upgradeList = response;
+        $scope.showMore(10);
+      },
+      function (error) {
+        $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+      }
+  );
+
+  $ionicModal.fromTemplateUrl('main/templates/arsenal/modal-filters.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -32,20 +62,28 @@ angular.module('main')
 
   $scope.filterType = undefined;
   $scope.filterByUpgradeType = function (type) {
+    $scope.display = 0;
+    $scope.currentUpgradeList = [];
     if ($scope.filterType === type) {
       $scope.filterType = undefined;
     } else {
       $scope.filterType = type;
     }
+    $scope.showMore(10);
+    $scope.closeModal();
   };
 
   $scope.filterFaction = undefined;
   $scope.filterByFaction= function (factionName) {
+    $scope.display = 0;
+    $scope.currentUpgradeList = [];
     if ($scope.filterFaction === factionName) {
       $scope.filterFaction = undefined;
     } else {
       $scope.filterFaction = factionName;
     }
+    $scope.showMore(10);
+    $scope.closeModal();
   };
 
   $scope.createUpgrade = function (upgrade) {

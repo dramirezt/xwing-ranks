@@ -1,0 +1,73 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">MOSTRAR SOLO</h1>
+    <button class="button button-icon button-clear ion-close-circled" ng-click="closeModal()"></button>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <div class="item item-divider">
+        <span class="title">Elige un tipo de mejora</span>
+      </div>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('turret')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-turret upgrade"></i>Turrets
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('cannon')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-cannon upgrade"></i>Cannons
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('salvaged astromech')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-salvagedastromech upgrade"></i>Salvaged Astromechs
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('missile')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-missile upgrade"></i>Missiles
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('title')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-title upgrade"></i>Titles
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('crew')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-crew upgrade"></i>Crews
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('bomb')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-turret upgrade"></i>Bombs
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('elite')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-elite upgrade"></i>Elite Talents
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('modification')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-modification upgrade"></i>Modifications
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('torpedo')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-torpedo upgrade"></i>Torpedoes
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('illicit')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-illicit upgrade"></i>Illicits
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('system')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-system upgrade"></i>Systems
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('astromech')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-astromech upgrade"></i>Astromechs
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('cargo')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-cargo upgrade"></i>Cargos (Huge ship upgrades)
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('team')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-team upgrade"></i>Teams (Huge ship upgrades)
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByUpgradeType('hardpoint')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-hardpoint upgrade"></i>Hardpoints (Huge ship upgrades)
+      </ion-item>
+      <div class="item item-divider">
+        <span class="title">Elige una facción</span>
+      </div>
+      <ion-item class="item-icon-left" ng-click="filterByFaction('rebel')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-rebel rebel"></i>Rebel limited upgrades
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByFaction('empire')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-empire empire"></i>Imperial limited upgrades
+      </ion-item>
+      <ion-item class="item-icon-left" ng-click="filterByFaction('scum')">
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-scum scum"></i>Scum limited upgrades
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>
