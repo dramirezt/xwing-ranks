@@ -5,11 +5,34 @@ angular.module('main')
 
   $scope.newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
 
+    $scope.start = 0;
+
+    $scope.loadMore = function() {
+
+        tournamentService.getTournaments($scope.start).then(
+            function (response) {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                $scope.tournamentList = $scope.tournamentList.concat(response);
+                $scope.start += response.length;
+            },
+            function (error) {
+                $scope.error = "Error: " + error.status + " " + error.statusText;
+            }
+        );
+    };
+
+
+    // $scope.$on('$stateChangeSuccess', function() {
+    //     $scope.loadMore();
+    // });
+
     $scope.MyFiles={};
 
     $scope.handler = function(e,files){
         var reader = new FileReader();
         reader.onload = function(e){
+            $scope.closeImportModal();
+            $scope.showLoading();
             var string=reader.result;
             var obj = { data: string };
             //var obj = JSON.parse(string);
@@ -97,7 +120,20 @@ angular.module('main')
   };
   $scope.closeModal = function () {
     $scope.modal.hide();
-  }
+  };
+
+    $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-import-tournament.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function (modal) {
+        $scope.modalImport = modal;
+    });
+    $scope.showImportModal = function () {
+        $scope.modalImport.show();
+    };
+    $scope.closeImportModal = function () {
+        $scope.modalImport.hide();
+    };
 
   $scope.createTournament = function (newTournament) {
     $scope.closeModal();
@@ -128,25 +164,25 @@ angular.module('main')
     $state.go('main.tournamentDetails');
   };
 
-  $scope.createTestTournament = function () {
-    $scope.newTournament.name = 'Carrera de Kessel';
-    $scope.newTournament.tier = 'Casual';
-    $scope.newTournament.city = 'Sistema Kessel';
-    $scope.newTournament.address = 'C/ Falsa 312';
-    $scope.newTournament.top = 4;
-    $scope.newTournament.rounds = 3;
-    $scope.newTournament.maxPlayers = 8;
-    $scope.newTournament.startDate = new Date('7/11/1977');
-    // $scope.newTournament.name = 'Nacional España 2016 - Top 32'
-    // $scope.newTournament.place = 'Madrid - Las Rozas';
-    // $scope.newTournament.rounds = 0;
-    // $scope.newTournament.top = 32;
-    // $scope.newTournament.maxPlayers = 32;
-    // $scope.newTournament.date = '2016-9-3';
-    // $scope.newTournament.rounds = 4;
-    // $scope.newTournament.maxPlayers = 16;
-    $scope.createTournament($scope.newTournament);
-  };
+  // $scope.createTestTournament = function () {
+  //   $scope.newTournament.name = 'Carrera de Kessel';
+  //   $scope.newTournament.tier = 'Casual';
+  //   $scope.newTournament.city = 'Sistema Kessel';
+  //   $scope.newTournament.address = 'C/ Falsa 312';
+  //   $scope.newTournament.top = 4;
+  //   $scope.newTournament.rounds = 3;
+  //   $scope.newTournament.maxPlayers = 8;
+  //   $scope.newTournament.startDate = new Date('7/11/1977');
+  //   // $scope.newTournament.name = 'Nacional España 2016 - Top 32'
+  //   // $scope.newTournament.place = 'Madrid - Las Rozas';
+  //   // $scope.newTournament.rounds = 0;
+  //   // $scope.newTournament.top = 32;
+  //   // $scope.newTournament.maxPlayers = 32;
+  //   // $scope.newTournament.date = '2016-9-3';
+  //   // $scope.newTournament.rounds = 4;
+  //   // $scope.newTournament.maxPlayers = 16;
+  //   $scope.createTournament($scope.newTournament);
+  // };
 
   var ipObj1 = {
     callback: function (val) {  //Mandatory
@@ -194,7 +230,19 @@ angular.module('main')
     ionicDatePicker.openDatePicker(ipObj2);
   };
 
-
+  $scope.orderBy = function (val) {
+      switch (val) {
+          case 'recent':
+              $scope.tournamentList = $filter('orderBy')($scope.tournamentList, ['-startDate']);
+              break;
+          case 'old':
+              $scope.tournamentList = $filter('orderBy')($scope.tournamentList, ['startDate']);
+              break;
+          default:
+              break;
+      }
+      console.log(val);
+  };
 
 })
 
@@ -437,7 +485,8 @@ angular.module('main')
                   $scope.hideLoading();
                   if (response.status === 200) {
                     $ionicHistory.clearCache().then(function () {
-                      $state.go('main.tournamentsList');
+                        $scope.nTournaments--;
+                        $state.go('main.tournamentsList');
                     });
                   }
                 },

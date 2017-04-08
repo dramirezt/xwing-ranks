@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-     .constant('baseURL', 'http://ec2-54-171-152-168.eu-west-1.compute.amazonaws.com:3000/api')
+      .constant('baseURL', 'http://ec2-54-171-152-168.eu-west-1.compute.amazonaws.com:3000/api')
     //.constant('baseURL', 'http://localhost:3000/api')
 .service('tournamentService', function ($http, $q, $filter, baseURL) {
 
@@ -21,16 +21,28 @@ angular.module('main')
     };
 
   this.tournamentList = function () {
-    tournaments = $filter('orderBy')(tournaments, ['-date', 'name']);
+    tournaments = $filter('orderBy')(tournaments, ['-startDate', 'name']);
     return tournaments;
   };
 
-  this.getTournaments = function () {
-    return $http.get(baseURL + '/tournaments')
+  this.getTournamentNumber = function () {
+      return $http.get(baseURL + '/tournaments/count').then(
+          function (response) {
+              return response.data;
+          },
+          function (response) {
+              $q.reject(response);
+          }
+      )
+  }
+
+  this.getTournaments = function (start) {
+    if (!start) start = 0;
+    return $http.get(baseURL + '/tournaments/' + start)
     .then(
       function (response) {
         if (typeof response.data === 'object') {
-          tournaments = $filter('orderBy')(response.data, ['-date', 'name']);
+          tournaments = response.data;
           return tournaments;
         } else {
           return $q.reject(response.data);

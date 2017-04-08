@@ -112,15 +112,23 @@ angular.module('main')
     }
   );
 
-  tournamentService.getTournaments()
-  .then(
-    function (response) {
-      $scope.tournamentList = response;
-    },
-    function (error) {
-      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-    }
-  );
+  // tournamentService.getTournaments()
+  // .then(
+  //   function (response) {
+  //     $scope.tournamentList = response;
+  //   },
+  //   function (error) {
+  //     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //   }
+  // );
+
+    $scope.nTournaments = 10;
+
+    tournamentService.getTournamentNumber().then(
+        function (response) {
+          $scope.nTournaments = response;
+        }
+    );
 
   function getUserData () {
     UserService.getCurrentUser().then(
