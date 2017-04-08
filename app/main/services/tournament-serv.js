@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
       .constant('baseURL', 'http://ec2-54-171-152-168.eu-west-1.compute.amazonaws.com:3000/api')
-    //.constant('baseURL', 'http://localhost:3000/api')
+    // .constant('baseURL', 'http://localhost:3000/api')
 .service('tournamentService', function ($http, $q, $filter, baseURL) {
 
   var tournament = {};
@@ -11,11 +11,10 @@ angular.module('main')
     this.importTournament = function (data) {
         return $http.post(baseURL + '/tournaments/import', data).then(
             function (response) {
-                console.log(response);
                 return response.data;
             },
-            function (error) {
-                return error;
+            function (response) {
+                return $q.reject(response);
             }
         );
     };
@@ -73,8 +72,6 @@ angular.module('main')
       }
     );
   }
-
-  var self = this;
 
   this.getMyTournaments = function (currentUser) {
     return $http.get(baseURL + '/tournaments/inscriptions/' + currentUser._id).then(

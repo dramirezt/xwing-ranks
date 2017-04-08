@@ -1,7 +1,7 @@
 <ion-view view-title="{{ tournament.name }}">
     <ion-nav-buttons side="right">
         <div class="buttons">
-            <button class="button button-icon button-clear ion-more" ng-click="openPopover($event)"></button>
+            <button class="button button-icon button-clear ion-more" ng-click="openPopover($event)" ng-show="currentUser._id === tournament.organizer"></button>
             <!--<button class="button button-icon button-clear ion-clipboard" ng-click="beginTestTournament()"></button>-->
         </div>
     </ion-nav-buttons>

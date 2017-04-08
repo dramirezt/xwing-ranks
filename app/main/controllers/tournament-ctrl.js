@@ -29,75 +29,69 @@ angular.module('main')
     $scope.MyFiles={};
 
     $scope.handler = function(e,files){
+        $scope.closeImportModal();
+        $scope.showLoading();
         var reader = new FileReader();
         reader.onload = function(e){
-            $scope.closeImportModal();
-            $scope.showLoading();
             var string=reader.result;
             var obj = { data: string };
             //var obj = JSON.parse(string);
             // var obj=$filter('csvToObj')(string);
             //do what you want with obj !
-            // console.log(obj);
             tournamentService.importTournament(obj).then(
                 function (response) {
-
                     var obj = JSON.parse(response[0]);
                     var newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
                         newTournament.name = obj.name;
                         newTournament.tier = obj.type;
                         newTournament.startDate = obj.date;
-
-                        $scope.showLoading();
-                        var user = UserService.currentUser();
-                        if (user) {
-                            newTournament.organizer = user._id;
-                            newTournament.visibleStartDate = undefined;
-                            newTournament.visibleEndDate = undefined;
-                            tournamentService.createTournament(newTournament)
-                                .then(
-                                    function (response) {
-                                        var tournament = response;
-                                        var inscriptions = obj.inscriptions;
-                                        var promises = [];
-                                        for (var i = 0; i < inscriptions.length; i++){
-                                            var newInscription = inscriptions[i];
-                                            newInscription.tournament = tournament._id;
-                                            promises.push(inscriptionService.createInscription(newInscription));
-                                        }
-                                        $q.all(promises).then(
-                                            function (response){
-                                              var promises2 = [];
-                                              for (var j = 0; j < response.length; j++) {
-                                                  promises2.push(listService.useInTournament(inscriptions[j].ships, response[j], false));
-                                              }
-                                              $q.all(promises2).then(
+                    var user = UserService.currentUser();
+                    if (user) {
+                        newTournament.organizer = user._id;
+                        tournamentService.createTournament(newTournament)
+                        .then(
+                            function (response) {
+                                var tournament = response;
+                                var inscriptions = obj.inscriptions;
+                                var promises = [];
+                                for (var i = 0; i < inscriptions.length; i++){
+                                    var newInscription = inscriptions[i];
+                                    newInscription.tournament = tournament._id;
+                                    promises.push(inscriptionService.createInscription(newInscription));
+                                }
+                                $q.all(promises).then(
+                                    function (response){
+                                      var promises2 = [];
+                                      for (var j = 0; j < response.length; j++) {
+                                          promises2.push(listService.useInTournament(inscriptions[j].ships, response[j], false));
+                                      }
+                                      $q.all(promises2).then(
+                                          function (response) {
+                                              tournament.maxPlayers = response.length;
+                                              tournament.finished = true;
+                                              tournamentService.updateTournament(tournament).then(
                                                   function (response) {
-                                                      tournament.maxPlayers = response.length;
-                                                      tournament.finished = true;
-                                                      tournamentService.updateTournament(tournament).then(
-                                                          function (response) {
-                                                              tournamentService.setCurrentTournament(response);
-                                                              $state.go('main.tournamentDetails');
-                                                              $scope.hideLoading();
-                                                          },
-                                                          function (error) {
-                                                              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                                                          }
-                                                      );
+                                                      tournamentService.setCurrentTournament(response);
+                                                      $state.go('main.tournamentDetails');
+                                                      $scope.hideLoading();
                                                   },
                                                   function (error) {
                                                       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
                                                   }
-                                              )
-                                            }
-                                        );
-                                    },
-                                    function (error) {
-                                        $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                              );
+                                          },
+                                          function (error) {
+                                              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                                          }
+                                      )
                                     }
                                 );
-                        }
+                            },
+                            function (error) {
+                                $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+                            }
+                        );
+                    }
                 },
                 function (error) {
                     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
