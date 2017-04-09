@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
 .controller('MenuCtrl', function ($scope, mongoDB, $filter, $ionicModal, $ionicPopup, $ionicPopover, $ionicLoading, $q,
-                                  $state, arsenalService, hangarService, tournamentService, AuthService, UserService, listService, $http) {
+                                  $state, arsenalService, hangarService, tournamentService, AuthService, UserService, statisticsService) {
 
   $scope.showLoading = function() {
     $ionicLoading.show({
@@ -130,10 +130,22 @@ angular.module('main')
         }
     );
 
+    $scope.factionLabels = ["Alianza Rebelde", "Imperio Galáctico", "Escoria y Villanos"];
+    $scope.factionColors = ['#ff0000', '#0000ff', '#00ff00'];
+    $scope.factionOptions = { legend: {
+        display: true,
+    }};
 
-
-    $scope.factionLabels = ["Alianza Rebelde", "Escoria y Villanos", "Imperio Galáctico"];
-    $scope.factionData = [33, 33, 33];
+    statisticsService.getFactionUse().then(
+        function (response) {
+          $scope.totalLists = response[0];
+          $scope.factionData = [
+              Math.round(response[1]/response[0] * 100, 2),
+              Math.round(response[2]/response[0] * 100, 2),
+              Math.round(response[3]/response[0] * 100, 2)
+          ];
+        }
+    );
 
     $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
     $scope.shipData = [25, 15, 10, 10, 5]

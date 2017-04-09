@@ -39,4 +39,45 @@ angular.module('main')
     );
   }
 
+  this.getFactionUse = function (){
+      return $http.get(baseURL + '/lists/count/rebel').then(
+          function (response) {
+              var data = [0, 0, 0, 0]
+              data[1] = response.data;
+              return $http.get(baseURL + '/lists/count/empire').then(
+                  function (response) {
+                      data[2] = response.data;
+                      return $http.get(baseURL + '/lists/count/scum').then(
+                          function (response) {
+                              data[3] = response.data;
+                              data[0] = data[1] + data[2] + data[3];
+                              return data;
+                          },
+                          function (response) {
+                              $q.reject(response);
+                          }
+                      );
+                  },
+                  function (response) {
+                      $q.reject(response);
+                  }
+              );
+          },
+          function (response) {
+              $q.reject(response);
+          }
+      );
+  }
+
+    this.getRebelLists= function () {
+        return $http.get(baseURL + '/lists/count/rebel').then(
+            function (response) {
+                return response.data;
+            },
+            function (response) {
+                $q.reject(response);
+            }
+        )
+    }
+
 });
