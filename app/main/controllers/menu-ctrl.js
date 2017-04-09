@@ -132,17 +132,7 @@ angular.module('main')
 
     $scope.factionLabels = ["Alianza Rebelde", "Imperio Galáctico", "Escoria y Villanos"];
     $scope.factionColors = ['#ff0000', '#0000ff', '#00ff00'];
-    $scope.factionOptions = { legend: { display: true, }, scales: {
-        xAxes: [{
-            display: true,
-            ticks: {
-                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
-                // OR //
-                beginAtZero: true   // minimum value will be 0.
-            }
-        }]
-    }
-    };
+    $scope.factionOptions = { legend: { display: true } };
 
     statisticsService.getFactionUse().then(
         function (response) {
@@ -156,7 +146,16 @@ angular.module('main')
     );
 
     $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
-    $scope.shipData = [25, 15, 10, 10, 5]
+    $scope.shipData = [25, 15, 10, 10, 5];
+    $scope.shipOptions = {scales: {
+        xAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true   // minimum value will be 0.
+            }
+        }]}};
 
   function getUserData () {
     UserService.getCurrentUser().then(
