@@ -131,7 +131,7 @@ angular.module('main')
     );
 
     $scope.factionLabels = ["Alianza Rebelde", "Imperio Galáctico", "Escoria y Villanos"];
-    $scope.factionColors = ['#ff0000', '#0000ff', '#00ff00'];
+    $scope.factionColors = ['#ffa2a2', '#adf1fe', '#b1ffb1'];
     $scope.factionOptions = { legend: { display: true } };
 
     statisticsService.getFactionUse().then(
