@@ -130,6 +130,14 @@ angular.module('main')
         }
     );
 
+
+
+    $scope.factionLabels = ["Alianza Rebelde", "Escoria y Villanos", "Imperio Galáctico"];
+    $scope.factionData = [33, 33, 33];
+
+    $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
+    $scope.shipData = [25, 15, 10, 10, 5]
+
   function getUserData () {
     UserService.getCurrentUser().then(
       function (response) {

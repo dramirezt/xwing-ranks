@@ -1,6 +1,27 @@
-<ion-view view-title="Index">
-    <ion-content>
-        <p style="color: white !important;">{{ message }}
-        </p>
+<ion-view view-title="Inicio">
+    <ion-content class="">
+        <ion-item class="item-divider item-icon-right" style="text-align: center;">
+            <span class="title">Ultimo torneo</span>
+        </ion-item>
+        <ion-item>
+            {{ message }}
+            <br>Last tournament resume maybe
+        </ion-item>
+        <div class="row responsive-md statisticsRow">
+            <div class="col col-50">
+                <div class="item-divider"  style="text-align: center;">
+                    <span class="title">Galaxia en guerra</span>
+                </div>
+                <canvas id="factionPlot" class="chart chart-pie" chart-data="factionData"
+                        chart-labels="factionLabels" chart-options="options" width="200" height="100"></canvas>
+            </div>
+            <div class="col col-50">
+                <div class="item-divider" style="text-align: center;">
+                    <span class="title">Los 10 más buscados</span>
+                </div>
+                <canvas id="shipPlot" class="chart chart-horizontalBar" chart-data="shipData"
+                        chart-labels="shipLabels" chart-options="options" width="200" height="100"></canvas>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

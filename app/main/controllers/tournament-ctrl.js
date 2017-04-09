@@ -72,8 +72,8 @@ angular.module('main')
                                               tournamentService.updateTournament(tournament).then(
                                                   function (response) {
                                                       tournamentService.setCurrentTournament(response);
-                                                      $state.go('main.tournamentDetails');
                                                       $scope.hideLoading();
+                                                      $state.go('main.tournamentDetails');
                                                   },
                                                   function (error) {
                                                       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -237,6 +237,45 @@ angular.module('main')
       }
       console.log(val);
   };
+
+    $scope.setFactions = function () {
+        var promises = [];
+        listService.getLists().then(
+            function (response) {
+                console.log(response.length);
+                var lists = response;
+                var promises = [];
+                for (var i = 0; i < lists.length; i++) {
+                    if(lists[i].ships) {
+                        var pilot = ($filter('filter')($scope.pilotList, { name: lists[i].ships[0].pilot }));
+                        if(!pilot.length) {
+                            pilot = ($filter('filter')($scope.pilotList, { name: lists[i].ships[1].pilot }));
+                        }
+                        var faction = pilot[0].faction;
+                            if(faction === 'Resistance') faction = 'Rebel Alliance';
+                            if(faction === 'First Order') faction = 'Galactic Empire';
+                        lists[i].faction = faction;
+                        promises.push(listService.updateList(lists[i]));
+                    }
+                }
+                $q.all(promises).then(
+                    function (response) {
+                        var lists = response;
+                        var promises2 = [];
+                        for (var i = 0; i < lists.length; i++) {
+                            console.log({ _id: lists[i].inscription, faction: lists[i].faction });
+                            promises2.push(inscriptionService.updateInscriptionFaction({ _id: lists[i].inscription, faction: lists[i].faction }));
+                        }
+                        $q.all(promises2).then(
+                            function (response) {
+                                console.log('everything should be ok');
+                            }
+                        )
+                    }
+                )
+            }
+        )
+    }
 
 })
 
@@ -614,10 +653,13 @@ angular.module('main')
   $scope.pairingList = $filter('filter')(pairingService.pairingList(), { $: $scope.inscription._id });
   $scope.hide = false;
   $scope.currentList = [];
+  $scope.currentFaction = '';
+  $scope.tmpCurrentList = {};
 
   listService.getListByInscription(inscriptionService.currentInscription()._id).then(
     function (response) {
-      console.log(response);
+      $scope.tmpCurrentList = response[0];
+      console.log($scope.tmpCurrentList);
       for (var i = 0; i < response.length; i++) {
         for (var j = 0; j < response[i].ships.length; j++) {
           var aux = { };
@@ -633,6 +675,7 @@ angular.module('main')
           $scope.currentList.push(aux);
         }
       }
+      $scope.currentFaction = $scope.currentList[0].pilot.faction;
       $scope.hideLoading();
     },
     function (error) {

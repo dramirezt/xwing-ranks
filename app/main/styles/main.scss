@@ -292,3 +292,11 @@ ion-footer-bar {
 .nopadding {
   padding: 0px !important;
 }
+
+.statisticsRow {
+  background-color: #02243d;
+  padding: 0px;
+  .col {
+    padding: 0px;
+  }
+}

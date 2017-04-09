@@ -66,7 +66,24 @@ angular.module('main')
       );
   };
 
-  this.deteteInscription = function (inscription) {
+    this.updateInscriptionFaction = function (inscription) {
+        return $http.put(baseURL + '/inscriptions/migrate/' + inscription._id, inscription)
+            .then(
+                function (response) {
+                    if (typeof response.data === 'object') {
+                        return response.data;
+                    } else {
+                        return $q.reject(response);
+                    }
+                },
+                function (response) {
+                    return $q.reject(response);
+                }
+            );
+    };
+
+
+    this.deteteInscription = function (inscription) {
 
     return $http.delete(baseURL + '/tournaments/' + inscription.tournament + '/inscriptions/' + inscription._id).then(
       function (response) {

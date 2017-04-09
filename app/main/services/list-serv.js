@@ -4,6 +4,21 @@ angular.module('main')
     //.constant('baseURL', 'http://localhost:3000/api')
 .service('listService', function ($http, $q, baseURL) {
 
+    this.getLists = function () {
+        return $http.get(baseURL + '/lists').then(
+            function (response) {
+                if (typeof response.data === 'object') {
+                    return response.data;
+                } else {
+                    return $q.reject(response);
+                }
+            },
+            function (response) {
+                return $q.reject(response);
+            }
+        );
+    };
+
   this.getListByInscription = function (inscriptionId) {
     return $http.get(baseURL + '/lists/' + inscriptionId).then(
       function (response) {
@@ -77,6 +92,22 @@ angular.module('main')
       }
     );
   };
+
+  this.updateList = function (list) {
+      return $http.put(baseURL + '/lists/' + list._id, list)
+          .then(
+              function (response) {
+                  if (typeof response.data === 'object') {
+                      return response.data;
+                  } else {
+                      return $q.reject(response);
+                  }
+              },
+              function (response) {
+                  return $q.reject(response);
+              }
+          )
+  }
 
 })
 ;

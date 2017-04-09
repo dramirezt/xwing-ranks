@@ -61,12 +61,12 @@
             </div>
             <ion-list show-delete="showDeleteInscriptions">
               <ion-item
-                      class="item-remove-animate item-avatar item-icon-right"
+                      class="item-remove-animate item-avatar item-icon-left item-icon-right"
                       type="item-text-wrap"
                       ng-repeat="inscription in inscriptionList | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'" ng-click="viewInscription(inscription)">
-                    <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
-                    <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px" href="#">
-                    <h2 ng-bind="inscription.name"></h2>
+                  <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
+                  <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
+                  <h2 ng-bind="inscription.name"></h2>
                     <p ng-show="!inscription.drop">
                         <span ng-show="inscription.topPosition">
                             Top: <span ng-bind="inscription.topPosition"></span>
