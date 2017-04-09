@@ -132,9 +132,17 @@ angular.module('main')
 
     $scope.factionLabels = ["Alianza Rebelde", "Imperio Galáctico", "Escoria y Villanos"];
     $scope.factionColors = ['#ff0000', '#0000ff', '#00ff00'];
-    $scope.factionOptions = { legend: {
-        display: true,
-    }};
+    $scope.factionOptions = { legend: { display: true, }, scales: {
+        xAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true   // minimum value will be 0.
+            }
+        }]
+    }
+    };
 
     statisticsService.getFactionUse().then(
         function (response) {
