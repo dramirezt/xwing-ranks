@@ -5,26 +5,87 @@ angular.module('main')
 
   $scope.newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
 
+  $scope.view = 'finished';
+  $scope.topMessage = '';
+
     $scope.start = 0;
 
-    $scope.loadMore = function() {
+    $scope.loadMore = function(start) {
 
-        tournamentService.getTournaments($scope.start).then(
-            function (response) {
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                $scope.tournamentList = $scope.tournamentList.concat(response);
-                $scope.start += response.length;
-            },
-            function (error) {
-                $scope.error = "Error: " + error.status + " " + error.statusText;
-            }
-        );
+        console.log($scope.view);
+        console.log(start);
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+
+        if($scope.view === 'finished') {
+            tournamentService.getFinishedTournamentNumber().then(
+                function (response) {
+                    $scope.nTournaments = response;
+                }
+            );
+            tournamentService.getTournaments(start).then(
+                function (response) {
+                    if(response.length > 0) {
+                        if(start === 0) $scope.tournamentList = response;
+                        else $scope.tournamentList = $scope.tournamentList.concat(response);
+                        $scope.start += response.length;
+                    } else {
+                        $scope.topMessage = 'No hay eventos que mostrar.';
+                        $scope.tournamentList = [];
+                    }
+                },
+                function (error) {
+                    $scope.error = "Error: " + error.status + " " + error.statusText;
+                }
+            );
+        } else if ($scope.view === 'following') {
+            tournamentService.getFollowingTournamentNumber().then(
+                function (response) {
+                    $scope.nTournaments = response;
+                }
+            );
+            tournamentService.getFollowingTournaments($scope.start).then(
+                function (response) {
+                    if(response.length > 0) {
+                        if(start === 0) $scope.tournamentList = response;
+                        else $scope.tournamentList = $scope.tournamentList.concat(response);
+                        $scope.start += response.length;
+                    } else {
+                        $scope.topMessage = 'No hay eventos que mostrar.';
+                        $scope.tournamentList = [];
+                    }
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                },
+                function (error) {
+                    $scope.error = "Error: " + error.status + " " + error.statusText;
+                }
+            );
+        }
     };
 
+    $scope.loadMore(0);
 
     // $scope.$on('$stateChangeSuccess', function() {
-    //     $scope.loadMore();
+    //     $scope.loadMore(0);
     // });
+
+    $scope.viewFinished = function () {
+        $scope.view = 'finished';
+        $scope.start = 0;
+        $scope.tournamentList = [];
+        $scope.loadMore(0);
+    };
+
+    $scope.viewFollowing = function () {
+        $scope.view = 'following';
+        $scope.start = 0;
+        $scope.tournamentList = [];
+        $scope.loadMore(0);
+    }
+
+    $scope.followingTournamentList = [];
+
+    $scope.nTournaments = 10;
 
     $scope.MyFiles={};
 

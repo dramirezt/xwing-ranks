@@ -12,63 +12,140 @@
       <button class="button icon-right button-balanced ion-plus" ng-click="modal.show()">Nuevo</button>
       <!--<button class="button button-icon button-clear ion-clipboard" ng-click="createTestTournament()"></button>-->
   </ion-nav-buttons>
-  <ion-tabs class="tabs-positive tabs-icon-top">
-    <ion-tab title="Todos" icon-on="ion-ios-calendar" icon-off="ion-ios-calendar-outline">
-      <ion-item class="item-divider" style="margin-top: 40px;">
-        Mostrando {{ tournamentList.length }} de {{ nTournaments }} torneos
-      </ion-item>
-      <ion-content style="margin-top: 30px;">
-        <ion-list>
-          <ion-item
-            class="item-remove-animate item-avatar item-icon-right"
-            type="item-text-wrap" ng-repeat="tournament in tournamentList" ng-click="viewTournament(tournament)">
-            <img src="main/assets/images/yo@2x.png">
-            <h2 ng-bind="tournament.name"></h2>
-            <p>
-              <span class="badge badge-assertive" ng-bind="tournament.tier"></span>
-              <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>
-              <span ng-show="tournament.city">en <span ng-bind="tournament.city"></span></span>
-            </p>
-            <i class="icon ion-chevron-right icon-accessory"></i>
-          </ion-item>
-        </ion-list>
-        <ion-infinite-scroll on-infinite="loadMore()" distance="1%" ng-if="start < nTournaments" class="text-lightblue">
-        </ion-infinite-scroll>
-      </ion-content>
-    </ion-tab>
-    <ion-tab title="Tus Torneos" icon-on="ion-ios-world" icon-off="ion-ios-world-outline">
-      <ion-content style="margin-top: 40px;">
-        <ion-list>
-          <ion-item
-            class="item-remove-animate item-avatar item-icon-right"
-            type="item-text-wrap" ng-repeat="tournament in myInscriptions" ng-click="viewTournament(tournament)">
-            <img src="main/assets/images/yo@2x.png">
-            <h2 ng-bind="tournament.name"></h2>
-            <p>
-              <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span> en
-              <span ng-bind="tournament.city"></span>
-            </p>
-            <i class="icon ion-chevron-right icon-accessory"></i>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-tab>
-    <ion-tab title="Tu Historial" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline">
-      <ion-content style="margin-top: 40px;">
-        <ion-list>
-          <ion-item
-            class="item-remove-animate item-avatar item-icon-right"
-            type="item-text-wrap" ng-repeat="tournament in myHistory" ng-click="viewTournament(tournament)">
-            <img src="main/assets/images/yo@2x.png">
-            <h2 ng-bind="tournament.name"></h2>
-            <p>
-              <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span> en
-              <span ng-bind="tournament.city"></span>
-            </p>
-            <i class="icon ion-chevron-right icon-accessory"></i>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-tab>
-  </ion-tabs>
+    <ion-header-bar class="bar bar-subheader item-divider" style="font-size: 0.75rem">
+        <span ng-show="tournamentList.length">
+            {{ tournamentList.length }} de {{ nTournaments }} torneos.
+            <span ng-show="start < nTournaments">Haz scroll hacia abajo para cargar más.</span>
+        </span>
+        <span ng-show="!tournamentList.length" ng-bind="topMessage"></span>
+    </ion-header-bar>
+    <ion-content class="has-subheader has-footer">
+        <div>
+            <ion-item
+                class="item-remove-animate item-avatar item-icon-right"
+                type="item-text-wrap" collection-repeat="tournament in tournamentList" item-height="75px" item-width="100%" ng-click="viewTournament(tournament)">
+                    <img src="main/assets/images/yo@2x.png">
+                    <h2 ng-bind="tournament.name"></h2>
+                    <p>
+                        <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>
+                        <span ng-show="tournament.city">en <span ng-bind="tournament.city"></span></span>
+                    </p>
+                    <span class="badge badge-assertive" ng-bind="tournament.tier"></span>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </ion-item>
+            <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="tournamentList.length > 0 && start < nTournaments" class="text-lightblue">
+                <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </div>
+        <!--<div ng-show="view === 'next'">-->
+            <!--<ion-item-->
+            <!--class="item-remove-animate item-avatar item-icon-right"-->
+            <!--type="item-text-wrap" collection-repeat="t2 in followingTournamentList" collection-item-height="item.height" ng-click="viewTournament(t2)">-->
+                <!--<img src="main/assets/images/yo@2x.png">-->
+                <!--<h2 ng-bind="t2.name"></h2>-->
+                <!--<p>-->
+                <!--<span ng-bind="t2.startDate | date: 'dd/MM/yyyy'"></span> en-->
+                <!--<span ng-bind="t2.city"></span>-->
+                <!--</p>-->
+                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+            <!--</ion-item>-->
+            <!--<ion-item></ion-item>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<ion-list>-->
+                <!--<ion-item-->
+                <!--class="item-remove-animate item-avatar item-icon-right"-->
+                <!--type="item-text-wrap" ng-repeat="tournament in myHistory" ng-click="viewTournament(tournament)">-->
+                    <!--<img src="main/assets/images/yo@2x.png">-->
+                    <!--<h2 ng-bind="tournament.name"></h2>-->
+                    <!--<p>-->
+                    <!--<span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span> en-->
+                    <!--<span ng-bind="tournament.city"></span>-->
+                    <!--</p>-->
+                    <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+                <!--</ion-item>-->
+            <!--</ion-list>-->
+        <!--</div>-->
+    </ion-content>
+
+    <ion-footer-bar class="bar bar-footer" align-title="left">
+        <div class="button-bar">
+            <button class="button button-small icon button-balanced" ng-click="viewFinished()"><i class="icon ion-ios-calendar"></i>Terminados</button>
+            <button class="button button-small icon button-positive" ng-click="viewFollowing()"><i class="icon ion-ios-filing"></i> Próximos</button>
+        </div>
+    </ion-footer-bar>
+    <!--<div class="footer">-->
+        <!--<ion-item class="nopadding" style="text-align: center" ng-show="start < nTournaments">-->
+            <!--...-->
+        <!--</ion-item>-->
+        <!--<ion-item class="item-divider" style="font-size: 0.75em;">-->
+            <!--{{ tournamentList.length }} de {{ nTournaments }} torneos.-->
+            <!--<span ng-show="start < nTournaments">Haz scroll hacia abajo para cargar más.</span>-->
+        <!--</ion-item>-->
+    <!--</div>-->
+    <!--<ion-footer-bar>-->
+        <!--<div class="button-bar">-->
+            <!--<button class="button button-energized"><i class="icon ion-ios-calendar"></i> Todos</button>-->
+            <!--<button class="button">Todos</button>-->
+            <!--<button class="button">Todos</button>-->
+        <!--</div>-->
+    <!--</ion-footer-bar>-->
+  <!--<ion-tabs class="tabs-positive tabs-icon-top">-->
+    <!--<ion-tab title="Todos" icon-on="ion-ios-calendar" icon-off="ion-ios-calendar-outline">-->
+      <!--<ion-item class="item-divider" style="margin-top: 40px;">-->
+        <!--Mostrando {{ tournamentList.length }} de {{ nTournaments }} torneos-->
+      <!--</ion-item>-->
+      <!--<ion-content style="margin-top: 30px;">-->
+        <!--<ion-list>-->
+          <!--<ion-item-->
+            <!--class="item-remove-animate item-avatar item-icon-right"-->
+            <!--type="item-text-wrap" ng-repeat="tournament in tournamentList" ng-click="viewTournament(tournament)">-->
+            <!--<img src="main/assets/images/yo@2x.png">-->
+            <!--<h2 ng-bind="tournament.name"></h2>-->
+            <!--<p>-->
+              <!--<span class="badge badge-assertive" ng-bind="tournament.tier"></span>-->
+              <!--<span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>-->
+              <!--<span ng-show="tournament.city">en <span ng-bind="tournament.city"></span></span>-->
+            <!--</p>-->
+            <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+        <!--<ion-infinite-scroll on-infinite="loadMore()" distance="1%" ng-if="start < nTournaments" class="text-lightblue">-->
+        <!--</ion-infinite-scroll>-->
+      <!--</ion-content>-->
+    <!--</ion-tab>-->
+    <!--<ion-tab title="Tuargin-top: 40px;">-->
+        <!--<ion-list>-->
+          <!--<ion-item-->
+            <!--class="item-remove-animate item-avatar item-icon-right"-->
+            <!--type="item-text-wrap" ng-repeat="tournament in myInscriptions" ng-click="viewTournament(tournament)">-->
+            <!--<img src="main/assets/images/yo@2x.png">-->
+            <!--<h2 ng-bind="tournament.name"></h2>-->
+            <!--<p>-->
+              <!--<span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span> en-->
+              <!--<span ng-bind="tournament.city"></span>-->
+            <!--</p>-->
+            <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-content>-->
+    <!--</ion-tab>-->
+    <!--<ion-tab title="Tu Historial" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline">-->
+      <!--<ion-content style="margin-top: 40px;">-->
+        <!--<ion-list>-->
+          <!--<ion-item-->
+            <!--class="item-remove-animate item-avatar item-icon-right"-->
+            <!--type="item-text-wrap" ng-repeat="tournament in myHistory" ng-click="viewTournament(tournament)">-->
+            <!--<img src="main/assets/images/yo@2x.png">-->
+            <!--<h2 ng-bind="tournament.name"></h2>-->
+            <!--<p>-->
+              <!--<span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span> en-->
+              <!--<span ng-bind="tournament.city"></span>-->
+            <!--</p>-->
+            <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-content>-->
+    <!--</ion-tab>-->
+  <!--</ion-tabs>-->
 </ion-view>

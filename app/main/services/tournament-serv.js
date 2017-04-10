@@ -24,8 +24,8 @@ angular.module('main')
     return tournaments;
   };
 
-  this.getTournamentNumber = function () {
-      return $http.get(baseURL + '/tournaments/count').then(
+  this.getFinishedTournamentNumber = function () {
+      return $http.get(baseURL + '/tournaments/finished/count').then(
           function (response) {
               return response.data;
           },
@@ -33,11 +33,22 @@ angular.module('main')
               $q.reject(response);
           }
       )
-  }
+  };
+
+  this.getFollowingTournamentNumber = function () {
+      return $http.get(baseURL + '/tournaments/following/count').then(
+          function (response) {
+              return response.data;
+          },
+          function (response) {
+              $q.reject(response);
+          }
+      )
+  };
 
   this.getTournaments = function (start) {
     if (!start) start = 0;
-    return $http.get(baseURL + '/tournaments/' + start)
+    return $http.get(baseURL + '/tournaments/finished/' + start)
     .then(
       function (response) {
         if (typeof response.data === 'object') {
@@ -52,6 +63,24 @@ angular.module('main')
       }
     );
   };
+
+    this.getFollowingTournaments = function (start) {
+        if (!start) start = 0;
+        return $http.get(baseURL + '/tournaments/following/' + start)
+            .then(
+                function (response) {
+                    if (typeof response.data === 'object') {
+                        tournaments = response.data;
+                        return tournaments;
+                    } else {
+                        return $q.reject(response.data);
+                    }
+                },
+                function (response) {
+                    return $q.reject(response);
+                }
+            );
+    };
 
   this.myTournaments = function () {
     return myTournaments;
