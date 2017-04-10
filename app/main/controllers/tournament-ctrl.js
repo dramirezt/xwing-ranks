@@ -12,10 +12,6 @@ angular.module('main')
 
     $scope.loadMore = function(start) {
 
-        console.log($scope.view);
-        console.log(start);
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-
         if($scope.view === 'finished') {
             tournamentService.getFinishedTournamentNumber().then(
                 function (response) {
@@ -32,6 +28,7 @@ angular.module('main')
                         $scope.topMessage = 'No hay eventos que mostrar.';
                         $scope.tournamentList = [];
                     }
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
                 },
                 function (error) {
                     $scope.error = "Error: " + error.status + " " + error.statusText;
