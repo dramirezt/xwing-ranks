@@ -13,8 +13,8 @@
               <!--<button ng-click="exportShips()">Export ships to mongodb</button>-->
               <!--<button ng-click="exportPilots()">Export pilots to mongodb</button>-->
           <!--</ion-item>-->
-        <ion-item class="item-icon-left item-icon-right item-text-wrap" collection-repeat="ship in currentShipList | orderBy: ['name'] | filter: showShip"
-                  ng-click="viewShip(ship)" item-height="60px" item-width="100%">
+        <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="ship in currentShipList | orderBy: ['name'] | filter: showShip"
+                  ng-click="viewShip(ship)">
           <div class="row responsive-sm">
               <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}
                         avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 4em"></i>
