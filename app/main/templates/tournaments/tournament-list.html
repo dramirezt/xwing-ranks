@@ -22,15 +22,15 @@
     <ion-content class="has-subheader has-footer">
         <div>
             <ion-item
-                class="item-remove-animate item-avatar item-icon-right"
-                type="item-text-wrap" collection-repeat="tournament in tournamentList" item-height="75px" item-width="100%" ng-click="viewTournament(tournament)">
+                class="item-remove-animate item-avatar item-icon-right has-badge"
+                type="item-text-wrap" collection-repeat="tournament in tournamentList" item-height="60px" item-width="100%" ng-click="viewTournament(tournament)">
                     <img src="main/assets/images/yo@2x.png">
                     <h2 ng-bind="tournament.name"></h2>
                     <p>
                         <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>
                         <span ng-show="tournament.city">en <span ng-bind="tournament.city"></span></span>
+                        <span class="badge badge-assertive" ng-bind="tournament.tier"></span>
                     </p>
-                    <span class="badge badge-assertive" ng-bind="tournament.tier"></span>
                     <i class="icon ion-chevron-right icon-accessory"></i>
                 </ion-item>
             <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="tournamentList.length > 0 && start < nTournaments" class="text-lightblue">

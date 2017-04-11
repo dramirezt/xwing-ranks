@@ -11,7 +11,7 @@ angular.module('main')
     $scope.start = 0;
 
     $scope.loadMore = function(start) {
-
+        $scope.showLoading();
         if($scope.view === 'finished') {
             tournamentService.getFinishedTournamentNumber().then(
                 function (response) {
@@ -28,9 +28,11 @@ angular.module('main')
                         $scope.topMessage = 'No hay eventos que mostrar.';
                         $scope.tournamentList = [];
                     }
+                    $scope.hideLoading();
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                 },
                 function (error) {
+                    $scope.hideLoading();
                     $scope.error = "Error: " + error.status + " " + error.statusText;
                 }
             );
@@ -50,10 +52,12 @@ angular.module('main')
                         $scope.topMessage = 'No hay eventos que mostrar.';
                         $scope.tournamentList = [];
                     }
+                    $scope.hideLoading();
                     $scope.$broadcast('scroll.infiniteScrollComplete');
 
                 },
                 function (error) {
+                    $scope.hideLoading();
                     $scope.error = "Error: " + error.status + " " + error.statusText;
                 }
             );
