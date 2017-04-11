@@ -8,16 +8,16 @@
           <button class="button" ng-click="modal.show()">Filters</button>
       </div>
   </ion-nav-buttons>
-  <ion-content>
-    <ion-list>
-        <ion-item class="item-divider item-icon-right">
-            <span ng-bind="currentUpgradeList.length"></span>
-            mejoras
-            <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ filterFaction }} {{ filterFaction }}"></i>
-            <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ filterType.replace(' ', '') }} upgrade"></i>
-            <i class="icon ion-information-circled icon-accesory"></i>
-        </ion-item>
-      <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="upgrade in currentUpgradeList" ng-click="showUpgrade($index)">
+    <ion-nav-header class="bar bar-subheader item-divider item-icon-right">
+        Mostrando&nbsp;<span ng-bind="upgradeListLength"></span>&nbsp;mejoras&nbsp;
+        <i class="xwing-miniatures-font xwing-miniatures-font-{{ filterType.replace(' ', '') }} upgrade"></i>
+        <i class="xwing-miniatures-font xwing-miniatures-font-{{ filterFaction }} {{ filterFaction }}"></i>
+        <i class="icon icon-accessory ion-information-circled"></i>
+    </ion-nav-header>
+  <ion-content class="has-subheader">
+    <!--<ion-list>-->
+      <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="upgrade in currentUpgradeList"
+                ng-click="showUpgrade($index)">
         <div class="row">
           <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.slot).replace(' ', '') | lowercase }}"></i>
           <i class="xwing-miniatures-font xwing-miniatures-font-unique" ng-show="upgrade.unique">&nbsp;</i>
@@ -43,7 +43,10 @@
           </div>
         </div>
       </ion-item>
-        <button class="button button-energized button-full" ng-click="showMore(10)" ng-show="display <= currentUpgradeList.length">Show more</button>
-    </ion-list>
+      <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="currentUpgradeList.length > 0 && start < upgradeList.length" class="text-lightblue">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+        <!--<button class="button button-energized button-full" ng-click="showMore(10)" ng-show="display <= currentUpgradeList.length">Show more</button>-->
+    <!--</ion-list>-->
   </ion-content>
 </ion-view>

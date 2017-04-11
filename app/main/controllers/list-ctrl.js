@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
 
-.controller('ListCreatorCtrl', function ($scope, $filter, $ionicModal, $q, tournamentService, listService, hangarService, arsenalService, UserService) {
+.controller('ListCreatorCtrl', function ($scope, $filter, $ionicModal, $q, tournamentService, listService, inscriptionService) {
 
   $scope.showLoading();
 
@@ -46,7 +46,7 @@ angular.module('main')
         return faction.indexOf($scope.selectedFaction) !== -1;
     };
 
-    $scope.showShip = function (pilot) {
+    $scope.showPilot = function (pilot) {
         var faction = pilot.faction;
         if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
         else if (faction.indexOf('Resistance') !== -1) faction = 'Rebel Alliance';
@@ -227,9 +227,17 @@ angular.module('main')
     $scope.closeModalTournament();
     $scope.showLoading();
     var inscription = $filter('filter')($scope.myInscriptionList, { tournament: tournamentId })[0];
-    listService.useInTournament($scope.currentList, inscription, true).then(
+    listService.useInTournament($scope.currentList, inscription, true, $scope.selectedFaction).then(
       function () {
-        $scope.hideLoading();
+          inscription.faction = $scope.selectedFaction;
+          inscriptionService.updateInscription(inscription).then(
+              function () {
+                  $scope.hideLoading();
+              },
+              function (error) {
+                  $scope.error = 'Error: ' + error + ' ' + error.statusText;
+              }
+          )
       },
       function (error) {
         $scope.error = 'Error: ' + error + ' ' + error.statusText;
@@ -244,7 +252,66 @@ angular.module('main')
             && (upgrade.ship === undefined || upgrade.ship.indexOf($scope.currentShip.ship.name) !== -1)
             && (upgrade.faction === undefined || upgrade.faction.indexOf($scope.currentShip.pilot.faction) !== -1)
         );
-  }
+  };
 
+    $scope.start = 0;
+    $scope.start2 = 0;
+    $scope.loadMore = function(start) {
+        $scope.showLoading();
+        tournamentService.getFollowingTournaments(start).then(
+            function (response) {
+                // if(response.length > 0) {
+                    if(start === 0) $scope.tournamentList = response;
+                    else $scope.tournamentList = $scope.tournamentList.concat(response);
+                    $scope.start += response.length;
+                    tournamentService.getTournaments($scope.start2).then(
+                        function (response) {
+                            // if (response.length > 0) {
+                                console.log('aqui llega');
+                                // if(start === 0) $scope.tournamentList = response;
+                                // else $scope.tournamentList = $scope.tournamentList.concat(response);
+                                $scope.tournamentList = $scope.tournamentList.concat(response);
+                                $scope.start2 += response.length;
+                            // } else {
+                            //     $scope.topMessage = 'No hay eventos que mostrar.';
+                            // }
+                            tournamentService.getFollowingTournamentNumber().then(
+                                function (response) {
+                                    $scope.nTournaments = response;
+                                    tournamentService.getFinishedTournamentNumber().then(
+                                        function (response) {
+                                            console.log('aqui llega2');
+                                            $scope.nTournaments += response;
+                                            $scope.$broadcast('scroll.infiniteScrollComplete');
+                                            $scope.hideLoading();
+                                        }
+                                    );
+                                }
+                            );
+                        },
+                        function (error) {
+                            $scope.error = "Error: " + error.status + " " + error.statusText;
+                        }
+                    );
+                // } else {
+                //     $scope.topMessage = 'No hay eventos que mostrar.';
+                // }
+            },
+            function (error) {
+                $scope.error = "Error: " + error.status + " " + error.statusText;
+            }
+        );
+    }
+
+    $scope.viewFinished = function () {
+        $scope.allBtnClass = 'balanced';
+        $scope.myInscriptionsBtnClass = 'positive';
+        $scope.view = 'finished';
+        $scope.start = 0;
+        $scope.tournamentList = [];
+        $scope.loadMore(0);
+    };
+
+    $scope.loadMore(0);
 })
 ;

@@ -39,10 +39,24 @@ $ionicons-font-path: "../assets/fonts" !default;
   font-weight: normal !important;
 }
 
+.bar-header {
+  //border-bottom: 0px;
+}
+
+.bar-subheader{
+  font-size: 0.75rem !important;
+  border-bottom: 1px $lightblue !important;
+  border-bottom-style: solid !important;
+}
+
 .title{
     text-transform: uppercase !important;
     font-weight: bolder !important;
     color: yellow !important;
+}
+
+.icon-accessory {
+  color: yellow !important;
 }
 
 .popup{

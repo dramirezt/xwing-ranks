@@ -21,15 +21,18 @@ angular.module('main')
 
   $scope.factionList = [];
   $scope.shipList = [];
+  $scope.currentShipList = [];
   $scope.pilotList = [];
   $scope.upgradeList = [];
+  $scope.currentUpgradeList = [];
+  $scope.upgradeListLength = 0;
   $scope.tournamentList = [];
   $scope.myInscriptions = [];
   $scope.myInscriptionList = [];
   $scope.myHistory = [];
   $scope.currentUser = undefined;
 
-  $scope.factionList = ["Rebel Alliance", "Galactic Empire", "Scum And Villainy"];
+  $scope.factionList = ["Rebel Alliance", "Galactic Empire", "Scum and Villainy"];
 
   // hangarService.getFactions().then(
   //   function (response) {
@@ -44,6 +47,11 @@ angular.module('main')
     function (response) {
       $scope.shipList = $filter('orderBy')(response, ['name']);
       $scope.shipListLength = $scope.shipList.length;
+      var i = 0;
+      while(i < 20 && i < $scope.shipList.length){
+          $scope.currentShipList.push($scope.shipList[i]);
+          i++;
+      }
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -54,9 +62,9 @@ angular.module('main')
     function (response) {
       $scope.pilotList = response;
       $scope.pilotListLength = $scope.pilotList.length;
-        for (var i = 0; i < $scope.shipList.length; i++) {
-            $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
-        }
+      for (var i = 0; i < $scope.shipList.length; i++) {
+        $scope.shipList[i].nPilots = $filter('filter')($scope.pilotList, { ship: $scope.shipList[i].name}).length;
+      }
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -66,6 +74,12 @@ angular.module('main')
   arsenalService.getUpgrades().then(
     function (response) {
       $scope.upgradeList = response;
+      var i = 0;
+      $scope.upgradeListLength = $scope.upgradeList.length;
+      while(i < 20 && i < $scope.upgradeListLength){
+        $scope.currentUpgradeList.push($scope.upgradeList[i]);
+        i++;
+      }
     },
     function (error) {
       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;

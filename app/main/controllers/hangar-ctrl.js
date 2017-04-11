@@ -4,6 +4,23 @@ angular.module('main')
 .controller('HangarCtrl', function ($scope, $ionicModal, $state, $filter, $ionicLoading, hangarService) {
 
   $scope.showLoading();
+  $scope.start = 20;
+
+  $scope.selectedFaction = undefined;
+
+
+  $scope.loadMore = function (start) {
+    $scope.showLoading();
+    var tmpShipList = $filter('filter')($scope.shipList, {'faction': $scope.selectedFaction });
+    var i = start;
+    while(i < start+20 && i < tmpShipList.length){
+        $scope.currentShipList.push(tmpShipList[i]);
+        i++;
+    }
+    $scope.start +=20;
+    $scope.hideLoading();
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  };
 
   $scope.newShip = {
     name: '',
@@ -53,8 +70,6 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-  $scope.selectedFaction = undefined;
-
   $scope.showShip = function (ship) {
       var faction = ship.faction;
       if (faction.indexOf('First Order') !== -1) faction = 'Galactic Empire';
@@ -76,6 +91,9 @@ angular.module('main')
     } else {
       $scope.selectedFaction = faction;
     }
+    $scope.start = 0;
+    $scope.currentShipList = [];
+    $scope.loadMore(0);
     getShipListLength();
     getPilotListLength();
   };

@@ -4,18 +4,17 @@
             <!--<button class="button button-icon button-clear ion-plus-circled" ng-click="modal.show()"></button>-->
         <!--</div>-->
     <!--</ion-nav-buttons>-->
-    <ion-content style="color: white !important">
-      <ion-list>
+    <ion-header-bar class="bar bar-subheader item-divider item-icon-right">
+        <i class="icon icon-accessory ion-information-circled"></i>
+        Mostrando&nbsp;<span ng-bind="shipListLength"></span>&nbsp;naves y&nbsp;<span ng-bind="pilotListLength"></span>&nbsp;pilotos.
+    </ion-header-bar>
+    <ion-content>
           <!--<ion-item>-->
               <!--<button ng-click="exportShips()">Export ships to mongodb</button>-->
               <!--<button ng-click="exportPilots()">Export pilots to mongodb</button>-->
           <!--</ion-item>-->
-        <ion-item class="item-divider item-icon-right">
-            <i class="icon ion-information-circled icon-accesory"></i>
-            <span ng-bind="pilotListLength"></span> pilotos en <span ng-bind="shipListLength"></span> naves
-        </ion-item>
-        <ion-item class="item-icon-left item-icon-right item-text-wrap" ng-repeat="ship in shipList | orderBy: ['name'] | filter: showShip"
-                  ng-click="viewShip(ship)">
+        <ion-item class="item-icon-left item-icon-right item-text-wrap" collection-repeat="ship in currentShipList | orderBy: ['name'] | filter: showShip"
+                  ng-click="viewShip(ship)" item-height="60px" item-width="100%">
           <div class="row responsive-sm">
               <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}
                         avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 4em"></i>
@@ -49,7 +48,9 @@
               <i class="icon ion-chevron-right icon-accessory"></i>
           </div>
         </ion-item>
-      </ion-list>
+        <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="currentShipList.length > 0 && start < shipList.length" class="text-lightblue">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </ion-content>
     <ion-footer-bar style="padding: 0px">
       <div class="button-bar">

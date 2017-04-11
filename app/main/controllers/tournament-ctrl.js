@@ -66,11 +66,12 @@ angular.module('main')
 
     $scope.loadMore(0);
 
-    // $scope.$on('$stateChangeSuccess', function() {
-    //     $scope.loadMore(0);
-    // });
+    $scope.finishedBtnClass = 'balanced';
+    $scope.followingBtnClass = 'positive';
 
     $scope.viewFinished = function () {
+        $scope.finishedBtnClass = 'balanced';
+        $scope.followingBtnClass = 'positive';
         $scope.view = 'finished';
         $scope.start = 0;
         $scope.tournamentList = [];
@@ -78,6 +79,8 @@ angular.module('main')
     };
 
     $scope.viewFollowing = function () {
+        $scope.finishedBtnClass = 'positive';
+        $scope.followingBtnClass = 'balanced';
         $scope.view = 'following';
         $scope.start = 0;
         $scope.tournamentList = [];
@@ -314,8 +317,8 @@ angular.module('main')
                             pilot = ($filter('filter')($scope.pilotList, { name: lists[i].ships[1].pilot }));
                         }
                         var faction = pilot[0].faction;
-                            if(faction === 'Resistance') faction = 'Rebel Alliance';
-                            if(faction === 'First Order') faction = 'Galactic Empire';
+                        if(faction === 'Resistance') faction = 'Rebel Alliance';
+                        if(faction === 'First Order') faction = 'Galactic Empire';
                         lists[i].faction = faction;
                         promises.push(listService.updateList(lists[i]));
                     }
@@ -715,13 +718,11 @@ angular.module('main')
   $scope.pairingList = $filter('filter')(pairingService.pairingList(), { $: $scope.inscription._id });
   $scope.hide = false;
   $scope.currentList = [];
-  $scope.currentFaction = '';
   $scope.tmpCurrentList = {};
 
   listService.getListByInscription(inscriptionService.currentInscription()._id).then(
     function (response) {
       $scope.tmpCurrentList = response[0];
-      console.log($scope.tmpCurrentList);
       for (var i = 0; i < response.length; i++) {
         for (var j = 0; j < response[i].ships.length; j++) {
           var aux = { };
@@ -737,7 +738,6 @@ angular.module('main')
           $scope.currentList.push(aux);
         }
       }
-      $scope.currentFaction = $scope.currentList[0].pilot.faction;
       $scope.hideLoading();
     },
     function (error) {

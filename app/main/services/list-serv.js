@@ -48,11 +48,11 @@ angular.module('main')
     return listAPI;
   };
 
-  this.useInTournament = function (currentList, inscription, transform) {
+  this.useInTournament = function (currentList, inscription, transform, faction) {
       if(transform) {
           currentList = this.apiFormat(currentList);
       }
-    var list = { inscription: inscription._id, ships: currentList };
+    var list = { inscription: inscription._id, ships: currentList, faction: faction };
     return $http.get(baseURL + '/lists/' + list.inscription).then(
       function (response) {
         var previousList = response.data[0];

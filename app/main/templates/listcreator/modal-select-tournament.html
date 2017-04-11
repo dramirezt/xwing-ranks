@@ -3,48 +3,34 @@
     <h3 class="title">Usar la lista en...</h3>
     <button class="button button-icon button-clear ion-close-circled" ng-click="closeModalTournament()"></button>
   </ion-header-bar>
-  <ion-tabs class="tabs-positive tabs-icon-top">
-    <ion-tab title="Todos" icon-on="ion-ios-calendar" icon-off="ion-ios-calendar-outline">
-      <ion-list style="margin-top: 40px;">
-        <ion-item
-          class="item-remove-animate item-avatar item-icon-right"
-          type="item-text-wrap" ng-repeat="tournament in tournamentList" ng-click="useListIn(tournament._id)">
-          <img src="main/assets/images/yo@2x.png">
-          <h2 ng-bind="tournament.name"></h2>
-          <p>
-            <span ng-bind="tournament.date | date: 'dd/MM/yyyy'"></span> en
-            <span ng-bind="tournament.place"></span>
-          </p>
-        </ion-item>
-      </ion-list>
-    </ion-tab>
-    <ion-tab title="Tus Torneos" icon-on="ion-ios-world" icon-off="ion-ios-world-outline">
-      <ion-list style="margin-top: 40px;">
-        <ion-item
-          class="item-remove-animate item-avatar item-icon-right"
-          type="item-text-wrap" ng-repeat="tournament in myInscriptions" ng-click="useListIn(tournament._id)">
-          <img src="main/assets/images/yo@2x.png">
-          <h2 ng-bind="tournament.name"></h2>
-          <p>
-            <span ng-bind="tournament.date | date: 'dd/MM/yyyy'"></span> en
-            <span ng-bind="tournament.place"></span>
-          </p>
-        </ion-item>
-      </ion-list>
-    </ion-tab>
-    <ion-tab title="Tu Historial" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline">
-      <ion-list style="margin-top: 40px;">
-        <ion-item
-          class="item-remove-animate item-avatar item-icon-right"
-          type="item-text-wrap" ng-repeat="tournament in myHistory" ng-click="useListIn(tournament._id)">
-          <img src="main/assets/images/yo@2x.png">
-          <h2 ng-bind="tournament.name"></h2>
-          <p>
-            <span ng-bind="tournament.date | date: 'dd/MM/yyyy'"></span> en
-            <span ng-bind="tournament.place"></span>
-          </p>
-        </ion-item>
-      </ion-list>
-    </ion-tab>
-  </ion-tabs>
-</ion-view>
+  <ion-header-bar class="bar bar-subheader item-divider">
+        <span ng-show="tournamentList.length">
+            Mostrando {{ tournamentList.length }} de {{ nTournaments }} torneos.
+            <span ng-show="start < nTournaments">Haz scroll hacia abajo para cargar más.</span>
+        </span>
+    <span ng-show="!tournamentList.length" ng-bind="topMessage"></span>
+  </ion-header-bar>
+  <ion-content>
+    <ion-item
+            class="item-remove-animate item-avatar item-icon-right has-badge"
+            type="item-text-wrap" collection-repeat="tournament in tournamentList" item-height="70px" item-width="100%" ng-click="useListIn(tournament._id)">
+      <img src="main/assets/images/yo@2x.png">
+      <h2 ng-bind="tournament.name"></h2>
+      <p>
+        <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>
+        <span ng-show="tournament.city">en <span ng-bind="tournament.city"></span></span>
+        <span class="badge badge-assertive" ng-bind="tournament.tier"></span>
+      </p>
+      <i class="icon ion-chevron-right icon-accessory"></i>
+    </ion-item>
+    <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="tournamentList.length > 0 && tournamentList.length < nTournaments" class="text-lightblue">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-content>
+  <ion-footer-bar class="bar bar-footer" align-title="left">
+    <div class="button-bar">
+        <button class="button button-small icon button-{{ allBtnClass }}" ng-click="viewAll()"><i class="icon ion-ios-filing"></i>Todos</button>
+        <button class="button button-small icon button-{{ myInscriptionsBtnClass }}" ng-click="" disabled><i class="icon ion-ios-calendar"></i>Terminados</button>
+    </div>
+  </ion-footer-bar>
+</ion-modal-view>

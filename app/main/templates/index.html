@@ -8,17 +8,17 @@
             <br>Last tournament resume maybe
         </ion-item>
         <div class="row responsive-md statisticsRow">
-            <div class="col col-50">
+            <div class="col col-50" style="margin-bottom: 0px;">
                 <div class="item-divider"  style="text-align: center;">
                     <span class="title">Galaxia en guerra</span>
                 </div>
                 <ion-item>
-                Analizadas {{ totalLists }} listas.
                 <canvas id="factionPlot" class="chart chart-pie" chart-data="factionData"
                         chart-labels="factionLabels" chart-options="factionOptions" width="200" height="100" chart-colors="factionColors"></canvas>
+                    Analizadas {{ totalLists }} listas.
                 </ion-item>
             </div>
-            <div class="col col-50">
+            <div class="col col-50" style="margin-bottom: 0px;">
                 <div class="item-divider" style="text-align: center;">
                     <span class="title">Los 10 más buscados</span>
                 </div>

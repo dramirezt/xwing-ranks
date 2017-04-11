@@ -3,35 +3,49 @@ angular.module('main')
 
 .controller('ArsenalCtrl', function ($scope, $ionicModal, $state, $filter, arsenalService, $rootScope) {
 
-  $scope.display = 0;
+  $scope.start = 20;
   $scope.upgrades = [];
-  $scope.currentUpgradeList = [];
 
-  $scope.showMore = function (number) {
-    var limit = $scope.display + number;
-    if($scope.filterType || $scope.filterFaction) {
-        var tmp = $filter('filter')($scope.upgradeList, { 'slot': $scope.filterType,  'faction': $scope.filterFaction });
-        while ($scope.display < limit) {
-          if(tmp[$scope.display]) $scope.currentUpgradeList.push(tmp[$scope.display]);
-          $scope.display++;
-        }
-    } else {
-        while ($scope.display < limit) {
-            $scope.currentUpgradeList.push($scope.upgradeList[$scope.display]);
-            $scope.display++;
-        }
-    }
+  $scope.loadMore = function (start) {
+      $scope.showLoading();
+      var tmpShipList = $filter('filter')($scope.upgradeList, { 'slot': $scope.filterType,  'faction': $scope.filterFaction });
+      $scope.upgradeListLength = $filter('filter')($scope.upgradeList, { 'slot': $scope.filterType,  'faction': $scope.filterFaction }).length;
+      var i = start;
+      while(i < start+20 && i < tmpShipList.length){
+          $scope.currentUpgradeList.push(tmpShipList[i]);
+          i++;
+      }
+      $scope.start +=20;
+      $scope.hideLoading();
+      $scope.$broadcast('scroll.infiniteScrollComplete');
   };
 
-  arsenalService.getUpgrades().then(
-      function (response) {
-        $scope.upgradeList = response;
-        $scope.showMore(10);
-      },
-      function (error) {
-        $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-      }
-  );
+
+  // $scope.showMore = function (number) {
+  //   var limit = $scope.display + number;
+  //   if($scope.filterType || $scope.filterFaction) {
+  //       var tmp = $filter('filter')($scope.upgradeList, { 'slot': $scope.filterType,  'faction': $scope.filterFaction });
+  //       while ($scope.display < limit) {
+  //         if(tmp[$scope.display]) $scope.currentUpgradeList.push(tmp[$scope.display]);
+  //         $scope.display++;
+  //       }
+  //   } else {
+  //       while ($scope.display < limit) {
+  //           $scope.currentUpgradeList.push($scope.upgradeList[$scope.display]);
+  //           $scope.display++;
+  //       }
+  //   }
+  // };
+
+  // arsenalService.getUpgrades().then(
+  //     function (response) {
+  //       $scope.upgradeList = response;
+  //       $scope.showMore(10);
+  //     },
+  //     function (error) {
+  //       $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+  //     }
+  // );
 
   $ionicModal.fromTemplateUrl('main/templates/arsenal/modal-filters.html', {
     scope: $scope,
@@ -62,28 +76,28 @@ angular.module('main')
 
   $scope.filterType = undefined;
   $scope.filterByUpgradeType = function (type) {
-    $scope.display = 0;
+    $scope.closeModal();
+    $scope.start = 0;
     $scope.currentUpgradeList = [];
     if ($scope.filterType === type) {
       $scope.filterType = undefined;
     } else {
       $scope.filterType = type;
     }
-    $scope.showMore(10);
-    $scope.closeModal();
+    $scope.loadMore(0);
   };
 
   $scope.filterFaction = undefined;
   $scope.filterByFaction= function (factionName) {
-    $scope.display = 0;
+    $scope.closeModal();
+    $scope.start = 0;
     $scope.currentUpgradeList = [];
     if ($scope.filterFaction === factionName) {
       $scope.filterFaction = undefined;
     } else {
       $scope.filterFaction = factionName;
     }
-    $scope.showMore(10);
-    $scope.closeModal();
+    $scope.loadMore(0);
   };
 
   $scope.createUpgrade = function (upgrade) {
