@@ -26,7 +26,8 @@
           <span ng-show="upgrade.faction"><i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.faction).replace('Galactic ', '') | lowercase }}"></i></span>
           <br>
           <span ng-show="upgrade.limited">Limitado</span>
-          <i class="icon ion-chevron-right icon-accessory"></i>
+          <i class="icon ion-chevron-down icon-accessory" ng-show="showUpgrades[$index]"></i>
+            <i class="icon ion-chevron-up icon-accessory" ng-show="!showUpgrades[$index]"></i>
         </div>
         <div class="row" style="color: lightblue;" ng-show="showUpgrades[$index]">
           <div class="row responsive-sm">
