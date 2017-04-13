@@ -31,6 +31,8 @@ angular.module('main')
   $scope.myInscriptionList = [];
   $scope.myHistory = [];
   $scope.currentUser = undefined;
+  $scope.pilotListLength = 0;
+  $scope.shipListLength = 0;
 
   $scope.factionList = ["Rebel Alliance", "Galactic Empire", "Scum and Villainy"];
 

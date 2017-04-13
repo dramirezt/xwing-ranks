@@ -7,8 +7,7 @@ angular.module('main')
   $scope.start = 20;
 
   $scope.selectedFaction = undefined;
-
-
+  
   $scope.loadMore = function (start) {
     $scope.showLoading();
     var tmpShipList = $filter('filter')($scope.shipList, {'faction': $scope.selectedFaction });
@@ -80,6 +79,7 @@ angular.module('main')
   function getShipListLength () {
       $scope.shipListLength = $filter('filter')($scope.shipList, {'faction': $scope.selectedFaction }).length;
   };
+
 
   function getPilotListLength () {
       $scope.pilotListLength = $filter('filter')($scope.pilotList, { 'faction': $scope.selectedFaction }).length;

@@ -54,8 +54,8 @@
           </div>
         </ion-item>
         <div class="item item-divider item-icon-right">
-          <span ng-bind="pilotList.length"></span> Pilotos
-          <i class="icon icon-accessory ion-person-stalker"></i>
+          <span ng-bind="pilotList.length"></span> PILOTOS
+          <i class="icon icon-accessory ion-person-stalker" style="color: yellow;"></i>
         </div>
         <ion-item ng-repeat="pilot in pilotList track by $index"
                   class="item-icon-right item-text-wrap"
@@ -78,7 +78,7 @@
                   PS: <span ng-bind="pilot.skill"></span>
                 </div>
                 <div class="col">
-                  P: <span ng-bind="pilot.points"></span>P: <span ng-bind="pilot.points"></span>
+                  P: <span ng-bind="pilot.points"></span>
                 </div>
               </div>
             </div>
@@ -105,7 +105,8 @@
               <img ng-src="../bower_components/xwing-data/images/{{ pilot.image }}" style="width: 200px; right: 0px;">
             </div>
           </div>
-          <i class="icon ion-chevron-right icon-accessory"></i>
+          <i class="icon ion-chevron-down icon-accessory" ng-show="!showPilots[$index]"></i>
+          <i class="icon ion-chevron-up icon-accessory" ng-show="showPilots[$index]"></i>
         </ion-item>
       </div>
       <div class="row responsive-sm statisticsRow" ng-show="isSelected(2)">

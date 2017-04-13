@@ -112,14 +112,16 @@ ion-item{
         text-transform: uppercase !important;
         font-weight: bold !important;
     }
-    p, .ion-chevron-right{
+    p, .ion-chevron-right,.ion-chevron-top,.ion-chevron-bottom{
         color: $lightblue !important;
     }
     .row, .col {
       padding: 0px !important;
     }
 }
-
+.ion-chevron-right, .ion-chevron-top, .ion-chevron-bottom{
+  color: $lightblue !important;
+}
 .list.list-inset {
   border-color: $menucolor;
   border-width: 1px;
@@ -164,6 +166,9 @@ ion-item{
     font-size: 0.8rem !important;
     p{
         color: $lightblue !important;
+    }
+    .icon {
+      color: yellow !important;
     }
 }
 

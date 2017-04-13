@@ -5,7 +5,7 @@
         <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
     </ion-nav-title>
     <ion-content>
-        <ion-list ng-if="!inscription.drop">
+        <ion-list ng-if="!inscription.drop && (inscription.topPosition || inscription.swissPosition || inscription.victoryPoints || inscripiton.strengthOfSchedule)">
             <ion-item class="item-divider item-icon-right">
                 Clasificación
                 <i class="icon icon-accessory ion-trophy"></i>
