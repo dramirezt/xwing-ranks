@@ -70,7 +70,7 @@ angular.module('main')
   }
 
   this.getPilotUse = function () {
-      return $http.get(baseURL + '/list/pilotuse').then(
+      return $http.get(baseURL + '/lists/stats/pilotuse').then(
           function (response) {
               return response;
           },
