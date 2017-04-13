@@ -1,34 +1,36 @@
 <ion-view view-title="Torneos">
-  <ion-nav-buttons side="right">
+    <ion-nav-buttons side="right">
       <button class="button button-energized icon-right ion-ios-upload" ng-click="modalImport.show()" style="margin-right: 5px;">Importar</button>
       <button class="button icon-right button-balanced ion-plus" ng-click="modal.show()">Nuevo</button>
       <!--<button class="button button-icon button-clear ion-clipboard" ng-click="createTestTournament()"></button>-->
-  </ion-nav-buttons>
-    <ion-header-bar class="bar bar-subheader item-divider">
+    </ion-nav-buttons>
+    <ion-item class="bar bar-subheader item-divider" type="item-text-wrap">
         <span ng-show="tournamentList.length">
             Mostrando {{ tournamentList.length }} de {{ nTournaments }} torneos.
             <span ng-show="start < nTournaments">Haz scroll hacia abajo para cargar más.</span>
         </span>
         <span ng-show="!tournamentList.length" ng-bind="topMessage"></span>
-    </ion-header-bar>
-    <ion-content class="has-subheader has-footer">
-            <ion-item
-                class="item-remove-animate item-avatar item-icon-right has-badge"
-                type="item-text-wrap" collection-repeat="tournament in tournamentList" item-height="70px" item-width="100%" ng-click="viewTournament(tournament)">
-                    <img src="main/assets/images/yo@2x.png">
-                    <h2 ng-bind="tournament.name"></h2>
-                    <p>
+    </ion-item>
+    <ion-content class="has-subheader">
+        <ion-item
+            class="item-remove-animate item-icon-right has-badge"
+            type="item-text-wrap" collection-repeat="tournament in tournamentList" item-height="70px" item-width="100%"
+            ng-click="viewTournament(tournament)">
+                <h3 ng-bind="tournament.name"></h3>
+                <div class="row">
+                    <div class="col smallfont">
                         <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>
                         <span ng-show="tournament.city">en <span ng-bind="tournament.city"></span></span>
                         <span class="badge badge-assertive" ng-bind="tournament.tier"></span>
-                    </p>
-                    <i class="icon ion-chevron-right icon-accessory"></i>
-                </ion-item>
-            <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="tournamentList.length > 0 && start < nTournaments" class="text-lightblue">
-                <ion-infinite-scroll-content></ion-infinite-scroll-content>
-            </ion-infinite-scroll>
+                    </div>
+                </div>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
+        <ion-infinite-scroll on-infinite="loadMore(start)" immediate-check="false" ng-if="tournamentList.length > 0 && start < nTournaments" class="text-lightblue">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </ion-content>
-    <ion-footer-bar class="bar bar-footer" align-title="left">
+    <ion-footer-bar class="bar bar-footer">
         <div class="button-bar">
             <button class="button button-small icon button-{{ finishedBtnClass }}" ng-click="viewFinished()"><i class="icon ion-ios-calendar"></i>Terminados</button>
             <button class="button button-small icon button-{{ followingBtnClass }}" ng-click="viewFollowing()"><i class="icon ion-ios-filing"></i> Próximos</button>

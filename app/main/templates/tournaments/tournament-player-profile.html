@@ -1,66 +1,76 @@
 <ion-view view-title="{{ tournament.name }}">
+    <ion-nav-title>
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
+        &nbsp;<span ng-bind="inscription.name"></span>&nbsp;
+        <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
+    </ion-nav-title>
     <ion-content>
-        <ion-item class="item item-icon-left">
-            <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
-            <h2>{{ inscription.name }}</h2>
-            <span ng-show="inscription.swissPosition">Suizo: <span ng-bind="inscription.swissPosition"></span></span>
-            <span ng-show="inscription.topPositon">Top: <span ng-bind="inscription.topPosition"></span></span>
-            PV: <span ng-bind="inscription.victoryPoints"></span>
-            SOS: <span ng-bind="inscription.strengthOfSchedule"></span>
-        </ion-item>
+        <ion-list ng-if="!inscription.drop">
+            <ion-item class="item-divider item-icon-right">
+                Clasificación
+                <i class="icon icon-accessory ion-trophy"></i>
+            </ion-item>
+            <ion-item class="item">
+                <div class="row responsive-sm">
+                    <span class="col" ng-if="inscription.topPosition">Top: <span ng-bind="inscription.topPosition"></span></span>
+                    <span class="col" ng-if="inscription.swissPosition">Suizo: <span ng-bind="inscription.swissPosition"></span></span>
+                    <span class="col" ng-if="inscription.victoryPoints">PV: <span ng-bind="inscription.victoryPoints"></span></span>
+                    <span class="col" ng-if="inscription.strengthOfSchedule">SoS: <span ng-bind="inscription.strengthOfSchedule"></span></span>
+                </div>
+            </ion-item>
+        </ion-list>
         <ion-item class="item-divider item-icon-right" ng-click="switchHide()">
           Lista
-          <i class="icon ion-chevron-down icon-accessory" ng-show="hide"></i>
-          <i class="icon ion-chevron-up icon-accessory" ng-show="!hide"></i>
+          <i class="icon ion-chevron-down icon-accessory" ng-if="hide"></i>
+          <i class="icon ion-chevron-up icon-accessory" ng-if="!hide"></i>
         </ion-item>
-        <ion-item class="nopadding">
-        <div class="card tournament-card" ng-repeat="current in currentList" ng-show="!hide">
-          <ion-item class="item-divider item-icon-right">
-              <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ current.ship.xws | lowercase }}
+        <ion-list ng-show="!hide">
+            <ion-item class="item-icon-left" ng-repeat="current in currentList">
+                <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ current.ship.xws | lowercase }}
                       avatar-{{ (current.pilot.faction).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 3em"></i>
-              <span ng-bind="current.pilot.name"></span>
-              (<span ng-bind="current.pilot.points" style="right: 0px;"></span>) - <span ng-bind="current.pilot.ship"></span>
-          </ion-item>
-            <ion-item>
-                <div class="row responsive-lg">
-                    <div class="col" ng-repeat="upgrade in current.upgrades track by $index">
+                <div class="row">
+                    <span ng-bind="current.pilot.name"></span>&nbsp;
+                    (<span ng-bind="current.pilot.points" style="right: 0px;"></span>)&nbsp;-
+                    &nbsp;<span ng-bind="current.pilot.ship"></span>
+                </div>
+                <div class="row smallfont" style="margin: 5px 0px;">
+                    <div class="col">
+                        PS: <span ng-bind="current.pilot.skill"></span>
+                    </div>
+                    <div class="col">
+                        <span class="attack" ng-bind="current.ship.attack"></span>
+                        <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
+                    </div>
+                    <div class="col">
+                        <span class="agility" ng-bind="current.ship.agility"></span>
+                        <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
+                    </div>
+                    <div class="col">
+                        <span class="hull" ng-bind="current.ship.hull"></span>
+                        <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
+                    </div>
+                    <div class="col">
+                        <span class="shield" ng-bind="current.ship.shields"></span>
+                        <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
+                    </div>
+                </div>
+                <div class="row responsive-lg" style="margin: 5px 0px;">
+                    <div class="col" ng-repeat="upgrade in current.upgrades track by $index"  style="margin: 5px 0px;">
                         <i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.slot).replace(' ','') | lowercase }}"></i>
                         <span ng-bind="upgrade.name || 'Upgrade not found on import, fix on R script.'"></span>
                         <br>
                     </div>
-                    <span ng-show="!current.upgrades.length">Sin mejoras equipadas.</span>
+                    <span ng-if="!current.upgrades.length">Sin mejoras equipadas.</span>
+                </div>
+                <div class="row item-body smallfont" ng-if="current.pilot.text" style="margin: 5px 0px;">
+                    <div class="col">
+                        <span ng-bind="current.pilot.text"></span>
+                    </div>
                 </div>
             </ion-item>
-          <ion-item class="item-text-wrap item-body">
-              <div class="row">
-                  <div class="col">
-                      PS: <span ng-bind="current.pilot.skill"></span>
-                  </div>
-                  <div class="col">
-                      <span class="attack" ng-bind="current.ship.attack"></span>
-                      <i class="xwing-miniatures-font xwing-miniatures-font-attack"></i>
-                  </div>
-                  <div class="col">
-                      <span class="agility" ng-bind="current.ship.agility"></span>
-                      <i class="xwing-miniatures-font xwing-miniatures-font-agility"></i>
-                  </div>
-                  <div class="col">
-                      <span class="hull" ng-bind="current.ship.hull"></span>
-                      <i class="xwing-miniatures-font xwing-miniatures-font-hull"></i>
-                  </div>
-                  <div class="col">
-                      <span class="shield" ng-bind="current.ship.shields"></span>
-                      <i class="xwing-miniatures-font xwing-miniatures-font-shield"></i>
-                  </div>
-              </div>
-          </ion-item>
-          <ion-item class="item-icon-left item-body item-text-wrap" ng-show="current.pilot.text">
-                <span ng-bind="current.pilot.text"></span>
-          </ion-item>
-        </div>
-        </ion-item>
+        </ion-list>
         <ion-item class="item-divider item-icon-right">
-          <i class="icon ion-information-circled icon-accesory"></i>
+          <i class="icon icon-accessory ion-information-circled"></i>
           EMPAREJAMIENTOS
         </ion-item>
         <ion-item ng-repeat="pairing in pairingList">

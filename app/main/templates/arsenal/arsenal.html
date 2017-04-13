@@ -5,7 +5,7 @@
   <ion-nav-buttons side="right">
       <div class="buttons">
           <!--<button class="button button-icon button-clear ion-plus-circled" ng-click="modal.show()"></button>-->
-          <button class="button" ng-click="modal.show()">Filters</button>
+          <button class="button" ng-click="modal.show()">Filtros</button>
       </div>
   </ion-nav-buttons>
     <ion-nav-header class="bar bar-subheader item-divider item-icon-right">
@@ -21,11 +21,11 @@
         <div class="row">
           <i class="icon icon-accesory xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.slot).replace(' ', '') | lowercase }}"></i>
           <i class="xwing-miniatures-font xwing-miniatures-font-unique" ng-show="upgrade.unique">&nbsp;</i>
-          <span ng-bind="upgrade.name"></span>&nbsp;
-          (<span ng-bind="upgrade.points"></span>)
-          <span ng-show="upgrade.faction"><i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.faction).replace('Galactic ', '') | lowercase }}"></i></span>
-          <br>
-          <span ng-show="upgrade.limited">Limitado</span>
+          <h3 ng-bind="upgrade.name"></h3>&nbsp;(<span ng-bind="upgrade.points"></span>)
+          <span ng-if="upgrade.faction">&nbsp;
+              <i class="xwing-miniatures-font xwing-miniatures-font-{{ (upgrade.faction).replace('Galactic ', '') | lowercase }}"></i>
+          </span>
+          <span ng-if="upgrade.limited">&nbsp;Limitado</span>
           <i class="icon ion-chevron-down icon-accessory" ng-if="!showUpgrades[$index]"></i>
           <i class="icon ion-chevron-up icon-accessory" ng-if="showUpgrades[$index]"></i>
         </div>

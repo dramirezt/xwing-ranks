@@ -17,15 +17,15 @@
                   ng-click="viewShip(ship)">
           <div class="row responsive-sm">
               <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}
-                        avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 4em"></i>
-              <div class="col">
-                <h2 ng-bind="ship.name" class="title"></h2>
+                        avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 3rem"></i>
+              <div class="col col-50">
+                <h3 ng-bind="ship.name" class="title"></h3>
               </div>
-              <div class="col" style="text-align: right; font-size: 1em !important;">
+              <div class="col col-50 smallfont">
                 <div class="row">
                   <div class="col">
-                    <span class="pilots" ng-bind="ship.nPilots"></span>
-                    <i class="ion-person-stalker" style="font-size: 1.5em;"></i>
+                      <span class="pilots" ng-bind="ship.nPilots"></span>
+                      <i class="icon-accessory ion-person-stalker"></i>
                   </div>
                   <div class="col">
                     <span class="attack" ng-bind="ship.attack"></span>

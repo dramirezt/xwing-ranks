@@ -69,15 +69,26 @@ angular.module('main')
       );
   }
 
-    this.getRebelLists= function () {
-        return $http.get(baseURL + '/lists/count/rebel').then(
-            function (response) {
-                return response.data;
-            },
-            function (response) {
-                $q.reject(response);
-            }
-        )
-    }
+  this.getPilotUse = function () {
+      return $http.get(baseURL + '/list/pilotuse').then(
+          function (response) {
+              return response;
+          },
+          function (error) {
+              $q.reject(error);
+          }
+      )
+  }
+
+    // this.getRebelLists= function () {
+    //     return $http.get(baseURL + '/lists/count/rebel').then(
+    //         function (response) {
+    //             return response.data;
+    //         },
+    //         function (response) {
+    //             $q.reject(response);
+    //         }
+    //     )
+    // }
 
 });

@@ -1,73 +1,153 @@
-<ion-view view-title="{{ tournament.name }}">
+<ion-view>
     <ion-nav-buttons side="right">
         <div class="buttons">
             <button class="button button-icon button-clear ion-more" ng-click="openPopover($event)" ng-show="currentUser._id === tournament.organizer"></button>
             <!--<button class="button button-icon button-clear ion-clipboard" ng-click="beginTestTournament()"></button>-->
         </div>
     </ion-nav-buttons>
-    <ion-content class="has-footer">
-        <div class="list card tournament-card">
-            <div class="item item-divider item-icon-left">
-                <i class="icon ion-information-circled icon-accesory"></i>
-                Información
-            </div>
-            <!--<div class="item item-avatar item-icon-right" ng-click="tournamentInfo()">-->
-            <div class="item item-avatar">
+    <ion-item class="bar bar-subheader item-divider item-icon-right" type="item-text-wrap">
+        <span ng-if="show === 'info'" ng-bind="tournament.name"></span>
+        <span ng-if="show === 'ranking'">
+            Ranking - <span ng-bind="inscriptionList.length"></span>&nbsp;Jugadores
+        </span>
+        <span ng-if="show === 'stats'">Estadísticas</span>
+        <i class="icon icon-accessory ion-information-circled"></i>
+    </ion-item>
+    <ion-content class="has-subheader has-footer">
+        <ion-list ng-show="show === 'info'">
+            <ion-item class="item-avatar item-icon-right" ng-click="tournamentInfo()">
                 <img ng-src="main/assets/images/yo@2x.png" style="width: 64px; height: 64px">
-                <div class="row responsive-sm">
-                  <div class="col col-50">
-                    <i class="ion-calendar"></i>
-                    <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span><span ng-show="tournament.endDate">- <span ng-bind="tournament.endDate | date: 'dd/MM/yyyy'"></span></span>
-                  </div>
-                  <div class="col col-50">
-                    <i class="ion-clock"></i> 09:00
-                  </div>
+                <div class="row responsive-md">
+                    <div class="col col-33">
+                        <i class="ion-calendar"></i>
+                        <span ng-bind="tournament.startDate | date: 'dd/MM/yyyy'"></span>
+                        <span ng-if="tournament.endDate">
+                            &nbsp;-&nbsp;<span ng-bind="tournament.endDate | date: 'dd/MM/yyyy'"></span>
+                        </span>
+                    </div>
+                    <div class="col col-33">
+                        <i class="ion-ios-stopwatch"></i>
+                        <span ng-show="tournament.rounds"><span ng-bind="tournament.rounds"></span> Rondas</span>
+                        <span ng-if="tournament.top && tournament.rounds">+</span>
+                        <span ng-if="tournament.top">
+                            Top <span ng-bind="tournament.top"></span>
+                        </span>
+                    </div>
+                    <div class="col col-33">
+                        <i class="ion-ios-people"></i>
+                        <span ng-bind="tournament.maxPlayers"></span> plazas
+                    </div>
                 </div>
-                <div class="row responsive-sm">
-                  <div class="col col-50">
-                    <i class="ion-ios-people"></i>
-                    <span ng-bind="tournament.maxPlayers"></span> plazas
-                  </div>
-                  <div class="col col-50">
-                    <i class="ion-ios-stopwatch"></i>
-                    <span ng-show="tournament.rounds"><span ng-bind="tournament.rounds"></span> Rondas</span>
-                    <span ng-show="tournament.top && tournament.rounds">+</span>
-                    <span ng-show="tournament.top">Top <span ng-bind="tournament.top"></span></span>
-                  </div>
+                <div ng-if="!tournament.finished">
+                    <a class="button button-small button-balanced button-full" ng-if="!showInscriptionButton()"
+                       ng-click="joinTournament()" ng-disabled="inscriptionList.length >= tournament.maxPlayers">
+                        <i class="ion-plus"></i>
+                        Inscribirme
+                    </a>
+                    <a class="button button-small button-assertive button-full" ng-if="showInscriptionButton()"
+                            ng-click="deleteInscription(myCurrentInscription)">
+                        <i class="ion-android-close"></i>
+                        Cancelar inscripción
+                    </a>
                 </div>
-                <div class="row responsive-sm">
-                  <div class="col">
-                    <i class="ion-ios-location"></i>
-                    <span ng-bind="tournament.city"></span> - <span ng-bind="tournament.address"></span>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+            <ion-list show-delete="showDeleteInscriptions" ng-if="!tournament.finished">
+                <ion-item class="item-divider item-icon-right">
+                    <i class="icon icon-accessory ion-person"></i>
+                    INSCRIPCIONES
+                </ion-item>
+                <ion-item
+                      class="item-remove-animate item-icon-right"
+                      type="item-text-wrap"
+                      ng-repeat="inscription in inscriptionList | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'"
+                      ng-click="viewInscription(inscription)">
+                  <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
+                  <div class="row responsive-sm">
+                      <div class="col col-60">
+                          <h3 ng-bind="inscription.name"></h3>
+                      </div>
+                      <div class="col col-40 smallfont" ng-if="!inscription.drop">
+                          <div class="row">
+                              <span class="col" ng-if="inscription.topPosition">Top: <span ng-bind="inscription.topPosition"></span></span>
+                              <span class="col" ng-if="inscription.swissPosition">Suizo: <span ng-bind="inscription.swissPosition"></span></span>
+                              <span class="col" ng-if="inscription.victoryPoints">PV: <span ng-bind="inscription.victoryPoints"></span></span>
+                              <span class="col" ng-if="inscription.strengthOfSchedule">SoS: <span ng-bind="inscription.strengthOfSchedule"></span></span>
+                          </div>
+                      </div>
                   </div>
-                </div>
-                <div class="row responsive-sm">
-                  <div class="col">
-                    Organiza:
-                    <span ng-bind="tournament.organizername"></span>
-                  </div>
-                  <div class="col" ng-show="!tournament.finished">
-                    <button class="button button-balanced" ng-show="!showInscriptionButton()" ng-click="joinTournament()" ng-disabled="inscriptionList.length >= tournament.maxPlayers">Inscribirme a este evento</button>
-                    <button class="button button-assertive" ng-show="showInscriptionButton()" ng-click="deleteInscription(myCurrentInscription)">Cancelar inscripción</button>
-                  </div>
-                </div>
-                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+                  <span class="badge badge-assertive" ng-if="inscription.drop">Drop</span>
+                  <span class="badge badge-assertive" ng-show="inscription.firstRoundBye">Bye R1</span>
+                  <i  style="color: #3398d0;" class="icon ion-chevron-right icon-accessory"></i>
+                </ion-item>
+            </ion-list>
+            <ion-list ng-if="tournament.finished">
+                <ion-item class="item-divider item-icon-right">
+                    <i class="icon icon-accessory ion-person"></i>
+                    TOP 4
+                </ion-item>
+                <ion-item
+                        class="item-remove-animate item-icon-left item-icon-right"
+                        type="item-text-wrap"
+                        ng-repeat="inscription in inscriptionList | limitTo: 4 | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'"
+                        ng-click="viewInscription(inscription)">
+                    <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
+                    <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
+                    <div class="row responsive-sm">
+                        <div class="col col-60">
+                            <h3 ng-bind="inscription.name"></h3>
+                        </div>
+                        <div class="col col-40 smallfont" ng-if="!inscription.drop">
+                            <div class="row">
+                                <span class="col" ng-if="inscription.topPosition">Top: <span ng-bind="inscription.topPosition"></span></span>
+                                <span class="col" ng-if="inscription.swissPosition">Suizo: <span ng-bind="inscription.swissPosition"></span></span>
+                                <span class="col" ng-if="inscription.victoryPoints">PV: <span ng-bind="inscription.victoryPoints"></span></span>
+                                <span class="col" ng-if="inscription.strengthOfSchedule">SoS: <span ng-bind="inscription.strengthOfSchedule"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="badge badge-assertive" ng-if="inscription.drop">Drop</span>
+                    <span class="badge badge-assertive" ng-show="inscription.firstRoundBye">Bye R1</span>
+                    <i  style="color: #3398d0;" class="icon ion-chevron-right icon-accessory"></i>
+                </ion-item>
+            </ion-list>
+        </ion-list>
+        <div class="row responsive-md statisticsRow" ng-show="show === 'stats'">
+            <div class="col col-50">
+                <ion-item class="item-divider">
+                    Uso de facción
+                </ion-item>
+                <ion-item class="item-icon-right">
+                    <canvas id="factionPlot" class="chart chart-pie"
+                            chart-data="factionData"
+                            chart-labels="factionLabels"
+                            chart-options="factionOptions" width="50" height="50"
+                            chart-colors="factionColors"></canvas>
+                </ion-item>
+            </div>
+            <div class="col col-50">
+                <ion-item class="item-divider">
+                    Uso de facción
+                </ion-item>
+                <ion-item class="item-icon-right">
+                    <canvas id="shipPlot" class="chart chart-horizontalBar" chart-data="shipData"
+                            chart-labels="shipLabels" chart-options="shipOptions" width="50" height="50"></canvas>
+                </ion-item>
             </div>
         </div>
-        <div class="list card tournament-card">
-            <div class="item item-divider item-icon-left">
-                <i class="icon ion-person icon-accesory"></i>
-                Ranking - <span ng-bind="inscriptionList.length"></span>/<span ng-bind="tournament.maxPlayers"></span> Jugadores
-            </div>
-            <ion-list show-delete="showDeleteInscriptions">
-              <ion-item
-                      class="item-remove-animate item-avatar item-icon-left item-icon-right"
-                      type="item-text-wrap"
-                      ng-repeat="inscription in inscriptionList | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'" ng-click="viewInscription(inscription)">
-                  <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
-                  <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
-                  <h2 ng-bind="inscription.name"></h2>
-                    <p ng-show="!inscription.drop">
+        <ion-list show-delete="showDeleteInscriptions" ng-show="show === 'ranking'">
+            <ion-item
+                    class="item-remove-animate item-icon-left item-icon-right"
+                    type="item-text-wrap"
+                    ng-repeat="inscription in inscriptionList | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'"
+                    ng-click="viewInscription(inscription)">
+                <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
+                <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
+                <div class="row responsive-sm">
+                    <div class="col col-66">
+                        <h3 ng-bind="inscription.name"></h3>
+                    </div>
+                    <div class="col col-33" ng-if="!inscription.drop">
                         <span ng-show="inscription.topPosition">
                             Top: <span ng-bind="inscription.topPosition"></span>
                         </span>
@@ -80,21 +160,35 @@
                         <span ng-show="inscription.strengthOfSchedule">
                             SoS: <span ng-bind="inscription.strengthOfSchedule"></span>
                         </span>
-                        <span class="badge badge-assertive" ng-show="inscription.firstRoundBye">Bye R1</span>
-                    </p>
-                    <p class="drop" ng-show="inscription.drop">Drop</p>
-                    <i  style="color: #3398d0;" class="icon ion-chevron-right icon-accessory"></i>
-              </ion-item>
-            </ion-list>
-        </div>
+                    </div>
+                    <div class="col col-33" ng-if="inscription.drop">
+                        Drop
+                    </div>
+                </div>
+                <span class="badge badge-assertive" ng-show="inscription.firstRoundBye">Bye R1</span>
+                <i  style="color: #3398d0;" class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+        </ion-list>
     </ion-content>
-    <ion-footer-bar style="padding: 0px" ng-show="!tournament.finished">
-        <div class="button-bar button-full">
-          <a class="button button-balanced" ng-click="viewPairings()"
-             ng-disabled="!inscriptionList.length">
-              <span ng-show="!pairingList.length">COMENZAR TORNEO</span>
-              <span ng-show="pairingList.length">EMPAREJAMIENTOS</span>
-          </a>
-        </div>
+    <ion-footer-bar class="bar bar-footer">
+      <div class="button-bar">
+        <a class="button button-balanced" ng-click="viewPairings()" ng-disabled="!inscriptionList.length"
+           ng-if="!tournament.finished">
+            <span ng-show="!pairingList.length">COMENZAR TORNEO</span>
+            <span ng-show="pairingList.length">EMPAREJAMIENTOS</span>
+        </a>
+        <a class="button button-small button-{{ infoBtnClass }} icon" ng-if="tournament.finished" ng-click="showView('info')">
+          <i class="icon ion-information-circled"></i>
+          Información
+        </a>
+        <a class="button button-small button-{{ statsBtnClass }} icon" ng-if="tournament.finished" ng-click="showView('stats')">
+          <i class="icon ion-stats-bars"></i>
+            Estadísticas
+        </a>
+        <a class="button button-small button-{{ rankingBtnClass }} icon" ng-if="tournament.finished" ng-click="showView('ranking')">
+          <i class="icon ion-trophy"></i>
+          Ranking
+        </a>
+      </div>
     </ion-footer-bar>
 </ion-view>

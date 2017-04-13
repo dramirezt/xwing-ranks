@@ -101,6 +101,12 @@ angular.module('main')
         }
     );
 
+    statisticsService.getPilotUse().then(
+        function (response) {
+            console.log(response);
+        }
+    );
+
     $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
     $scope.shipData = [25, 15, 10, 10, 5];
     $scope.shipOptions = {scales: {

@@ -410,7 +410,8 @@ angular.module('main')
   };
 
 })
-    .filter("emptyToEnd", function () {
+
+.filter("emptyToEnd", function () {
         return function (array, key) {
             if(!angular.isArray(array)) return;
             var present = array.filter(function (item) {
@@ -422,9 +423,39 @@ angular.module('main')
             return present.concat(empty);
         };
     })
+
 .controller('TournamentDetailsCtrl', function ($scope, $state, $ionicModal, $ionicPopover, $ionicHistory, $ionicPopup, $q, inscriptionService, pairingService, tournamentService, UserService, $filter, ionicDatePicker) {
 
   $scope.showLoading();
+
+  $scope.show = 'info';
+  $scope.infoBtnClass = 'balanced';
+  $scope.statsBtnClass = 'positive';
+  $scope.rankingBtnClass = 'positive';
+
+  $scope.showView = function (list) {
+      $scope.showLoading();
+      switch (list){
+          case 'info':
+              $scope.infoBtnClass = 'balanced';
+              $scope.statsBtnClass = 'positive';
+              $scope.rankingBtnClass = 'positive';
+              break;
+          case 'stats':
+              $scope.infoBtnClass = 'positive';
+              $scope.statsBtnClass = 'balanced';
+              $scope.rankingBtnClass = 'positive';
+              break;
+          case 'ranking':
+              $scope.infoBtnClass = 'positive';
+              $scope.statsBtnClass = 'positive';
+              $scope.rankingBtnClass = 'balanced';
+              break;
+
+      }
+      $scope.show = list;
+      $scope.hideLoading();
+  };
 
   $scope.currentUser = UserService.currentUser();
   $scope.tournament = tournamentService.currentTournament();
@@ -444,18 +475,43 @@ angular.module('main')
     }
   );
 
+  $scope.factionLabels = ["Alianza Rebelde", "Imperio Galáctico", "Escoria y Villanos"];
+  $scope.factionColors = ['#ffa2a2', '#adf1fe', '#b1ffb1'];
+  $scope.factionOptions = { legend: { display: false } };
+  $scope.factionData = [0, 0, 0];
+
+  $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
+  $scope.shipData = [25, 15, 10, 10, 5];
+  $scope.shipOptions = {scales: {
+    xAxes: [{
+        display: true,
+        ticks: {
+            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+            // OR //
+            beginAtZero: true   // minimum value will be 0.
+        }
+        }]
+  }};
+
   $scope.inscriptionList = [];
   inscriptionService.getInscriptions($scope.tournament)
   .then(
     function (response) {
         $scope.inscriptionList = response;
+        $scope.factionData = [
+            $filter('filter')($scope.inscriptionList, { faction: 'Rebel Alliance' }).length/$scope.inscriptionList.length,
+            $filter('filter')($scope.inscriptionList, { faction: 'Galactic Empire' }).length/$scope.inscriptionList.length,
+            $filter('filter')($scope.inscriptionList, { faction: 'Scum and Villainy' }).length/$scope.inscriptionList.length
+        ]
         $scope.showInscriptionButton = function () {
             var i = 0;
             var show = false;
-            while (!show && i < $scope.inscriptionList.length) {
-                show = ($scope.inscriptionList[i].player === $scope.currentUser._id);
-                if(show) $scope.myCurrentInscription = $scope.inscriptionList[i];
-                i++;
+            if(!$scope.tournament.finished) {
+                while (!show && i < $scope.inscriptionList.length) {
+                    show = ($scope.inscriptionList[i].player === $scope.currentUser._id);
+                    if(show) $scope.myCurrentInscription = $scope.inscriptionList[i];
+                    i++;
+                }
             }
             return show;
         };

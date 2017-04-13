@@ -6,15 +6,16 @@
   </ion-nav-buttons>
   <ion-content>
     <div class="row" style="padding: 0px; margin: 0px;">
-      <ion-list class="col col-70 nopadding" ng-show="showShips">
+      <ion-list class="col col-70 nopadding" ng-if="showShips">
         <ion-item class="nopadding" ng-repeat="ship in shipList | filter: showShip">
           <ion-item class="item-divider" ng-click="selectShip(ship)">
             <i class="xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}
             {{ selectedFaction.replace(' ', '').replace(' ', '') | lowercase }}"></i>&nbsp;
             <span class="title" ng-bind="ship.name"></span>
           </ion-item>
-          <ion-list ng-show="selectedShip === ship.name">
-            <ion-item ng-repeat="pilot in pilotList | filter: showPilot | filter: { ship: ship.name }" class="item item-icon-right" type="item-text-wrap" ng-click="addToList(pilot)">
+          <ion-list ng-if="selectedShip === ship.name">
+            <ion-item ng-repeat="pilot in pilotList | filter: showPilot | filter: { ship: ship.name }"
+                      class="item item-icon-right" type="item-text-wrap" ng-click="addToList(pilot)">
               <span ng-bind="pilot.skill"></span>&nbsp;
               <i class="ion-ios-circle-filled" ng-show="pilot.unique">&nbsp;</i>
               <span ng-bind="pilot.name"></span>&nbsp;
@@ -24,7 +25,8 @@
         </ion-item>
       </ion-list>
       <ion-list class="col">
-        <ion-item class="card tournament-card item item-remove-animate" style="color: lightblue; padding: 0px;" ng-repeat="current in currentList track by $index">
+        <ion-item class="card tournament-card item item-remove-animate" style="color: lightblue; padding: 0px;"
+                  ng-repeat="current in currentList track by $index">
           <ion-item class="item-divider item-button-right item-icon-left" ng-click="toggle($index)">
             <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (current.ship.xws).replace('fore', '') | lowercase }}
                         {{ selectedFaction.replace(' ', '').replace(' ', '') | lowercase }}" style="font-size: 3em"></i>
@@ -32,8 +34,10 @@
               <span ng-bind="current.pilot.name"></span>
             (<span ng-bind="current.pilot.points"></span>)
             <div class="buttons" style="margin-top: -5px;">
-              <button class="button button-energized button-outline ion-ios-copy-outline" ng-click="duplicate($index); $event.stopPropagation()"></button>
-              <button class="button button-assertive button-outline ion-ios-close-outline" ng-click="dropFromList($index); $event.stopPropagation()"></button>
+              <button class="button button-energized button-outline ion-ios-copy-outline"
+                      ng-click="duplicate($index); $event.stopPropagation()"></button>
+              <button class="button button-assertive button-outline ion-ios-close-outline"
+                      ng-click="dropFromList($index); $event.stopPropagation()"></button>
             </div>
           </ion-item>
           <ion-item class="item-body" ng-show="visible($index)">
