@@ -72,7 +72,7 @@ angular.module('main')
   this.getPilotUse = function () {
       return $http.get(baseURL + '/lists/stats/pilotuse').then(
           function (response) {
-              return response;
+              return response.data;
           },
           function (error) {
               $q.reject(error);

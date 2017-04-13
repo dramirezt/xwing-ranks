@@ -101,14 +101,20 @@ angular.module('main')
         }
     );
 
+    $scope.shipLabels = [];
+    $scope.shipData = [];
+    $scope.totalPilots = 0;
+
     statisticsService.getPilotUse().then(
         function (response) {
-            console.log(response);
+            for (var i = 0; i < response.length; i++) {
+                $scope.shipLabels.push(response[i].source);
+                $scope.shipData.push(response[i].Percent);
+            }
+            $scope.totalPilots = response[0].Total;
         }
     );
 
-    $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
-    $scope.shipData = [25, 15, 10, 10, 5];
     $scope.shipOptions = {scales: {
         xAxes: [{
             display: true,

@@ -19,6 +19,17 @@ angular.module('main')
         );
     };
 
+    this.getPilotUse = function (tournament) {
+        return $http.get(baseURL + '/lists/stats/pilotuse/' + tournament._id).then(
+            function (response) {
+                return response.data;
+            },
+            function (response) {
+                return $q.reject(response);
+            }
+        );
+    };
+
   this.tournamentList = function () {
     tournaments = $filter('orderBy')(tournaments, ['-startDate', 'name']);
     return tournaments;

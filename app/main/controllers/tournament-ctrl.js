@@ -480,18 +480,29 @@ angular.module('main')
   $scope.factionOptions = { legend: { display: false } };
   $scope.factionData = [0, 0, 0];
 
-  $scope.shipLabels = ["TIE X", "TIE X", "TIE X", "TIE X", "TIE X", ];
-  $scope.shipData = [25, 15, 10, 10, 5];
-  $scope.shipOptions = {scales: {
-    xAxes: [{
-        display: true,
-        ticks: {
-            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
-            // OR //
-            beginAtZero: true   // minimum value will be 0.
+    $scope.shipLabels = [];
+    $scope.shipData = [];
+    $scope.totalPilots = 0;
+
+    tournamentService.getPilotUse($scope.tournament).then(
+        function (response) {
+            for (var i = 0; i < response.length; i++) {
+                $scope.shipLabels.push(response[i].source);
+                $scope.shipData.push(response[i].Percent);
+            }
+            $scope.totalPilots = response[0].Total;
         }
-        }]
-  }};
+    );
+
+    $scope.shipOptions = {scales: {
+        xAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true   // minimum value will be 0.
+            }
+        }]}};
 
   $scope.inscriptionList = [];
   inscriptionService.getInscriptions($scope.tournament)
