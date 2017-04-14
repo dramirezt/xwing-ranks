@@ -9,31 +9,31 @@
         </ion-item>
         <div class="row responsive-md statisticsRow">
             <div class="col col-50" style="margin-bottom: 0px;">
-                <div class="item-divider"  style="text-align: center;">
-                    <span class="title">Galaxia en guerra</span>
+                <div class="item-divider" style="text-align: center;">
+                    <span class="title">Los 10 más buscados</span>
                 </div>
                 <ion-item>
-                    <canvas id="factionPlot" class="chart chart-pie" chart-data="factionData"
-                        chart-labels="factionLabels" chart-options="factionOptions" height="100%" width="200%" chart-colors="factionColors"></canvas>
-                    Analizadas {{ totalLists }} listas.
+                    Analizados {{ totalPilots }} pilotos.
+                    <canvas id="pilotsPlot" class="chart chart-horizontalBar" chart-data="pilotsData"
+                            chart-labels="pilotsLabels" chart-options="shipOptions" height="100%" width="200%"></canvas>
                 </ion-item>
                 <div class="item-divider" style="text-align: center;">
                     <span class="title">Las 10 naves más usadas</span>
                 </div>
                 <ion-item>
-                    <canvas id="shipPlot" class="chart chart-horizontalBar" chart-data="shipData"
-                            chart-labels="shipLabels" chart-options="shipOptions" height="100%" width="200%"></canvas>
-                    Analizados {{ totalPilots }} pilotos.
+                    Analizadas {{ totalShips }} naves.
+                    <canvas id="shipsPlot" class="chart chart-horizontalBar" chart-data="shipsData"
+                            chart-labels="shipsLabels" chart-options="shipOptions" height="100%" width="200%"></canvas>
                 </ion-item>
             </div>
             <div class="col col-50" style="margin-bottom: 0px;">
-                <div class="item-divider" style="text-align: center;">
-                    <span class="title">Los 10 más buscados</span>
+                <div class="item-divider"  style="text-align: center;">
+                    <span class="title">Galaxia en guerra</span>
                 </div>
                 <ion-item>
-                    <canvas id="shipPlot" class="chart chart-horizontalBar" chart-data="shipData"
-                        chart-labels="shipLabels" chart-options="shipOptions" height="110%" width="100%"></canvas>
-                    Analizados {{ totalPilots }} pilotos.
+                    <canvas id="factionPlot" class="chart chart-pie" chart-data="factionData"
+                            chart-labels="factionLabels" chart-options="factionOptions" height="100%" width="100%" chart-colors="factionColors"></canvas>
+                    Analizadas {{ totalLists }} listas.
                 </ion-item>
             </div>
         </div>

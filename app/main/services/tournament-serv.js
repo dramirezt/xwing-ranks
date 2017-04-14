@@ -30,6 +30,17 @@ angular.module('main')
         );
     };
 
+    this.getShipUse = function (tournament) {
+        return $http.get(baseURL + '/lists/stats/shipuse/' + tournament._id).then(
+            function (response) {
+                return response.data;
+            },
+            function (error) {
+                return $q.reject(error);
+            }
+        );
+    };
+
     this.getLastWinner = function () {
         return $http.get(baseURL + '/lists/get/lastwinner').then(
             function (response) {

@@ -80,6 +80,17 @@ angular.module('main')
       )
   }
 
+    this.getShipUse = function () {
+        return $http.get(baseURL + '/lists/stats/shipuse').then(
+            function (response) {
+                return response.data;
+            },
+            function (error) {
+                $q.reject(error);
+            }
+        )
+    }
+
     // this.getRebelLists= function () {
     //     return $http.get(baseURL + '/lists/count/rebel').then(
     //         function (response) {

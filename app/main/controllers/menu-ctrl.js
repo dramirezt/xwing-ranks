@@ -103,17 +103,32 @@ angular.module('main')
         }
     );
 
-    $scope.shipLabels = [];
-    $scope.shipData = [];
+    $scope.pilotsLabels = [];
+    $scope.pilotsData = [];
     $scope.totalPilots = 0;
 
     statisticsService.getPilotUse().then(
         function (response) {
             for (var i = 0; i < response.length; i++) {
-                $scope.shipLabels.push(response[i].source);
-                $scope.shipData.push(response[i].Percent);
+                $scope.pilotsLabels.push(response[i].source);
+                $scope.pilotsData.push(response[i].Percent);
             }
             $scope.totalPilots = response[0].Total;
+        }
+    );
+
+    $scope.shipsLabels = [];
+    $scope.shipsData = [];
+    $scope.totalShips = 0;
+
+    statisticsService.getShipUse().then(
+        function (response) {
+            for (var i = 0; i < response.length; i++) {
+                $scope.shipsLabels.push(response[i].source);
+                $scope.shipsData.push(response[i].Percent);
+                console.log(response[i].source + " " + response[i].Freq);
+            }
+            $scope.totalShips = response[0].Total;
         }
     );
 
