@@ -117,6 +117,15 @@ angular.module('main')
         }
     );
 
+    tournamentService.getLastWinner().then(
+        function (response) {
+            console.log(response);
+        },
+        function (error) {
+            $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
+        }
+    );
+
     $scope.shipOptions = {scales: {
         xAxes: [{
             display: true,

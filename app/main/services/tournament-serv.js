@@ -13,8 +13,8 @@ angular.module('main')
             function (response) {
                 return response.data;
             },
-            function (response) {
-                return $q.reject(response);
+            function (error) {
+                return $q.reject(error);
             }
         );
     };
@@ -24,10 +24,22 @@ angular.module('main')
             function (response) {
                 return response.data;
             },
-            function (response) {
-                return $q.reject(response);
+            function (error) {
+                return $q.reject(error);
             }
         );
+    };
+
+    this.getLastWinner = function () {
+        return $http.get(baseURL + '/lists/get/lastwinner').then(
+            function (response) {
+                console.log(response);
+                return response.data;
+            },
+            function (error) {
+                return $q.reject(error);
+            }
+        )
     };
 
   this.tournamentList = function () {
@@ -40,8 +52,8 @@ angular.module('main')
           function (response) {
               return response.data;
           },
-          function (response) {
-              $q.reject(response);
+          function (error) {
+              return $q.reject(error);
           }
       )
   };
@@ -51,8 +63,8 @@ angular.module('main')
           function (response) {
               return response.data;
           },
-          function (response) {
-              $q.reject(response);
+          function (error) {
+              return $q.reject(error);
           }
       )
   };
@@ -69,9 +81,9 @@ angular.module('main')
           return $q.reject(response.data);
         }
       },
-      function (response) {
-        return $q.reject(response);
-      }
+        function (error) {
+            return $q.reject(error);
+        }
     );
   };
 
