@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
 
-.controller('TournamentListCtrl', function ($scope, $ionicModal, $log, $state, $filter, $q, tournamentService, UserService, ionicDatePicker, inscriptionService, listService) {
+.controller('TournamentListCtrl', function ($scope, $timeout, $ionicModal, $log, $state, $filter, $q, tournamentService, UserService, ionicDatePicker, inscriptionService, listService) {
 
   $scope.newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
 
@@ -313,7 +313,7 @@ angular.module('main')
                 for (var i = 0; i < lists.length; i++) {
                     if(lists[i].ships) {
                         var pilot = ($filter('filter')($scope.pilotList, { name: lists[i].ships[0].pilot }));
-                        if(!pilot.length) {
+                        if(pilot.length != 1) {
                             pilot = ($filter('filter')($scope.pilotList, { name: lists[i].ships[1].pilot }));
                         }
                         var faction = pilot[0].faction;
@@ -341,6 +341,8 @@ angular.module('main')
             }
         )
     }
+
+    // $timeout($scope.setFactions(), 30000);
 
 })
 
@@ -808,9 +810,13 @@ angular.module('main')
       for (var i = 0; i < response.length; i++) {
         for (var j = 0; j < response[i].ships.length; j++) {
           var aux = { };
-          // aux.pilot = $filter('filter')($scope.pilotList, { _id: response[i].ships[j].pilot })[0];
-          // aux.ship = $filter('filter')($scope.shipList, { _id: aux.pilot.ship })[0];
-          aux.pilot = $filter('filter')($scope.pilotList, { 'name': response[i].ships[j].pilot })[0];
+          aux.pilot = $filter('filter')($scope.pilotList, { 'name': response[i].ships[j].pilot });
+          if(aux.pilot.length > 1) {
+              console.log(aux.pilot);
+              aux.pilot = $filter('filter')(aux.pilot, { 'faction': $scope.inscription.faction });
+              console.log(aux.pilot);
+          }
+          aux.pilot = aux.pilot[0];
           aux.ship = $filter('filter')($scope.shipList, { 'name': aux.pilot.ship })[0];
           aux.upgrades = [];
           for (var k = 0; k < response[i].ships[j].upgrades.length; k++) {

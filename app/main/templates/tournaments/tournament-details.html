@@ -89,7 +89,7 @@
                 <ion-item
                         class="item-remove-animate item-icon-left item-icon-right"
                         type="item-text-wrap"
-                        ng-repeat="inscription in inscriptionList | limitTo: 4 | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition'"
+                        ng-repeat="inscription in inscriptionList | emptyToEnd: 'topPosition' | emptyToEnd: 'swissPosition' | limitTo: 4"
                         ng-click="viewInscription(inscription)">
                     <ion-delete-button class="ion-close-circled" ng-click="deleteInscription(inscription)"></ion-delete-button>
                     <i class="icon xwing-miniatures-font xwing-miniatures-font-{{ inscription.faction.replace('Galactic ', '').replace('-', '') | lowercase }}"></i>
