@@ -110,6 +110,9 @@ angular.module('main')
     statisticsService.getPilotUse().then(
         function (response) {
             for (var i = 0; i < response.length; i++) {
+                response[i].source = response[i].source.replace('- Galactic Empire', '');
+                response[i].source = response[i].source.replace('- Rebel Alliance', '');
+                response[i].source = response[i].source.replace('- Scum and Villainy', '');
                 $scope.pilotsLabels.push(response[i].source);
                 $scope.pilotsData.push(response[i].Percent);
             }
@@ -124,6 +127,9 @@ angular.module('main')
     statisticsService.getShipUse().then(
         function (response) {
             for (var i = 0; i < response.length; i++) {
+                response[i].source = response[i].source.replace('- Galactic Empire', '');
+                response[i].source = response[i].source.replace('- Rebel Alliance', '');
+                response[i].source = response[i].source.replace('- Scum and Villainy', '');
                 $scope.shipsLabels.push(response[i].source);
                 $scope.shipsData.push(response[i].Percent);
                 console.log(response[i].source + " " + response[i].Freq);
