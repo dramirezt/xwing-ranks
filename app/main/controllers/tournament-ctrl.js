@@ -105,6 +105,7 @@ angular.module('main')
             //do what you want with obj !
             tournamentService.importTournament(obj).then(
                 function (response) {
+                    console.log(response[0])
                     var obj = JSON.parse(response[0]);
                     var newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
                         newTournament.name = obj.name;
@@ -128,7 +129,7 @@ angular.module('main')
                                     function (response){
                                       var promises2 = [];
                                       for (var j = 0; j < response.length; j++) {
-                                          promises2.push(listService.useInTournament(inscriptions[j].ships, response[j], false));
+                                          promises2.push(listService.useInTournament(inscriptions[j].ships, response[j], false, inscriptions[j].faction));
                                       }
                                       $q.all(promises2).then(
                                           function (response) {
