@@ -37,7 +37,7 @@ angular.module('main')
   this.apiFormat = function (currentList) {
     var listAPI = [];
     for (var i = 0; i < currentList.length; i++) {
-      var aux = { pilot: currentList[i].pilot.name, upgrades: []};
+      var aux = { pilot: currentList[i].pilot.name, ship: currentList[i].ship.name, upgrades: []};
       for (var j = 0; j < currentList[i].upgrades.length; j++) {
         if (currentList[i].upgrades[j].selected.name !== undefined) {
           aux.upgrades.push({ upgrade: currentList[i].upgrades[j].selected.name });

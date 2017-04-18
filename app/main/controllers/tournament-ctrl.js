@@ -342,6 +342,8 @@ angular.module('main')
         )
     }
 
+    // $scope.setFactions();
+
     // $timeout($scope.setFactions(), 30000);
 
 })
@@ -817,7 +819,8 @@ angular.module('main')
               console.log(aux.pilot);
           }
           aux.pilot = aux.pilot[0];
-          aux.ship = $filter('filter')($scope.shipList, { 'name': aux.pilot.ship })[0];
+          aux.ship = $filter('filter')($scope.shipList, { 'name': response[i].ships[j].ship })[0];
+          if(!aux.ship) aux.ship = $filter('filter')($scope.shipList, { 'name': aux.pilot.ship })[0];
           aux.upgrades = [];
           for (var k = 0; k < response[i].ships[j].upgrades.length; k++) {
             // aux.upgrades.push($filter('filter')($scope.upgradeList, { _id: response[i].ships[j].upgrades[k].upgrade })[0]);
