@@ -117,7 +117,7 @@ angular.module('main')
         // $scope.hideLoading();
     }
 
-  $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-new-tournament.html', {
+  $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-new-tournament.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -130,7 +130,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-    $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-import-tournament.html', {
+    $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-import-tournament.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function (modal) {

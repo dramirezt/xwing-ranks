@@ -52,7 +52,7 @@ angular.module('main', [
 
     // Tournament states
     .state('main.tournamentsList', {
-      url: '/completedTournaments',
+      url: '/tournaments',
       views: {
         'pageContent': {
           templateUrl: 'main/templates/tournaments/tournament-list.html',
@@ -61,7 +61,7 @@ angular.module('main', [
       }
     })
     .state('main.tournamentDetails', {
-      url: '/completedTournaments',
+      url: '/tournaments',
       views: {
         'pageContent': {
           templateUrl: 'main/templates/tournaments/tournament-details.html',
@@ -70,7 +70,7 @@ angular.module('main', [
       }
     })
     .state('main.tournamentPlayerProfile', {
-      url: '/completedTournaments',
+      url: '/tournaments',
       views: {
         'pageContent': {
           templateUrl: 'main/templates/tournaments/tournament-player-profile.html',
@@ -79,7 +79,7 @@ angular.module('main', [
       }
     })
     .state('main.tournamentInfo', {
-      url: '/completedTournaments',
+      url: '/tournaments',
       views: {
         'pageContent': {
           templateUrl: 'main/templates/tournaments/tournament-info.html',
@@ -88,7 +88,7 @@ angular.module('main', [
       }
     })
     .state('main.tournamentPairings', {
-      url: '/completedTournaments',
+      url: '/tournaments',
       views: {
         'pageContent': {
           templateUrl: 'main/templates/tournaments/pairing-list.html',
@@ -97,7 +97,7 @@ angular.module('main', [
       }
     })
     .state('main.pairingDetails', {
-      url: '/completedTournaments',
+      url: '/tournaments',
       views: {
         'pageContent': {
           templateUrl: 'main/templates/tournaments/pairing-details.html',
