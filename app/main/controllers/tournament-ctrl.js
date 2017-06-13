@@ -18,7 +18,7 @@ angular.module('main')
                     $scope.nTournaments = response;
                 }
             );
-            tournamentService.getTournaments(start).then(
+            tournamentService.getCompletedTournaments(start).then(
                 function (response) {
                     if(response.length > 0) {
                         if(start === 0) $scope.tournamentList = response;
@@ -105,59 +105,7 @@ angular.module('main')
             //do what you want with obj !
             tournamentService.importTournament(obj).then(
                 function (response) {
-                    console.log(response[0])
-                    var obj = JSON.parse(response[0]);
-                    var newTournament = { rounds: 3, top: 0, maxPlayers: 8, finished: 0 };
-                        newTournament.name = obj.name;
-                        newTournament.tier = obj.type;
-                        newTournament.startDate = obj.date;
-                    var user = UserService.currentUser();
-                    if (user) {
-                        newTournament.organizer = user._id;
-                        tournamentService.createTournament(newTournament)
-                        .then(
-                            function (response) {
-                                var tournament = response;
-                                var inscriptions = obj.inscriptions;
-                                var promises = [];
-                                for (var i = 0; i < inscriptions.length; i++){
-                                    var newInscription = inscriptions[i];
-                                    newInscription.tournament = tournament._id;
-                                    promises.push(inscriptionService.createInscription(newInscription));
-                                }
-                                $q.all(promises).then(
-                                    function (response){
-                                      var promises2 = [];
-                                      for (var j = 0; j < response.length; j++) {
-                                          promises2.push(listService.useInTournament(inscriptions[j].ships, response[j], false, inscriptions[j].faction));
-                                      }
-                                      $q.all(promises2).then(
-                                          function (response) {
-                                              tournament.maxPlayers = response.length;
-                                              tournament.finished = true;
-                                              tournamentService.updateTournament(tournament).then(
-                                                  function (response) {
-                                                      tournamentService.setCurrentTournament(response);
-                                                      $scope.hideLoading();
-                                                      $state.go('main.tournamentDetails');
-                                                  },
-                                                  function (error) {
-                                                      $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                                                  }
-                                              );
-                                          },
-                                          function (error) {
-                                              $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                                          }
-                                      )
-                                    }
-                                );
-                            },
-                            function (error) {
-                                $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
-                            }
-                        );
-                    }
+                    console.log(response);
                 },
                 function (error) {
                     $scope.error = 'Error: ' + error.status + ' ' + error.statusText;
@@ -169,7 +117,7 @@ angular.module('main')
         // $scope.hideLoading();
     }
 
-  $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-new-tournament.html', {
+  $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-new-tournament.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -182,7 +130,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-    $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-import-tournament.html', {
+    $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-import-tournament.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function (modal) {
@@ -363,7 +311,7 @@ angular.module('main')
 
   $scope.editTournament = angular.copy($scope.tournament);
 
-  $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-edit-tournament.html', {
+  $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-edit-tournament.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -572,7 +520,7 @@ angular.module('main')
     }
   );
 
-  $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-new-inscription.html', {
+  $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-new-inscription.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -588,7 +536,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-  $ionicPopover.fromTemplateUrl('main/templates/tournaments/popover-tournament-details.html', {
+  $ionicPopover.fromTemplateUrl('main/templates/completedTournaments/popover-tournament-details.html', {
     scope: $scope
   }).then(function (popover) {
     $scope.popover = popover;
