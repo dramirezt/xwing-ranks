@@ -25,7 +25,7 @@
         </ion-item>
       </ion-list>
       <ion-list class="col">
-        <ion-item class="card tournament-card item item-remove-animate" style="color: lightblue; padding: 0px;"
+        <ion-item class="card tournament-card item item-remove-animate" style="padding: 0px;"
                   ng-repeat="current in currentList track by $index">
           <ion-item class="item-divider item-button-right item-icon-left" ng-click="toggle($index)">
             <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (current.ship.xws).replace('fore', '') | lowercase }}

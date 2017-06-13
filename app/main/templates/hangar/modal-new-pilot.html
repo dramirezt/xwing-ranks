@@ -18,7 +18,7 @@
       <input type="number" min="0" ng-model="newPilot.points">
     </label>
     <li class="item item-toggle">
-      <span class="input-label"><i class="ion-ios-circle-filled" style="color: lightblue; text-transform: none"></i>&nbsp;Piloto único:</span>
+      <span class="input-label"><i class="ion-ios-circle-filled" style="text-transform: none"></i>&nbsp;Piloto único:</span>
       <label class="toggle toggle-balanced">
         <input type="checkbox" ng-model="newPilot.unique">
         <div class="track">
@@ -27,7 +27,7 @@
       </label>
     </li>
     <li class="item item-toggle">
-      <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-elite" style="color: lightblue; text-transform: none; font-weight: normal"></i>&nbsp;Talento de élite:</span>
+      <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-elite" style="text-transform: none; font-weight: normal"></i>&nbsp;Talento de élite:</span>
       <label class="toggle toggle-balanced">
         <input type="checkbox" ng-model="newPilot.elitePilot">
         <div class="track">
@@ -39,7 +39,7 @@
       <span class="input-label">Habilidad/Descripcion:</span><br>
     </li>
     <li class="item item-input" style="border-top: 0px;">
-      <textarea ng-model="newPilot.ability" placeholder="Texto de la carta" style="background-color: transparent; color: lightblue;"></textarea>
+      <textarea ng-model="newPilot.ability" placeholder="Texto de la carta" style="background-color: transparent;"></textarea>
     </li>
     <button class="button button-full button-balanced" ng-click="createPilot(newPilot)">AÑADIR PILOTO</button>
   </div>

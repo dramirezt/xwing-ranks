@@ -264,7 +264,7 @@ angular.module('main')
                     if(start === 0) $scope.tournamentList = response;
                     else $scope.tournamentList = $scope.tournamentList.concat(response);
                     $scope.start += response.length;
-                    tournamentService.getTournaments($scope.start2).then(
+                    tournamentService.getCompletedTournaments($scope.start2).then(
                         function (response) {
                             // if (response.length > 0) {
                                 console.log('aqui llega');

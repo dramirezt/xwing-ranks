@@ -10,7 +10,7 @@
   <!--</ion-nav-buttons>-->
   <ion-content style="color: white;">
     <div ng-show="isSelected(1)">
-        <ion-item class="item item-icon-left" style="color: lightblue;">
+        <ion-item class="item item-icon-left" >
           <i class="icon icon-accesory xwing-miniatures-ship xwing-miniatures-ship-{{ (ship.xws).replace('fore', '') }}
                         avatar-{{ (ship.faction[0]).replace('Galactic ', '').replace('-', '') | lowercase }}" style="font-size: 5rem"></i>
           <div class="row responsive-sm">
@@ -43,7 +43,7 @@
                 </div>
               </div>
           </div>
-          <div class="row responsive-sm upgradeSlots" style="color: lightblue; margin-top: 5px;">
+          <div class="row responsive-sm upgradeSlots" style="margin-top: 5px;">
             <div class="col" style="text-align: center;">
               <span  ng-repeat="slot in pilotList[0].slots track by $index">
                 <i class="xwing-miniatures-font xwing-miniatures-font-{{ slot.replace(' ', '') | lowercase }}"></i>

@@ -5,25 +5,25 @@ in ionic's _variables.scss file.
 For example, you might change some of the default colors:
 */
 $lightblue:                       #adf1fe !default;
-$menucolor:                       #3398d0 !default;
-$light:                           #02243d !default;
-$stable:                          #f8f8f8 !default;
-$positive:                        #11122e !default;
-$calm:                            #43cee6 !default;
-$balanced:                        #66cc33 !default;
-$energized:                       #f0b840 !default;
-$assertive:                       #ef4e3a !default;
-$royal:                           #8a6de9 !default;
-$dark:                            #444 !default;
-$base-background-color:           #000015 !default;
-$menu-bg:                         $positive !default;
-$item-divider-color:              yellow !default;
-$item-divider-bg:                 $positive !default;
-$card-body-bg:                    $positive !default;
-$button-positive-border:          $menucolor !default;
-$button-light-border:             $lightblue !default;
-$modal-bg-color:                  #000015 !default;
-$bar-positive-text:               yellow !default;
+//$menucolor:                       #3398d0 !default;
+//$light:                           #02243d !default;
+//$stable:                          #f8f8f8 !default;
+//$positive:                        #387ef5 !default;
+//$calm:                            #43cee6 !default;
+//$balanced:                        #66cc33 !default;
+//$energized:                       #f0b840 !default;
+//$assertive:                       #ef4e3a !default;
+//$royal:                           #8a6de9 !default;
+//$dark:                            #444 !default;
+//$base-//background-color:           #000015 !default;
+//$menu-bg:                         $positive !default;
+//$item-divider-color:              yellow !default;
+//$item-divider-bg:                 $positive !default;
+//$card-body-bg:                    $positive !default;
+//$button-positive-border:          $menucolor !default;
+//$button-light-border:             $lightblue !default;
+//$modal-bg-color:                  #000015 !default;
+//$bar-positive-text:               yellow !default;
 
 // The path for our ionicons font files, relative to the built & temporary main.css
 $ionicons-font-path: "../assets/fonts" !default;
@@ -40,15 +40,15 @@ $ionicons-font-path: "../assets/fonts" !default;
 }
 
 .bar-header {
-  //border-bottom: 0px;
+  border-bottom: 0px;
 }
 
 .bar-subheader{
   font-size: 0.8rem !important;
-  border-bottom: 1px $lightblue !important;
-  border-bottom-style: solid !important;
+  //border-bottom: 1px $lightblue !important;
+  //border-bottom-style: solid !important;
   .icon {
-    color: yellow !important;
+    //color: yellow !important;
   }
   min-height: 30px !important;
   padding-top: 5px !important;
@@ -57,74 +57,74 @@ $ionicons-font-path: "../assets/fonts" !default;
 .title{
     text-transform: uppercase !important;
     font-weight: bolder !important;
-    color: yellow !important;
+    //color: yellow !important;
 }
 
 .popup{
-    background-color: $positive !important;
-    border-color: $lightblue !important;
-    border-width: 1px !important;
+    //background-color: $positive !important;
+    //border-color: $lightblue !important;
+    //border-width: 1px !important;
     border-style: solid !important;
     .popup-title{
-        color: yellow !important;
+        //color: yellow !important;
         text-transform: uppercase !important;
         font-weight: bold !important;
     }
     .popup-body{
-        background-color: $light !important;
-        color: $lightblue !important;
+        //background-color: $light !important;
+        //color: $lightblue !important;
     }
 }
 
 .tournament-card{
-    border-width: 1px !important;
+    //border-width: 1px !important;
     border-style: solid !important;
-    border-color: $menucolor !important;
+    //border-color: $menucolor !important;
     .item-avatar {
         font-weight: bold !important;
-        color: $lightblue !important;
+        //color: $lightblue !important;
         h2, row {
-          color: yellow !important;
+          //color: yellow !important;
           font-weight: bold !important;
           text-transform: uppercase;
         }
     }
     .item-avatar, .item-body > p{
-        color: $lightblue !important;
+        //color: $lightblue !important;
     }
 }
 
 .item {
   h3 {
-    color: $lightblue !important;
+    //color: $lightblue !important;
     font-weight: bold !important;
     text-transform: uppercase;
   }
 }
 
 ion-item{
-    color: $lightblue !important;
-    border-color: $menucolor !important;
+    //color: $lightblue !important;
+    //border-color: $menucolor !important;
     border-style: solid !important;
-    border-width: 1px 0px !important;
+    //border-width: 1px 0px !important;
     h2{
-        color: yellow !important;
+        //color: yellow !important;
         text-transform: uppercase !important;
         font-weight: bold !important;
     }
     p, .ion-chevron-right,.ion-chevron-top,.ion-chevron-bottom{
-        color: $lightblue !important;
+        //color: $lightblue !important;
     }
     .row, .col {
       padding: 0px !important;
     }
 }
 .ion-chevron-right, .ion-chevron-top, .ion-chevron-bottom{
-  color: $lightblue !important;
+  //color: $lightblue !important;
 }
 .list.list-inset {
-  border-color: $menucolor;
-  border-width: 1px;
+  //border-color: $menucolor;
+  //border-width: 1px;
   border-style: solid;
   padding: 0px;
   margin: 0px;
@@ -139,12 +139,12 @@ ion-item{
 }
 
 .item {
-    border-color: $menucolor !important;
+    //border-color: $menucolor !important;
     .input-label, input{
-        color: $lightblue !important;
+        //color: $lightblue !important;
     }
     .input-label{
-        color: yellow !important;
+        //color: yellow !important;
         text-transform: uppercase !important;
         font-weight: bold !important;
         padding: 0px !important;
@@ -154,21 +154,21 @@ ion-item{
 #leftmenu{
     .item-input{
         .input-label{
-            color: yellow !important;
+            //color: yellow !important;
         }
     }
 }
 
 .item-divider{
-    border-color: $menucolor !important;
+    //border-color: $menucolor !important;
     font-weight: bold !important;
-    color: yellow !important;
+    //color: yellow !important;
     font-size: 0.8rem !important;
     p{
-        color: $lightblue !important;
+        //color: $lightblue !important;
     }
     .icon {
-      color: yellow !important;
+      //color: yellow !important;
     }
 }
 
@@ -181,15 +181,15 @@ ion-item{
 }
 
 .ion-navicon, ion-nav-buttons > button{
-    color: yellow !important;
+    //color: yellow !important;
 }
 
 
 // Empire SASS
 
 a.button.empire {
-  // background-color: lightblue;
-  // color: darkblue !important;
+  background-color: lightblue;
+  color: darkblue !important;
   border-width: 1px;
   border-style: solid;
   border-color: blue;
@@ -208,10 +208,10 @@ a.button.empire {
 }
 
 .text-lightblue{
-  color: lightblue !important;
+  //color: lightblue !important;
 }
 i.upgrade {
-  color: lightblue !important;
+  //color: lightblue !important;
 }
 
 // Rebel SASS
@@ -267,15 +267,15 @@ a.button.scum {
 }
 
 .hull, .xwing-miniatures-font-hull {
-  color: yellow;
+  //color: yellow;
 }
 
 .shield, .xwing-miniatures-font-shield {
-  color: $lightblue;
+  //color: $lightblue;
 }
 
 .description, .ability {
-  color: $lightblue;
+  //color: $lightblue;
 }
 
 
@@ -294,11 +294,11 @@ ion-popover-view.fit{
 .numberRight {
    text-align: right !important;
    padding-right: 5px !important;
-   border-color: $lightblue !important;
-   border-width: 0px 0px 1px 0px !important;
+   //border-color: $lightblue !important;
+   //border-width: 0px 0px 1px 0px !important;
    border-style: solid !important;
   -moz-appearance: textfield !important;
-   background-color: transparent;
+   //background-color: transparent;
 }
 
 ion-footer-bar {
@@ -323,7 +323,7 @@ ion-footer-bar {
 }
 
 .statisticsRow {
-  background-color: #02243d !important;
+  //background-color: #02243d !important;
   padding: 0px !important;
   .col {
     padding: 0px !important;

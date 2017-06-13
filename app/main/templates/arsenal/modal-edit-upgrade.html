@@ -17,7 +17,7 @@
       <input type="number" min="0" ng-model="editUpgrade.points">
     </label>
     <li class="item item-toggle">
-      <span class="input-label"><i class="ion-ios-circle-filled" style="color: lightblue; text-transform: none"></i>&nbsp;Mejora única:</span>
+      <span class="input-label"><i class="ion-ios-circle-filled" style="text-transform: none"></i>&nbsp;Mejora única:</span>
       <label class="toggle toggle-balanced">
         <input type="checkbox" ng-model="editUpgrade.unique">
         <div class="track">
@@ -26,7 +26,7 @@
       </label>
     </li>
     <li class="item item-toggle">
-      <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-elite" style="color: lightblue; text-transform: none; font-weight: normal"></i>&nbsp;Mejora limitada:</span>
+      <span class="input-label"><i class="xwing-miniatures-font xwing-miniatures-font-elite" style="text-transform: none; font-weight: normal"></i>&nbsp;Mejora limitada:</span>
       <label class="toggle toggle-balanced">
         <input type="checkbox" ng-model="editUpgrade.limited">
         <div class="track">
@@ -39,7 +39,7 @@
       <input type="text" ng-model="editUpgrade.faction" placeholder="TODO">
     </label>
     <label class="item item-input">
-      <textarea ng-model="editUpgrade.text" placeholder="Descripción" style="background-color: transparent; color: lightblue;"></textarea>
+      <textarea ng-model="editUpgrade.text" placeholder="Descripción" style="background-color: transparent;"></textarea>
     </label>
     <button class="button button-full button-balanced" ng-click="updateUpgrade(editUpgrade)">MODIFICAR MEJORA</button>
   </ion-content>

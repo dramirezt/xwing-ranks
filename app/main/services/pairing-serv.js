@@ -19,7 +19,7 @@ angular.module('main')
   };
 
   this.getPairings = function (tournament) {
-    return $http.get(baseURL + '/tournaments/' + tournament._id + '/pairings')
+    return $http.get(baseURL + '/completedTournaments/' + tournament._id + '/pairings')
     .then(
       function (response) {
         if (typeof response.data === 'object') {
@@ -45,7 +45,7 @@ angular.module('main')
   };
 
   this.createPairing = function (pairing) {
-    return $http.post(baseURL + '/tournaments/' + pairing.tournament + '/pairings', pairing).then(
+    return $http.post(baseURL + '/completedTournaments/' + pairing.tournament + '/pairings', pairing).then(
         function (response) {
           if (typeof response.data === 'object') {
             return response.data;
@@ -60,7 +60,7 @@ angular.module('main')
   };
 
   this.deletePairing = function (pairing) {
-    return $http.delete(baseURL + '/tournaments/' + pairing.tournament + '/pairings/' + pairing._id).then(
+    return $http.delete(baseURL + '/completedTournaments/' + pairing.tournament + '/pairings/' + pairing._id).then(
       function (response) {
         var index = pairings.indexOf(pairing);
         pairings.splice(index, 1);
@@ -73,7 +73,7 @@ angular.module('main')
   };
 
   this.deletePairings = function (tournament) {
-    return $http.delete(baseURL + '/tournaments/' + tournament._id + '/pairings');
+    return $http.delete(baseURL + '/completedTournaments/' + tournament._id + '/pairings');
   };
 
   this.currentPairing = function () {
@@ -85,7 +85,7 @@ angular.module('main')
   };
 
   this.updatePairing = function (pairing) {
-    return $http.put(baseURL + '/tournaments/' + pairing.tournament + '/pairings/' + pairing._id, pairing)
+    return $http.put(baseURL + '/completedTournaments/' + pairing.tournament + '/pairings/' + pairing._id, pairing)
       .then(
         function (response) {
           if (typeof response.data === 'object') {

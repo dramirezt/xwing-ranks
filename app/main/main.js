@@ -52,55 +52,55 @@ angular.module('main', [
 
     // Tournament states
     .state('main.tournamentsList', {
-      url: '/tournaments',
+      url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournaments/tournament-list.html',
+          templateUrl: 'main/templates/completedTournaments/tournament-list.html',
           controller: 'TournamentListCtrl'
         }
       }
     })
     .state('main.tournamentDetails', {
-      url: '/tournaments',
+      url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournaments/tournament-details.html',
+          templateUrl: 'main/templates/completedTournaments/tournament-details.html',
           controller: 'TournamentDetailsCtrl'
         }
       }
     })
     .state('main.tournamentPlayerProfile', {
-      url: '/tournaments',
+      url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournaments/tournament-player-profile.html',
+          templateUrl: 'main/templates/completedTournaments/tournament-player-profile.html',
           controller: 'TournamentPlayerProfileCtrl'
         }
       }
     })
     .state('main.tournamentInfo', {
-      url: '/tournaments',
+      url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournaments/tournament-info.html',
+          templateUrl: 'main/templates/completedTournaments/tournament-info.html',
           controller: 'TournamentInfoCtrl'
         }
       }
     })
     .state('main.tournamentPairings', {
-      url: '/tournaments',
+      url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournaments/pairing-list.html',
+          templateUrl: 'main/templates/completedTournaments/pairing-list.html',
           controller: 'PairingListCtrl'
         }
       }
     })
     .state('main.pairingDetails', {
-      url: '/tournaments',
+      url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/tournaments/pairing-details.html',
+          templateUrl: 'main/templates/completedTournaments/pairing-details.html',
           controller: 'PairingDetailsCtrl'
         }
       }

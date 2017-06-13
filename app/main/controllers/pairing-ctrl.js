@@ -31,7 +31,7 @@ angular.module('main')
     );
   }
 
-  $ionicModal.fromTemplateUrl('main/templates/tournaments/modal-edit-pairing.html', {
+  $ionicModal.fromTemplateUrl('main/templates/completedTournaments/modal-edit-pairing.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
@@ -44,7 +44,7 @@ angular.module('main')
     $scope.modal.hide();
   };
 
-  $ionicPopover.fromTemplateUrl('main/templates/tournaments/popover-pairing-list.html', {
+  $ionicPopover.fromTemplateUrl('main/templates/completedTournaments/popover-pairing-list.html', {
     scope: $scope
   }).then(function (popover) {
     $scope.popover = popover;
