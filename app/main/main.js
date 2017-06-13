@@ -55,7 +55,7 @@ angular.module('main', [
       url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/completedTournaments/tournament-list.html',
+          templateUrl: 'main/templates/tournaments/tournament-list.html',
           controller: 'TournamentListCtrl'
         }
       }
@@ -64,7 +64,7 @@ angular.module('main', [
       url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/completedTournaments/tournament-details.html',
+          templateUrl: 'main/templates/tournaments/tournament-details.html',
           controller: 'TournamentDetailsCtrl'
         }
       }
@@ -73,7 +73,7 @@ angular.module('main', [
       url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/completedTournaments/tournament-player-profile.html',
+          templateUrl: 'main/templates/tournaments/tournament-player-profile.html',
           controller: 'TournamentPlayerProfileCtrl'
         }
       }
@@ -82,7 +82,7 @@ angular.module('main', [
       url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/completedTournaments/tournament-info.html',
+          templateUrl: 'main/templates/tournaments/tournament-info.html',
           controller: 'TournamentInfoCtrl'
         }
       }
@@ -91,7 +91,7 @@ angular.module('main', [
       url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/completedTournaments/pairing-list.html',
+          templateUrl: 'main/templates/tournaments/pairing-list.html',
           controller: 'PairingListCtrl'
         }
       }
@@ -100,7 +100,7 @@ angular.module('main', [
       url: '/completedTournaments',
       views: {
         'pageContent': {
-          templateUrl: 'main/templates/completedTournaments/pairing-details.html',
+          templateUrl: 'main/templates/tournaments/pairing-details.html',
           controller: 'PairingDetailsCtrl'
         }
       }
