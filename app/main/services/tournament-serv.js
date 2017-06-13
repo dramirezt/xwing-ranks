@@ -80,7 +80,7 @@ angular.module('main')
       )
   };
 
-  this.getTournaments = function (start) {
+  this.getCompletedTournaments = function (start) {
     if (!start) start = 0;
     return $http.get(baseURL + '/tournaments/finished/' + start)
     .then(
